@@ -336,7 +336,11 @@ nav.scrolled {
 
 .btn-secondary {
     display: inline-block;
-    padding: 14px 36px;
+    /* 2px less than .btn-primary's 14px/36px on each side, because the 2px
+       border below adds back to the same total. Without this compensation a
+       secondary button renders 4px taller and 4px wider than a primary one,
+       which is visible wherever the two sit together (hero, closing CTA). */
+    padding: 12px 34px;
     border-radius: 50px;
     background: transparent;
     color: var(--navy);
@@ -1692,10 +1696,43 @@ footer p {
         align-items: center;
     }
 
+    /* One button size for the whole site at this width. These were
+       `width: 100%`, so every button stretched the full column and, with the
+       50px pill radius, read as an oversized slab rather than a button.
+       Sizing to content with a consistent 48px height keeps them tappable
+       without dominating the screen. */
     .btn-primary,
     .btn-secondary {
-        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: auto;
+        max-width: 100%;
+        min-height: 48px;
+        padding: 12px 28px;
+        font-size: 0.95rem;
         text-align: center;
+    }
+
+    /* .btn-secondary carries a 2px border that .btn-primary doesn't. Its
+       natural height therefore came out 4px taller (52 vs 48) and min-height
+       couldn't equalise them, since both already exceeded it. Trimming the
+       padding by exactly the border width makes the two render identically --
+       important where they sit side by side or stacked as a pair. */
+    .btn-secondary {
+        padding: 10px 26px;
+    }
+
+    /* Stacked pairs (hero, closing CTA) get a shared width so the two buttons
+       line up as a matched set instead of sizing to their own label lengths.
+       Capped well short of the viewport so they stay button-shaped. */
+    .hero-buttons .btn-primary,
+    .hero-buttons .btn-secondary,
+    .cta-buttons .btn-primary,
+    .cta-buttons .btn-secondary {
+        width: 100%;
+        max-width: 260px;
     }
 
     /* Section padding is fluid via clamp() on the base rule now, so the old
