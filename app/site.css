@@ -1645,12 +1645,21 @@ footer p {
         background: var(--gold);
         color: var(--navy) !important;
         justify-content: center;
-        padding: 14px 20px;
+        /* Same 48px height as the nav rows above it. It was 14px padding at
+           1.02rem, which came out 54px -- taller than every item in the list
+           and, with a heavier glow, dominated the drawer. It still reads as
+           the primary action through colour and weight, not bulk. */
+        padding: 12px 20px;
+        min-height: 48px;
+        /* Pinned rather than inherited: the inherited line-height rendered the
+           box at 50px, so it still didn't match the 48px rows. 24px + 12px
+           padding top and bottom lands exactly on 48. */
+        line-height: 24px;
         margin-top: 14px;
-        border-radius: 12px;
-        font-size: 1.02rem;
+        border-radius: 10px;
+        font-size: 1rem;
         font-weight: 700;
-        box-shadow: 0 6px 18px rgba(246, 201, 59, 0.25);
+        box-shadow: 0 4px 12px rgba(246, 201, 59, 0.18);
     }
 
     .nav-links .nav-cta:hover {
