@@ -326,6 +326,12 @@ nav.scrolled {
     border: none;
     cursor: pointer;
     font-size: 1rem;
+    /* These classes are used on both <a> and <button>. Browsers don't inherit
+       font or line-height into form controls, so the Contact form's submit
+       button rendered 8px shorter than every link styled the same way.
+       Setting both explicitly makes the two elements render identically. */
+    font-family: inherit;
+    line-height: 1.5;
 }
 
 .btn-primary:hover {
@@ -349,6 +355,9 @@ nav.scrolled {
     border: 2px solid var(--navy);
     transition: all 0.3s ease;
     font-size: 1rem;
+    /* Matches .btn-primary -- see the note there on <a> vs <button>. */
+    font-family: inherit;
+    line-height: 1.5;
 }
 
 .btn-secondary:hover {

@@ -90,8 +90,11 @@ export default async function ContactPage() {
             <input type="text" id="contactSubject" placeholder="Subject" />
             <label htmlFor="contactMessage" style={{ display: 'none' }}>Message</label>
             <textarea id="contactMessage" placeholder="Message" required></textarea>
-            <button type="submit" className="btn-primary" style={{ width: '100%', textAlign: 'center' }}>
-              <i className="fas fa-paper-plane" aria-hidden="true" style={{ marginRight: 8 }}></i> Send Message
+            {/* No inline width: an inline style outranks the stylesheet, so a
+                hardcoded width:100% here made this the one button on the site
+                that ignored the shared sizing. It follows .btn-primary now. */}
+            <button type="submit" className="btn-primary">
+              <i className="fas fa-paper-plane" aria-hidden="true"></i> Send Message
             </button>
           </form>
         </div>
