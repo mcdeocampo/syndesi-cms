@@ -15,7 +15,7 @@ export default async function AdmissionsPage() {
   ])
 
   return (
-    <section style={{ paddingTop: 140 }}>
+    <section className="page-top">
       <div className="container">
         <SectionTag icon="fas fa-door-open" label={s.intro.tag} />
         <h2 className="section-title">{s.intro.title}</h2>

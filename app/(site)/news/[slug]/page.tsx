@@ -28,7 +28,7 @@ export default async function NewsDetailPage({
   if (!article) notFound()
 
   return (
-    <section style={{ paddingTop: 140 }}>
+    <section className="page-top">
       <div className="container" style={{ maxWidth: 780 }}>
         <Link href="/news" className="card-learn-more" style={{ marginBottom: 24, display: 'inline-block' }}>
           <i className="fas fa-arrow-left" aria-hidden="true"></i> Back to News

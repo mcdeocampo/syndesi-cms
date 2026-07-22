@@ -884,6 +884,15 @@ section {
     z-index: 1;
 }
 
+/* First section on an inner page: has to clear the fixed 71px header. This was
+   a hardcoded inline `paddingTop: 140` repeated across all 9 inner pages,
+   which left 69px of dead space under the header on a phone. Now scales with
+   the viewport -- 100px on mobile (a comfortable ~29px below the header),
+   rising to the original 140px on desktop where it reads as intentional. */
+.page-top {
+    padding-top: clamp(100px, 11vw, 140px);
+}
+
 .section-alt {
     background: #f3efe4;
 }

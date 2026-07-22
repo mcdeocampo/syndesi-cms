@@ -12,7 +12,7 @@ export default async function AboutPage() {
   const [s, items] = await Promise.all([getPageSections('about'), getPageItems('about')])
 
   return (
-    <section style={{ paddingTop: 140 }}>
+    <section className="page-top">
       <div className="container">
         <SectionTag icon="fas fa-info-circle" label={s.intro.tag} />
         <h2 className="section-title">{s.intro.title}</h2>

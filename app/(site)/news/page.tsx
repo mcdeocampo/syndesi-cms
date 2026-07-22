@@ -13,7 +13,7 @@ export default async function NewsPage() {
   const [news, s] = await Promise.all([getPublishedNews(), getPageSections('news')])
 
   return (
-    <section style={{ paddingTop: 140 }}>
+    <section className="page-top">
       <div className="container">
         <SectionTag icon="fas fa-newspaper" label={s.intro.tag} />
         <h2 className="section-title">{s.intro.title}</h2>

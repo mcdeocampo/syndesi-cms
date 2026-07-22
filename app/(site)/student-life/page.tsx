@@ -15,7 +15,7 @@ export default async function StudentLifePage() {
   ])
 
   return (
-    <section style={{ paddingTop: 140 }}>
+    <section className="page-top">
       <div className="container">
         <SectionTag icon="fas fa-users" label={s.intro.tag} />
         <h2 className="section-title">{s.intro.title}</h2>

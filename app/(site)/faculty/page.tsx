@@ -11,7 +11,7 @@ export default async function FacultyPage() {
   const [faculty, s] = await Promise.all([getPublishedFaculty(), getPageSections('faculty')])
 
   return (
-    <section style={{ paddingTop: 140 }}>
+    <section className="page-top">
       <div className="container">
         <SectionTag icon="fas fa-chalkboard-teacher" label={s.intro.tag} />
         <h2 className="section-title">{s.intro.title}</h2>
