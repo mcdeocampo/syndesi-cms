@@ -41,7 +41,7 @@ export default function Header({ settings }: { settings: WebsiteSettings }) {
               href="/contact"
               className={`nav-cta${pathname === '/contact' ? ' active' : ''}`}
             >
-              Contact
+              Contact Us
             </Link>
           </li>
         </ul>

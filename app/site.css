@@ -236,7 +236,9 @@ nav.scrolled {
    have to share the bar. Placed AFTER the base .nav-links a rule on purpose:
    it previously sat before it, so the base font-size (0.92rem) overrode this
    one at equal specificity and the squeeze never took effect. */
-@media (min-width: 769px) and (max-width: 1120px) {
+/* Starts at 861px to meet the drawer breakpoint above -- below that the
+   horizontal nav isn't rendered at all. */
+@media (min-width: 861px) and (max-width: 1120px) {
     .nav-links {
         gap: 16px;
     }
@@ -938,11 +940,16 @@ section {
    NOTE: this assumes four stats, which is what the section ships with. A
    fifth added via the CMS would wrap to its own row -- revisit this rule if
    the count changes. */
+/* Deliberately keyed to 768px, not the 860px nav breakpoint -- the two are
+   independent. Holding 2 columns up to 860 left the cards ~395px wide for a
+   two-character figure, which looked stretched; four-up from 769 matches the
+   desktop proportions. */
 @media (min-width: 769px) {
     .stats-strip {
         grid-template-columns: repeat(4, 1fr);
     }
 }
+
 
 .stat-card {
     background: rgba(255, 255, 255, 0.07);
@@ -977,6 +984,40 @@ section {
 .stat-card p {
     color: rgba(255, 255, 255, 0.72);
     font-size: 0.9rem;
+}
+
+/* Phones: two-up instead of stacked. The auto-fit grid only fits one 180px
+   column on a phone, so four cards ran full-width at 201px each -- about
+   876px of scrolling for four short figures.
+   Placed AFTER the .stat-card base rules above, not next to .stats-strip:
+   these selectors carry the same specificity, so sitting earlier in the file
+   meant the base padding and font sizes silently won and the block rendered
+   at its full desktop size on phones. */
+@media (max-width: 768px) {
+    .stats-strip {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .stat-card {
+        padding: 22px 12px;
+        border-radius: 16px;
+    }
+
+    .stat-card i {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    .stat-card h3 {
+        font-size: 1.75rem;
+        /* The inherited line-height gave a 36.8px figure a 59px box. */
+        line-height: 1.15;
+    }
+
+    .stat-card p {
+        font-size: 0.85rem;
+    }
 }
 
 /* subtle dot-grid texture, reusable on dark sections */
@@ -1586,7 +1627,13 @@ footer p {
     }
 }
 
-@media (max-width: 768px) {
+/* 860px, not 768px. Nine nav items plus the Contact CTA overflowed the bar
+   below roughly 860px -- by 38px at 769px even with the shorter "Contact"
+   label. Squeezing the font further would only have made a cramped nav
+   illegible, so the drawer takes over before the overflow starts. This also
+   brings the button, footer and stats layouts down with it, which suits a
+   portrait tablet. */
+@media (max-width: 860px) {
     .nav-links {
         position: fixed;
         top: 0;
@@ -1781,35 +1828,6 @@ footer p {
        floating with ragged edges on both sides and no common margin to scan
        down. Left alignment gives every item the same starting edge as the
        page content above it. */
-    /* Two-up instead of stacked. The auto-fit grid only fits one 180px column
-       on a phone, so four cards ran full-width at 201px each -- about 876px of
-       scrolling for four short numbers. A 2x2 grid with tighter padding cuts
-       that to roughly a third while keeping the figures readable. */
-    .stats-strip {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 14px;
-    }
-
-    .stat-card {
-        padding: 22px 12px;
-        border-radius: 16px;
-    }
-
-    .stat-card i {
-        font-size: 1.5rem;
-        margin-bottom: 10px;
-    }
-
-    .stat-card h3 {
-        font-size: 1.75rem;
-        /* The inherited line-height gave a 36.8px figure a 59px box. */
-        line-height: 1.15;
-    }
-
-    .stat-card p {
-        font-size: 0.85rem;
-    }
-
     .footer-grid {
         grid-template-columns: 1fr;
         text-align: left;
