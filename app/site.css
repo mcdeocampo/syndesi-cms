@@ -1569,12 +1569,17 @@ footer p {
         height: 100vh;
         background: linear-gradient(165deg, var(--navy) 0%, var(--navy-light) 55%, #2d3f9e 100%);
         flex-direction: column;
-        justify-content: center;
-        padding: 40px;
+        /* Was justify-content: center with a 22px gap. Combined with the 44px
+           tap targets that spread the items ~66px apart, which read as a huge
+           empty drawer. Starting from the top with a small gap gives a tight,
+           scannable list -- the per-item padding now provides the rhythm. */
+        justify-content: flex-start;
+        align-items: stretch;
+        padding: 92px 20px 32px;
         transition: right 0.4s ease;
-        gap: 22px;
+        gap: 2px;
         box-shadow: -10px 0 50px rgba(0, 0, 0, 0.4);
-        overflow: hidden;
+        overflow-y: auto;
     }
 
     .nav-links::before {
@@ -1597,38 +1602,51 @@ footer p {
         pointer-events: none;
     }
 
+    /* Full-width rows: the whole strip is tappable, not just the words, and
+       the row itself carries the active/pressed state. */
     .nav-links a {
         position: relative;
         z-index: 1;
         color: rgba(255, 255, 255, 0.85);
-        font-size: 1.05rem;
-        /* The link was an inline box exactly as tall as its text (20px), well
-           under the ~44px minimum for a reliable touch target. Padding makes
-           the tappable area 44px without moving the text or changing the
-           menu's spacing, which is driven by the parent's gap. */
-        display: block;
-        padding: 12px 0;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        min-height: 48px;
+        padding: 10px 16px;
+        border-radius: 10px;
+        transition: background 0.2s ease, color 0.2s ease;
     }
 
+    /* The sliding underline is a desktop affordance. In the drawer the row
+       highlight does that job, and the underline sat awkwardly under a
+       full-width row. */
     .nav-links a::after {
-        background: var(--gold);
-        /* Re-anchor the underline to the text now that the link box is taller;
-           8px from the padded edge reproduces the desktop 4px-below-text look. */
-        bottom: 8px;
+        display: none;
     }
 
     .nav-links a:hover,
     .nav-links a.active {
         color: var(--gold);
+        background: rgba(255, 255, 255, 0.09);
     }
 
+    /* Contact is the one action in the drawer, so it gets to look like a
+       button: full width, its own block, pushed away from the list.
+       It also needs its padding restated -- `.nav-links a` above outranks
+       the base `.nav-cta` rule on specificity, which previously stripped the
+       horizontal padding and collapsed this into a small oval. */
     .nav-links .nav-cta {
         position: relative;
         z-index: 1;
         background: var(--gold);
         color: var(--navy) !important;
-        display: inline-block;
-        text-align: center;
+        justify-content: center;
+        padding: 14px 20px;
+        margin-top: 14px;
+        border-radius: 12px;
+        font-size: 1.02rem;
+        font-weight: 700;
+        box-shadow: 0 6px 18px rgba(246, 201, 59, 0.25);
     }
 
     .nav-links .nav-cta:hover {
