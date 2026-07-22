@@ -1701,20 +1701,41 @@ footer p {
     /* Section padding is fluid via clamp() on the base rule now, so the old
        flat 60px override here would only make mobile roomier than intended. */
 
+    /* Single column, but left-aligned. This block used to centre the whole
+       footer on phones, which left the headings, links and contact rows
+       floating with ragged edges on both sides and no common margin to scan
+       down. Left alignment gives every item the same starting edge as the
+       page content above it. */
     .footer-grid {
         grid-template-columns: 1fr;
-        text-align: center;
+        text-align: left;
     }
 
     footer .footer-logo,
     .footer-brand p {
-        justify-content: center;
-        margin-left: auto;
-        margin-right: auto;
+        justify-content: flex-start;
+        margin-left: 0;
+        margin-right: 0;
     }
 
     .footer-contact li {
-        justify-content: center;
+        justify-content: flex-start;
+    }
+
+}
+
+/* The copyright bar follows the footer columns instead of staying centred on
+   its own. Scoped to 992px rather than 768px because the footer is still
+   left-aligned in the 769-992px tablet band -- a centred bar under
+   left-aligned columns looked like a mistake there too. It sits outside
+   .container, so it also needs the container's 24px inset; without it the
+   text sat flush against the screen edge, 24px off from everything above.
+   Above 992px the four-column footer keeps its centred bar. */
+@media (max-width: 992px) {
+    .footer-bottom {
+        text-align: left;
+        padding-left: 24px;
+        padding-right: 24px;
     }
 }
 
