@@ -1489,6 +1489,21 @@ footer p {
     margin: 20px 0;
 }
 
+/* Featured image on a news card. Bleeds to the card's edges via negative
+   margins that cancel the card's 32px/24px padding, and rounds only its top
+   corners so it sits flush inside the card's 18px radius. A fixed aspect
+   ratio keeps a row of cards aligned regardless of the source image's shape;
+   object-fit crops rather than distorts. */
+.news-card-image {
+    display: block;
+    width: calc(100% + 48px);
+    margin: -32px -24px 20px;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 17px 17px 0 0;
+    background: var(--border);
+}
+
 .news-detail-summary {
     font-size: 1.05rem;
     color: var(--text-muted);

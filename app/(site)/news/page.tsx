@@ -27,6 +27,17 @@ export default async function NewsPage() {
           <div className="card-grid">
             {news.map((article) => (
               <div className="card reveal" key={article.id}>
+                {/* Only rendered when an image is attached in the CMS, so
+                    articles without one keep the plain text card rather than
+                    showing an empty placeholder block. */}
+                {article.featured_image_url && (
+                  <img
+                    src={article.featured_image_url}
+                    alt={article.title}
+                    className="news-card-image"
+                    loading="lazy"
+                  />
+                )}
                 {article.category && <span className="news-category-badge">{article.category}</span>}
                 <h4>{article.title}</h4>
                 <p>
