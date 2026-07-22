@@ -1,0 +1,18 @@
+/* Minimal universal reset shared by both the public site and the CMS admin
+   area. Section-specific styling lives in app/site.css (public site,
+   imported by the (site) route group) and app/admin/admin.css (CMS). */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+}

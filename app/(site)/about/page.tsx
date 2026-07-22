@@ -1,0 +1,62 @@
+import type { Metadata } from 'next'
+import { getPageSections } from '@/lib/page-sections'
+import { getPageItems } from '@/lib/page-section-items'
+import { SectionTag } from '@/components/SectionCta'
+
+export const metadata: Metadata = {
+  description:
+    "Learn about Gardner School of Multiple Intelligences: our story, mission, and core values, located in San Antonio, San Pascual, Batangas.",
+}
+
+export default async function AboutPage() {
+  const [s, items] = await Promise.all([getPageSections('about'), getPageItems('about')])
+
+  return (
+    <section style={{ paddingTop: 140 }}>
+      <div className="container">
+        <SectionTag icon="fas fa-info-circle" label={s.intro.tag} />
+        <h2 className="section-title">{s.intro.title}</h2>
+        <div className="two-col-grid" style={{ gap: 40, alignItems: 'center' }}>
+          <div>
+            {/* One <p> per stored paragraph. An optional `title` renders as a
+                bold lead-in inline at the start of the paragraph. The last
+                paragraph drops its bottom margin, as the hardcoded copy did. */}
+            {items.intro?.map((p, i) => (
+              <p
+                key={p.id ?? i}
+                style={{
+                  color: 'var(--text-muted)',
+                  marginBottom: i === (items.intro?.length ?? 0) - 1 ? 0 : 16,
+                }}
+              >
+                {p.title && <strong>{p.title}</strong>}
+                {p.title && p.body ? ' ' : ''}
+                {p.body}
+              </p>
+            ))}
+          </div>
+          <div className="stats-2x2-grid">
+            {items.facts?.map((f, i) => (
+              <div className="card reveal" style={{ padding: 20, textAlign: 'center' }} key={f.id ?? i}>
+                <i className={f.icon ?? ''} aria-hidden="true" style={{ fontSize: '2rem', color: 'var(--red)' }}></i>
+                <h4>{f.title}</h4>
+                <p>{f.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{ marginTop: 50 }}>
+          <h3 style={{ color: 'var(--navy)', fontSize: '1.6rem', marginBottom: 16, fontFamily: "'Poppins',sans-serif" }}>{s.values.title}</h3>
+          <div className="card-grid">
+            {items.values?.map((v, i) => (
+              <div className="card reveal" key={v.id ?? i}>
+                <h4>{v.title}</h4>
+                <p>{v.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
