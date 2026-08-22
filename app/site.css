@@ -1494,14 +1494,49 @@ footer p {
    corners so it sits flush inside the card's 18px radius. A fixed aspect
    ratio keeps a row of cards aligned regardless of the source image's shape;
    object-fit crops rather than distorts. */
+/* Equal-height news cards with the Read More link pinned to the bottom, so a
+   row lines up regardless of how much summary each article has. Scoped to
+   .news-card rather than .card so faculty/program/testimonial grids are
+   untouched. */
+.news-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.news-card .card-learn-more {
+    margin-top: auto;
+}
+
+/* Title clamped to two lines: without this a one-line and a three-line title
+   pushed the summary and CTA to different heights across a row. */
+.news-card h4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Media wrapper bleeds to the card edges (its negative margins cancel the
+   card's 32px/24px padding) and clips the image's hover zoom to the rounded
+   top corners. The image can't carry overflow itself, hence the wrapper. */
+.news-card-media {
+    margin: -32px -24px 20px;
+    border-radius: 17px 17px 0 0;
+    overflow: hidden;
+    background: var(--border);
+}
+
 .news-card-image {
     display: block;
-    width: calc(100% + 48px);
-    margin: -32px -24px 20px;
+    width: 100%;
     aspect-ratio: 16 / 9;
     object-fit: cover;
-    border-radius: 17px 17px 0 0;
-    background: var(--border);
+    transition: transform 0.5s var(--ease-out-quint);
+}
+
+.news-card:hover .news-card-image {
+    transform: scale(1.05);
 }
 
 .news-detail-summary {
@@ -2030,6 +2065,7 @@ summary:focus-visible,
     .btn-secondary:active,
     .nav-cta:active,
     .card:hover .faculty-photo,
+    .card:hover .news-card-image,
     .card-learn-more:hover i {
         transform: none;
     }
@@ -2042,6 +2078,7 @@ summary:focus-visible,
     .card > i,
     .card-learn-more i,
     .faculty-photo,
+    .news-card-image,
     .news-detail-image {
         transition-duration: 0.01ms;
     }

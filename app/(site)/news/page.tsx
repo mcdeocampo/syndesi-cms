@@ -26,17 +26,20 @@ export default async function NewsPage() {
         ) : (
           <div className="card-grid">
             {news.map((article) => (
-              <div className="card reveal" key={article.id}>
+              <div className="card news-card reveal" key={article.id}>
                 {/* Only rendered when an image is attached in the CMS, so
                     articles without one keep the plain text card rather than
-                    showing an empty placeholder block. */}
+                    showing an empty placeholder block. The wrapper clips the
+                    hover zoom to the rounded top corners. */}
                 {article.featured_image_url && (
-                  <img
-                    src={article.featured_image_url}
-                    alt={article.title}
-                    className="news-card-image"
-                    loading="lazy"
-                  />
+                  <div className="news-card-media">
+                    <img
+                      src={article.featured_image_url}
+                      alt={article.title}
+                      className="news-card-image"
+                      loading="lazy"
+                    />
+                  </div>
                 )}
                 {article.category && <span className="news-category-badge">{article.category}</span>}
                 <h4>{article.title}</h4>

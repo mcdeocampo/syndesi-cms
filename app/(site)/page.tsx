@@ -189,16 +189,18 @@ export default async function HomePage() {
           ) : (
             <div className="card-grid">
               {latestNews.map((article) => (
-                <div className="card reveal" key={article.id}>
+                <div className="card news-card reveal" key={article.id}>
                   {/* Same conditional as the /news list: no image attached
                       means a plain text card, not an empty placeholder. */}
                   {article.featured_image_url && (
-                    <img
-                      src={article.featured_image_url}
-                      alt={article.title}
-                      className="news-card-image"
-                      loading="lazy"
-                    />
+                    <div className="news-card-media">
+                      <img
+                        src={article.featured_image_url}
+                        alt={article.title}
+                        className="news-card-image"
+                        loading="lazy"
+                      />
+                    </div>
                   )}
                   <h4>{article.title}</h4>
                   {article.summary && <p>{article.summary}</p>}
