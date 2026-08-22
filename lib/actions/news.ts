@@ -4,8 +4,106 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { requireAuth } from '@/lib/supabase/dal'
 import { createClient } from '@/lib/supabase/server'
+import { extractStoragePath } from '@/lib/storage'
 
 export type NewsFormState = { error?: string; success?: string } | undefined
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+type Supa = Awaited<ReturnType<typeof createClient>>
+
+// The ordered media ids the CMS submitted for this article, as a JSON array in
+// a single hidden field. Validated to real uuids and de-duplicated, order
+// preserved -- index 0 is the cover.
+function parsePhotoIds(formData: FormData): string[] {
+  const raw = formData.get('photo_ids')
+  if (typeof raw !== 'string' || !raw) return []
+  let arr: unknown
+  try {
+    arr = JSON.parse(raw)
+  } catch {
+    return []
+  }
+  if (!Array.isArray(arr)) return []
+  const seen = new Set<string>()
+  const out: string[] = []
+  for (const v of arr) {
+    if (typeof v === 'string' && UUID_RE.test(v) && !seen.has(v)) {
+      seen.add(v)
+      out.push(v)
+    }
+  }
+  return out
+}
+
+// Every media id currently linked to an article: its news_photos rows plus its
+// featured_image_id (the two are kept in sync, but a pre-existing record has
+// only the latter). Used to diff what was removed on save.
+async function currentArticleMedia(supabase: Supa, newsId: string): Promise<Set<string>> {
+  const ids = new Set<string>()
+  const { data: photos } = await supabase
+    .from('news_photos')
+    .select('media_id')
+    .eq('news_id', newsId)
+  for (const p of photos ?? []) ids.add((p as { media_id: string }).media_id)
+
+  const { data: article } = await supabase
+    .from('news')
+    .select('featured_image_id')
+    .eq('id', newsId)
+    .single()
+  const fid = (article as { featured_image_id: string | null } | null)?.featured_image_id
+  if (fid) ids.add(fid)
+
+  return ids
+}
+
+// Replaces the photo set for an article with the given ordered media ids, and
+// keeps news.featured_image_id pointing at the first (the cover) so every
+// existing cover-based reader keeps working unchanged.
+async function writeArticlePhotos(
+  supabase: Supa,
+  newsId: string,
+  mediaIds: string[]
+): Promise<string | null> {
+  // Replace-all is simplest and correct for a small per-article set: delete
+  // then insert in order. Order is stored explicitly in sort_order.
+  const { error: delErr } = await supabase.from('news_photos').delete().eq('news_id', newsId)
+  if (delErr) return `Could not update photos: ${delErr.message}`
+
+  if (mediaIds.length > 0) {
+    const rows = mediaIds.map((media_id, i) => ({ news_id: newsId, media_id, sort_order: i }))
+    const { error: insErr } = await supabase.from('news_photos').insert(rows)
+    if (insErr) return `Could not save photos: ${insErr.message}`
+  }
+  return null
+}
+
+// Reference-counted storage cleanup. `media` is a SHARED library (logo,
+// favicon, faculty photos, resource files all live in the same bucket), so a
+// file is only safe to delete once nothing references it: not another article's
+// photos, not any article's cover, not a faculty photo, not a resource file.
+// Anything still referenced is left untouched. Best-effort and non-fatal --
+// an orphaned file is harmless, a wrongly-deleted shared file is not.
+async function cleanupOrphanedMedia(supabase: Supa, mediaIds: string[]): Promise<void> {
+  for (const id of mediaIds) {
+    const refChecks = await Promise.all([
+      supabase.from('news_photos').select('id', { count: 'exact', head: true }).eq('media_id', id),
+      supabase.from('news').select('id', { count: 'exact', head: true }).eq('featured_image_id', id),
+      supabase.from('faculty').select('id', { count: 'exact', head: true }).eq('photo_id', id),
+      supabase.from('resources').select('id', { count: 'exact', head: true }).eq('file_id', id),
+    ])
+    const stillReferenced = refChecks.some((r) => (r.count ?? 0) > 0)
+    if (stillReferenced) continue
+
+    const { data: row } = await supabase.from('media').select('file_url').eq('id', id).single()
+    const url = (row as { file_url: string } | null)?.file_url
+    // Delete the DB row first (source of truth for the Library), then the file.
+    await supabase.from('media').delete().eq('id', id)
+    const path = url ? extractStoragePath(url) : null
+    if (path) await supabase.storage.from('media').remove([path])
+  }
+}
 
 function slugify(title: string): string {
   return (
@@ -48,6 +146,11 @@ export async function createNews(
   const title = textField(formData, 'title')
   if (!title) return { error: 'Title is required.' }
 
+  const photoIds = parsePhotoIds(formData)
+  // The cover is the first photo. Falls back to the legacy single-image field
+  // if the form somehow submits no photo list, so nothing regresses.
+  const coverId = photoIds[0] ?? textField(formData, 'featured_image_id')
+
   const baseSlug = slugify(title)
   let slug = baseSlug
   let newId: string | null = null
@@ -65,7 +168,7 @@ export async function createNews(
       .insert({
         slug,
         title,
-        featured_image_id: textField(formData, 'featured_image_id'),
+        featured_image_id: coverId,
         summary: textField(formData, 'summary'),
         content_html: textField(formData, 'content'),
         publish_date: parsePublishDate(formData),
@@ -95,6 +198,11 @@ export async function createNews(
     return { error: 'Could not generate a unique slug. Try a slightly different title.' }
   }
 
+  if (photoIds.length > 0) {
+    const photoErr = await writeArticlePhotos(supabase, newId, photoIds)
+    if (photoErr) return { error: photoErr }
+  }
+
   revalidatePath('/admin/news')
   revalidatePath('/admin')
   revalidatePath('/news')
@@ -115,13 +223,20 @@ export async function updateNews(
   const title = textField(formData, 'title')
   if (!title) return { error: 'Title is required.' }
 
+  const photoIds = parsePhotoIds(formData)
+  const coverId = photoIds[0] ?? textField(formData, 'featured_image_id')
+
+  // Snapshot what was linked before, so we can clean up anything the edit
+  // removed after the new set is written.
+  const previousMedia = await currentArticleMedia(supabase, id)
+
   // Slug is derived once at creation and left stable on edit (re-slugging
   // on every title edit would break the article's public URL and any
   // external links/bookmarks/social shares pointing at it).
   const { error } = await supabase
     .from('news')
     .update({
-      featured_image_id: textField(formData, 'featured_image_id'),
+      featured_image_id: coverId,
       title,
       summary: textField(formData, 'summary'),
       content_html: textField(formData, 'content'),
@@ -137,6 +252,14 @@ export async function updateNews(
     .eq('id', id)
 
   if (error) return { error: `Could not save changes: ${error.message}` }
+
+  const photoErr = await writeArticlePhotos(supabase, id, photoIds)
+  if (photoErr) return { error: photoErr }
+
+  // Files the article no longer uses -- deleted from storage only if nothing
+  // else references them (see cleanupOrphanedMedia).
+  const removed = [...previousMedia].filter((m) => !photoIds.includes(m))
+  if (removed.length > 0) await cleanupOrphanedMedia(supabase, removed)
 
   revalidatePath('/admin/news')
   revalidatePath('/news')
@@ -154,8 +277,15 @@ export async function deleteNews(
   const id = textField(formData, 'id')
   if (!id) return { error: 'Missing news article id.' }
 
+  // Capture the article's media before deleting -- the news_photos rows
+  // cascade away with the article (FK ON DELETE CASCADE), but the underlying
+  // storage files don't, so gather them for reference-counted cleanup after.
+  const media = await currentArticleMedia(supabase, id)
+
   const { error } = await supabase.from('news').delete().eq('id', id)
   if (error) return { error: `Could not delete: ${error.message}` }
+
+  if (media.size > 0) await cleanupOrphanedMedia(supabase, [...media])
 
   revalidatePath('/admin/news')
   revalidatePath('/admin')

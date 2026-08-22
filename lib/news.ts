@@ -1,5 +1,12 @@
 import { createClient } from '@/lib/supabase/server'
 
+export type NewsPhoto = {
+  // media row id -- the CMS works in media ids; the URL is for rendering.
+  media_id: string
+  url: string
+  alt: string | null
+}
+
 export type NewsArticle = {
   id: string
   slug: string
@@ -17,6 +24,10 @@ export type NewsArticle = {
   display_order: number
   created_at: string
   updated_at: string
+  // Ordered gallery. Populated only by the single-record readers
+  // (getNewsBySlug / getNewsById); the list readers leave it empty and use
+  // featured_image_url as the cover. First entry is always the cover.
+  photos: NewsPhoto[]
 }
 
 type NewsRow = {
@@ -40,7 +51,48 @@ type NewsRow = {
 
 function toArticle(row: NewsRow): NewsArticle {
   const { media, content_html, ...rest } = row
-  return { ...rest, featured_image_url: media?.file_url ?? null, content: content_html }
+  return {
+    ...rest,
+    featured_image_url: media?.file_url ?? null,
+    content: content_html,
+    photos: [],
+  }
+}
+
+// Loads the ordered photo gallery for one article. Backward-compatible: if the
+// article has no news_photos rows yet (every article that predates this
+// feature, until it's next saved), it synthesizes a single-photo list from the
+// existing featured_image_id -- so old records "just appear as one photo" with
+// no data migration. First entry is always the cover.
+async function loadPhotos(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  article: NewsArticle
+): Promise<NewsPhoto[]> {
+  const { data, error } = await supabase
+    .from('news_photos')
+    .select('media_id, sort_order, media(file_url, alt_text)')
+    .eq('news_id', article.id)
+    .order('sort_order', { ascending: true })
+
+  if (!error && data && data.length > 0) {
+    return (data as unknown as PhotoRow[])
+      .filter((r) => r.media?.file_url)
+      .map((r) => ({ media_id: r.media_id, url: r.media!.file_url, alt: r.media!.alt_text ?? null }))
+  }
+
+  // Fallback: the pre-existing single featured image, if any.
+  if (article.featured_image_id && article.featured_image_url) {
+    return [
+      { media_id: article.featured_image_id, url: article.featured_image_url, alt: article.title },
+    ]
+  }
+  return []
+}
+
+type PhotoRow = {
+  media_id: string
+  sort_order: number
+  media: { file_url: string; alt_text: string | null } | null
 }
 
 const SELECT_COLUMNS =
@@ -120,7 +172,9 @@ export async function getNewsById(id: string): Promise<NewsArticle | null> {
     .single()
 
   if (error || !data) return null
-  return toArticle(data as unknown as NewsRow)
+  const article = toArticle(data as unknown as NewsRow)
+  article.photos = await loadPhotos(supabase, article)
+  return article
 }
 
 // Public detail-page reader. Published-only -- drafts 404 even if the slug
@@ -138,7 +192,9 @@ export async function getNewsBySlug(slug: string): Promise<NewsArticle | null> {
       .single()
 
     if (error || !data) return null
-    return toArticle(data as unknown as NewsRow)
+    const article = toArticle(data as unknown as NewsRow)
+    article.photos = await loadPhotos(supabase, article)
+    return article
   } catch {
     return null
   }

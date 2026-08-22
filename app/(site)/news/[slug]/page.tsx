@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getNewsBySlug } from '@/lib/news'
+import NewsPhotoCarousel from '@/components/NewsPhotoCarousel'
 
 export async function generateMetadata({
   params,
@@ -47,8 +48,20 @@ export default async function NewsDetailPage({
           {article.author && <> &middot; {article.author}</>}
         </p>
 
-        {article.featured_image_url && (
-          <img src={article.featured_image_url} alt={article.title} className="news-detail-image" />
+        {/* 0 photos → nothing; 1 → plain image; 2+ → carousel. photos[0] is
+            the cover, and for pre-existing single-image articles the reader
+            synthesizes a one-photo list from the old featured image. */}
+        {article.photos.length === 1 && (
+          <img
+            src={article.photos[0].url}
+            alt={article.photos[0].alt ?? article.title}
+            className="news-detail-image"
+          />
+        )}
+        {article.photos.length > 1 && (
+          <NewsPhotoCarousel
+            photos={article.photos.map((p) => ({ url: p.url, alt: p.alt ?? article.title }))}
+          />
         )}
 
         {article.summary && <p className="news-detail-summary">{article.summary}</p>}

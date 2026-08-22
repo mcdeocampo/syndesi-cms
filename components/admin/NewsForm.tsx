@@ -4,7 +4,7 @@ import { useActionState, useState } from 'react'
 import { createNews, updateNews } from '@/lib/actions/news'
 import type { NewsArticle } from '@/lib/news'
 import type { MediaItem } from '@/lib/media'
-import MediaPicker from './MediaPicker'
+import NewsPhotoManager from './NewsPhotoManager'
 
 function todayISO(): string {
   return new Date().toISOString().slice(0, 10)
@@ -41,9 +41,15 @@ export default function NewsForm({
 }) {
   const action = article ? updateNews : createNews
   const [state, formAction, pending] = useActionState(action, undefined)
-  const [featuredImageId, setFeaturedImageId] = useState<string | null>(
-    article?.featured_image_id ?? null
-  )
+
+  // Initial ordered photo ids: the article's gallery if it has one, otherwise
+  // its legacy single featured image (so existing records open as one photo).
+  const initialPhotoIds =
+    article?.photos && article.photos.length > 0
+      ? article.photos.map((p) => p.media_id)
+      : article?.featured_image_id
+        ? [article.featured_image_id]
+        : []
   // Optional public-facing label override. '' = show the recorded date;
   // a preset or 'custom' = show that caption instead. The Publish Date is
   // always recorded regardless of this choice, so the two never conflict.
@@ -58,9 +64,13 @@ export default function NewsForm({
       {state?.error && <div className="admin-error">{state.error}</div>}
 
       <div className="admin-card" style={{ marginBottom: 20 }}>
-        <h2>Featured Image</h2>
-        <input type="hidden" name="featured_image_id" value={featuredImageId ?? ''} />
-        <MediaPicker items={mediaItems} selectedId={featuredImageId} onSelect={setFeaturedImageId} />
+        <h2>Photos</h2>
+        <p className="admin-field-hint" style={{ marginTop: -6, marginBottom: 14 }}>
+          Add one or more photos. The first is the cover shown on news cards and the homepage;
+          a detail page with two or more photos shows a swipeable carousel. Upload images in
+          Media Library first, then add them here.
+        </p>
+        <NewsPhotoManager items={mediaItems} initialIds={initialPhotoIds} />
       </div>
 
       <div className="admin-card" style={{ marginBottom: 20 }}>

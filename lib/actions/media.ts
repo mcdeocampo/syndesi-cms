@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { requireAdmin } from '@/lib/supabase/dal'
 import { createClient } from '@/lib/supabase/server'
+import { extractStoragePath } from '@/lib/storage'
 
 export type MediaFormState = { error?: string; success?: string } | undefined
 
@@ -20,14 +21,6 @@ const MAX_SIZE_BYTES = 10 * 1024 * 1024 // 10MB
 // broader file-type support (PDFs, docs, etc). Do not widen ALLOWED_TYPES
 // here to accommodate it -- Resources should use its own validation set in
 // its own action, or this module should grow an explicit `kind` param then.
-
-function extractStoragePath(fileUrl: string): string | null {
-  // getPublicUrl() produces .../storage/v1/object/public/media/<path>
-  const marker = '/object/public/media/'
-  const idx = fileUrl.indexOf(marker)
-  if (idx === -1) return null
-  return fileUrl.slice(idx + marker.length)
-}
 
 export async function uploadMedia(
   _prevState: MediaFormState,

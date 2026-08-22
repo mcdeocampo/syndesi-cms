@@ -1539,6 +1539,116 @@ footer p {
     transform: scale(1.05);
 }
 
+/* ===== NEWS PHOTO CAROUSEL (detail page, 2+ photos) ===== */
+.news-carousel {
+    margin: 20px 0;
+}
+
+.news-carousel-viewport {
+    position: relative;
+    overflow: hidden; /* clips the sliding track -- no horizontal page scroll */
+    border-radius: 12px;
+    background: var(--border);
+    touch-action: pan-y; /* let vertical page scroll through; we handle x-swipe */
+}
+
+.news-carousel-track {
+    display: flex;
+    transition: transform 0.4s var(--ease-out-quint);
+}
+
+.news-carousel-slide {
+    flex: 0 0 100%;
+    min-width: 100%;
+}
+
+.news-carousel-slide img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    user-select: none;
+}
+
+.news-carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(22, 34, 92, 0.55);
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+}
+
+.news-carousel-arrow:hover {
+    background: rgba(22, 34, 92, 0.85);
+}
+
+.news-carousel-prev {
+    left: 12px;
+}
+
+.news-carousel-next {
+    right: 12px;
+}
+
+.news-carousel-counter {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+}
+
+.news-carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.news-carousel-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--border);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.news-carousel-dot.active {
+    background: var(--red);
+    transform: scale(1.25);
+}
+
+@media (max-width: 480px) {
+    .news-carousel-arrow {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .news-carousel-track {
+        transition: none;
+    }
+}
+
 .news-detail-summary {
     font-size: 1.05rem;
     color: var(--text-muted);
