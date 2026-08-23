@@ -23,9 +23,10 @@ export default async function StudentLifePage() {
 
         <div className="card-grid">
           {items.cards?.map((c, i) => (
-            <div className="card reveal" key={c.id ?? i}>
+            <div className="card reveal accent-card" key={c.id ?? i}>
               <h4>
-                <i className={c.icon ?? ''} aria-hidden="true" style={{ color: 'var(--red)', marginRight: 8 }}></i>
+                {/* No explicit colour -- inherits the card's accent from h4. */}
+                <i className={c.icon ?? ''} aria-hidden="true" style={{ marginRight: 8 }}></i>
                 {c.title}
               </h4>
               <p>{c.body}</p>

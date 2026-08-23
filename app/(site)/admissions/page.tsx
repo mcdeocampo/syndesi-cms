@@ -23,9 +23,10 @@ export default async function AdmissionsPage() {
 
         <div className="card-grid">
           {items.cards?.map((card, i) => (
-            <div className="card reveal" key={card.id ?? i}>
+            <div className="card reveal accent-card" key={card.id ?? i}>
               <h4>
-                <i className={card.icon ?? ''} aria-hidden="true" style={{ color: 'var(--red)', marginRight: 8 }}></i>
+                {/* No explicit colour -- inherits the card's accent from h4. */}
+                <i className={card.icon ?? ''} aria-hidden="true" style={{ marginRight: 8 }}></i>
                 {card.title}
               </h4>
               {/* Cards 1 and 2 render their body from the requirements /
