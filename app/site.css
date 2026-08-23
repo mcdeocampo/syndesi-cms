@@ -1439,6 +1439,22 @@ footer p {
     margin-bottom: 4px;
 }
 
+/* ===== FACULTY CARDS (professional portrait treatment) =====
+   Restrained on purpose -- these are staff portraits, so instead of the
+   multicolour accent-card look they get a clean portrait ring that warms to
+   gold on hover, a subtle gold top accent, and a sliding Read Bio arrow. */
+.faculty-card {
+    border-top: 3px solid transparent;
+    transition:
+        transform 0.35s var(--ease-out-quint),
+        box-shadow 0.35s var(--ease-out-quint),
+        border-color 0.35s ease;
+}
+
+.faculty-card:hover {
+    border-top-color: var(--gold);
+}
+
 .faculty-photo {
     width: 88px;
     height: 88px;
@@ -1446,7 +1462,28 @@ footer p {
     object-fit: cover;
     margin: 0 auto 16px;
     display: block;
-    border: 3px solid rgba(22, 34, 92, 0.08);
+    /* White inner ring + soft navy halo -- a framed-portrait look. */
+    border: 4px solid #fff;
+    box-shadow:
+        0 0 0 3px rgba(22, 34, 92, 0.12),
+        0 6px 16px rgba(22, 34, 92, 0.12);
+    transition: box-shadow 0.4s var(--ease-out-quint);
+}
+
+/* On hover the halo turns brand gold and lifts. (The scale is handled by the
+   existing .card:hover .faculty-photo rule.) */
+.faculty-card:hover .faculty-photo {
+    box-shadow:
+        0 0 0 3px var(--gold),
+        0 10px 24px rgba(22, 34, 92, 0.22);
+}
+
+.faculty-bio summary i {
+    transition: transform 0.3s ease;
+}
+
+.faculty-bio summary:hover i {
+    transform: translateX(4px);
 }
 
 .faculty-bio {
@@ -2299,6 +2336,7 @@ summary:focus-visible,
     .card:hover .faculty-photo,
     .card:hover .news-card-image,
     .accent-card:hover,
+    .faculty-bio summary:hover i,
     .card-learn-more:hover i {
         transform: none;
     }

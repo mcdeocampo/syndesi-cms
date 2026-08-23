@@ -24,7 +24,7 @@ export default async function FacultyPage() {
         ) : (
           <div className="card-grid">
             {faculty.map((member) => (
-              <div className="card reveal" style={{ textAlign: 'center' }} key={member.id}>
+              <div className="card reveal faculty-card" style={{ textAlign: 'center' }} key={member.id}>
                 {member.photo_url ? (
                   <img src={member.photo_url} alt={member.full_name} className="faculty-photo" />
                 ) : (
