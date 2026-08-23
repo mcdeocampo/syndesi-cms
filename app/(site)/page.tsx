@@ -129,7 +129,7 @@ export default async function HomePage() {
           </div>
           <div className="card-grid">
             {items.programs?.map((p, i) => (
-              <div className="card reveal" key={p.id ?? i}>
+              <div className="card reveal accent-card" key={p.id ?? i}>
                 <span className="icon"><i className={p.icon ?? ''} aria-hidden="true"></i></span>
                 <h4>{p.title}</h4>
                 <p>{p.body}</p>

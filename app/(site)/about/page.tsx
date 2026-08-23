@@ -49,7 +49,7 @@ export default async function AboutPage() {
           <h3 style={{ color: 'var(--navy)', fontSize: '1.6rem', marginBottom: 16, fontFamily: "'Poppins',sans-serif" }}>{s.values.title}</h3>
           <div className="card-grid">
             {items.values?.map((v, i) => (
-              <div className="card reveal" key={v.id ?? i}>
+              <div className="card reveal accent-card" key={v.id ?? i}>
                 <h4>{v.title}</h4>
                 <p>{v.body}</p>
               </div>

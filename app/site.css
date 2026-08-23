@@ -1539,14 +1539,17 @@ footer p {
     transform: scale(1.05);
 }
 
-/* ===== EIGHT INTELLIGENCES (Programs framework grid) =====
-   Eight otherwise-identical cards get a distinct accent each via nth-child,
-   driving a colored top bar, the heading colour, a soft corner glow, and a
-   tinted hover lift. Colour only -- content and layout are untouched. */
-.framework-card {
+/* ===== ACCENT CARDS =====
+   Otherwise-identical cards get a distinct accent each via nth-child, driving
+   a coloured top bar, the heading (and icon) colour, a soft corner glow, and
+   a tinted hover lift. Used by the Programs "Eight Intelligences" grid, the
+   homepage "What We Offer" cards, and About's "Core Values". Colour only --
+   content and layout unchanged. The palette cycles every 8, which comfortably
+   covers each grid (8, 4, and 4 cards). */
+.accent-card {
     position: relative;
     overflow: hidden;
-    border-top: 3px solid var(--fw-accent, var(--navy));
+    border-top: 3px solid var(--acc, var(--navy));
     transition:
         transform 0.35s var(--ease-out-quint),
         box-shadow 0.35s var(--ease-out-quint),
@@ -1554,7 +1557,7 @@ footer p {
 }
 
 /* Soft accent glow in the top-right corner. */
-.framework-card::after {
+.accent-card::after {
     content: '';
     position: absolute;
     top: 0;
@@ -1563,7 +1566,7 @@ footer p {
     height: 90px;
     background: radial-gradient(
         circle at top right,
-        color-mix(in srgb, var(--fw-accent, var(--navy)) 20%, transparent),
+        color-mix(in srgb, var(--acc, var(--navy)) 20%, transparent),
         transparent 70%
     );
     pointer-events: none;
@@ -1571,30 +1574,36 @@ footer p {
     opacity: 0.75;
 }
 
-.framework-card h4 {
-    color: var(--fw-accent, var(--navy));
+.accent-card h4 {
+    color: var(--acc, var(--navy));
     transition: color 0.3s ease;
 }
 
-.framework-card:hover {
-    transform: translateY(-6px);
-    border-top-color: var(--fw-accent, var(--navy));
-    box-shadow: 0 16px 34px color-mix(in srgb, var(--fw-accent, var(--navy)) 28%, transparent);
+/* Icon (homepage program cards) picks up the same accent instead of the
+   uniform red. */
+.accent-card .icon {
+    color: var(--acc, var(--red));
 }
 
-.framework-card:hover::after {
+.accent-card:hover {
+    transform: translateY(-6px);
+    border-top-color: var(--acc, var(--navy));
+    box-shadow: 0 16px 34px color-mix(in srgb, var(--acc, var(--navy)) 28%, transparent);
+}
+
+.accent-card:hover::after {
     opacity: 1;
 }
 
-/* Eight harmonious accents, brand red and gold-navy leading. */
-.framework-card:nth-child(1) { --fw-accent: #d1232a; } /* red (brand) */
-.framework-card:nth-child(2) { --fw-accent: #2563eb; } /* blue */
-.framework-card:nth-child(3) { --fw-accent: #0891b2; } /* cyan */
-.framework-card:nth-child(4) { --fw-accent: #059669; } /* emerald */
-.framework-card:nth-child(5) { --fw-accent: #d97706; } /* amber */
-.framework-card:nth-child(6) { --fw-accent: #7c3aed; } /* violet */
-.framework-card:nth-child(7) { --fw-accent: #db2777; } /* pink */
-.framework-card:nth-child(8) { --fw-accent: #16225c; } /* navy (brand) */
+/* Eight harmonious accents, brand red and navy leading. */
+.accent-card:nth-child(1) { --acc: #d1232a; } /* red (brand) */
+.accent-card:nth-child(2) { --acc: #2563eb; } /* blue */
+.accent-card:nth-child(3) { --acc: #0891b2; } /* cyan */
+.accent-card:nth-child(4) { --acc: #059669; } /* emerald */
+.accent-card:nth-child(5) { --acc: #d97706; } /* amber */
+.accent-card:nth-child(6) { --acc: #7c3aed; } /* violet */
+.accent-card:nth-child(7) { --acc: #db2777; } /* pink */
+.accent-card:nth-child(8) { --acc: #16225c; } /* navy (brand) */
 
 /* ===== NEWS PHOTO CAROUSEL (detail page, 2+ photos) ===== */
 .news-carousel {
@@ -2233,7 +2242,7 @@ summary:focus-visible,
     .nav-cta:active,
     .card:hover .faculty-photo,
     .card:hover .news-card-image,
-    .framework-card:hover,
+    .accent-card:hover,
     .card-learn-more:hover i {
         transform: none;
     }
