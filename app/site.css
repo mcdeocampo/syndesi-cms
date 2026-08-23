@@ -1539,6 +1539,63 @@ footer p {
     transform: scale(1.05);
 }
 
+/* ===== EIGHT INTELLIGENCES (Programs framework grid) =====
+   Eight otherwise-identical cards get a distinct accent each via nth-child,
+   driving a colored top bar, the heading colour, a soft corner glow, and a
+   tinted hover lift. Colour only -- content and layout are untouched. */
+.framework-card {
+    position: relative;
+    overflow: hidden;
+    border-top: 3px solid var(--fw-accent, var(--navy));
+    transition:
+        transform 0.35s var(--ease-out-quint),
+        box-shadow 0.35s var(--ease-out-quint),
+        border-color 0.35s ease;
+}
+
+/* Soft accent glow in the top-right corner. */
+.framework-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 90px;
+    height: 90px;
+    background: radial-gradient(
+        circle at top right,
+        color-mix(in srgb, var(--fw-accent, var(--navy)) 20%, transparent),
+        transparent 70%
+    );
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+    opacity: 0.75;
+}
+
+.framework-card h4 {
+    color: var(--fw-accent, var(--navy));
+    transition: color 0.3s ease;
+}
+
+.framework-card:hover {
+    transform: translateY(-6px);
+    border-top-color: var(--fw-accent, var(--navy));
+    box-shadow: 0 16px 34px color-mix(in srgb, var(--fw-accent, var(--navy)) 28%, transparent);
+}
+
+.framework-card:hover::after {
+    opacity: 1;
+}
+
+/* Eight harmonious accents, brand red and gold-navy leading. */
+.framework-card:nth-child(1) { --fw-accent: #d1232a; } /* red (brand) */
+.framework-card:nth-child(2) { --fw-accent: #2563eb; } /* blue */
+.framework-card:nth-child(3) { --fw-accent: #0891b2; } /* cyan */
+.framework-card:nth-child(4) { --fw-accent: #059669; } /* emerald */
+.framework-card:nth-child(5) { --fw-accent: #d97706; } /* amber */
+.framework-card:nth-child(6) { --fw-accent: #7c3aed; } /* violet */
+.framework-card:nth-child(7) { --fw-accent: #db2777; } /* pink */
+.framework-card:nth-child(8) { --fw-accent: #16225c; } /* navy (brand) */
+
 /* ===== NEWS PHOTO CAROUSEL (detail page, 2+ photos) ===== */
 .news-carousel {
     margin: 20px 0;
@@ -2176,6 +2233,7 @@ summary:focus-visible,
     .nav-cta:active,
     .card:hover .faculty-photo,
     .card:hover .news-card-image,
+    .framework-card:hover,
     .card-learn-more:hover i {
         transform: none;
     }

@@ -56,7 +56,7 @@ export default async function ProgramsPage() {
           <p className="section-subtitle">{s.framework.subtitle}</p>
           <div className="card-grid">
             {items.framework?.map((f, i) => (
-              <div className="card reveal" key={f.id ?? i}>
+              <div className="card reveal framework-card" key={f.id ?? i}>
                 <h4>{f.title}</h4>
                 <p>{f.body}</p>
               </div>
