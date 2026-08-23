@@ -967,11 +967,26 @@ section {
     background: rgba(255, 255, 255, 0.12);
 }
 
+/* Icon sits in a soft circular gold "coin" rather than a bare glyph; the coin
+   gains a glow-ring on card hover. Purely decorative -- the count-up number
+   (h3 data-*) is untouched. */
 .stat-card i {
-    font-size: 1.7rem;
+    width: 58px;
+    height: 58px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    border-radius: 50%;
+    background: rgba(246, 201, 59, 0.14);
     color: var(--gold);
-    margin-bottom: 14px;
-    display: block;
+    font-size: 1.5rem;
+    transition: background 0.35s ease, box-shadow 0.35s ease;
+}
+
+.stat-card:hover i {
+    background: rgba(246, 201, 59, 0.24);
+    box-shadow: 0 0 0 6px rgba(246, 201, 59, 0.1);
 }
 
 .stat-card h3 {
