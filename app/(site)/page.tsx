@@ -129,12 +129,12 @@ export default async function HomePage() {
           </div>
           <div className="card-grid">
             {items.programs?.map((p, i) => (
-              <div className="card reveal accent-card" key={p.id ?? i}>
-                <span className="icon"><i className={p.icon ?? ''} aria-hidden="true"></i></span>
+              <div className="program-card reveal" key={p.id ?? i}>
+                <span className="program-icon"><i className={p.icon ?? ''} aria-hidden="true"></i></span>
                 <h4>{p.title}</h4>
                 <p>{p.body}</p>
                 {p.link_text && (
-                  <Link href={p.link_href ?? '#'} className="card-learn-more">
+                  <Link href={p.link_href ?? '#'} className="card-learn-more program-link">
                     {p.link_text} <i className="fas fa-arrow-right" aria-hidden="true"></i>
                   </Link>
                 )}

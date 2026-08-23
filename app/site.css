@@ -1063,6 +1063,85 @@ section {
     gap: 16px;
 }
 
+/* ===== PROGRAM FEATURE CARDS (home "What We Offer") =====
+   Left-aligned feature card -- accent icon chip, an accent top bar, and a
+   CTA pinned to the bottom whose arrow slides on hover. A more designed look
+   than the centred icon-on-top tile, and equal-height across the row. */
+.program-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition:
+        transform 0.35s var(--ease-out-quint),
+        box-shadow 0.35s var(--ease-out-quint);
+}
+
+.program-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--prog-acc, var(--navy));
+}
+
+.program-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 34px color-mix(in srgb, var(--prog-acc, var(--navy)) 24%, transparent);
+}
+
+.program-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 18px;
+    background: color-mix(in srgb, var(--prog-acc, var(--navy)) 12%, #fff);
+    color: var(--prog-acc, var(--navy));
+}
+
+.program-card h4 {
+    color: var(--navy);
+    font-size: 1.15rem;
+    margin-bottom: 8px;
+}
+
+.program-card p {
+    color: var(--text-muted);
+    margin-bottom: 18px;
+}
+
+/* CTA pinned to the bottom so a row of cards lines up; arrow slides on hover. */
+.program-card .program-link {
+    margin-top: auto;
+    color: var(--prog-acc, var(--red));
+}
+
+.program-card .program-link i {
+    transition: transform 0.3s ease;
+}
+
+.program-card:hover .program-link i {
+    transform: translateX(4px);
+}
+
+.program-card:nth-child(1) { --prog-acc: #d1232a; }
+.program-card:nth-child(2) { --prog-acc: #2563eb; }
+.program-card:nth-child(3) { --prog-acc: #0891b2; }
+.program-card:nth-child(4) { --prog-acc: #059669; }
+
 /* ===== QUICK FACTS (About) =====
    A horizontal fact-row -- accent icon chip + label/value hierarchy --
    instead of the generic centred icon-on-top card, so it reads like a real
@@ -2400,6 +2479,8 @@ summary:focus-visible,
     .card:hover .news-card-image,
     .accent-card:hover,
     .fact-card:hover,
+    .program-card:hover,
+    .program-card:hover .program-link i,
     .faculty-bio summary:hover i,
     .card-learn-more:hover i {
         transform: none;
