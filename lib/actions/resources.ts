@@ -92,6 +92,73 @@ async function uploadResourceFile(
   return mediaRow.id
 }
 
+// ---- Direct (signed-URL) upload path, for files that would exceed Vercel's
+// ~4.5MB Server Action body cap (large PDFs/handbooks). The bytes go straight
+// from the browser to Supabase Storage, never through our serverless function.
+//
+// createResourceUploadUrl mints a short-lived signed upload URL (admin-gated),
+// the browser uploads to it, then registerResourceFile records the media row.
+// Small files keep using the normal FormData path in uploadResourceFile().
+
+export async function createResourceUploadUrl(
+  fileName: string,
+  fileType: string,
+  fileSize: number
+): Promise<{ path?: string; token?: string; error?: string }> {
+  await requireAdmin()
+  const supabase = await createClient()
+
+  if (!ALLOWED_TYPES.includes(fileType)) return { error: `${fileName}: unsupported file type.` }
+  if (fileSize > MAX_SIZE_BYTES) return { error: `${fileName}: exceeds 20MB limit.` }
+
+  const ext = fileName.split('.').pop() || 'bin'
+  const rand = Math.random().toString(36).slice(2, 8)
+  const path = `resource-${Date.now()}-${rand}.${ext}`
+
+  // Runs as the authed admin, so it satisfies the storage insert policy; the
+  // returned token then authorizes the browser's upload without its own auth.
+  const { data, error } = await supabase.storage.from('media').createSignedUploadUrl(path)
+  if (error || !data) {
+    return { error: `Could not start upload: ${error?.message ?? 'unknown error'}` }
+  }
+  return { path: data.path, token: data.token }
+}
+
+export async function registerResourceFile(
+  path: string,
+  fileName: string,
+  fileType: string,
+  fileSize: number
+): Promise<{ fileId?: string; error?: string }> {
+  const auth = await requireAdmin()
+  const supabase = await createClient()
+
+  // Re-validate server-side -- the client is untrusted even for its own metadata.
+  if (!ALLOWED_TYPES.includes(fileType)) return { error: 'Unsupported file type.' }
+  if (fileSize > MAX_SIZE_BYTES) return { error: 'File exceeds 20MB limit.' }
+
+  const { data: urlData } = supabase.storage.from('media').getPublicUrl(path)
+  const { data: mediaRow, error } = await supabase
+    .from('media')
+    .insert({
+      file_url: urlData.publicUrl,
+      file_name: fileName,
+      file_type: fileType,
+      file_size: fileSize,
+      created_by: auth.userId,
+      updated_by: auth.userId,
+    })
+    .select('id')
+    .single()
+
+  if (error) {
+    // Don't orphan the just-uploaded object if the DB insert fails.
+    await supabase.storage.from('media').remove([path])
+    return { error: `Could not save file: ${error.message}` }
+  }
+  return { fileId: mediaRow.id }
+}
+
 // Deletes a media row + its storage object (best-effort) -- used when a
 // resource's file is replaced or the resource is deleted.
 async function deleteMediaFile(supabase: SupabaseClient, fileId: string): Promise<void> {
@@ -111,13 +178,17 @@ export async function createResource(
   const title = textField(formData, 'title')
   if (!title) return { error: 'Title is required.' }
 
-  let fileId: string | null = null
-  const file = formData.get('file')
-  if (file instanceof File && file.size > 0) {
-    try {
-      fileId = await uploadResourceFile(supabase, file, auth.userId)
-    } catch (e) {
-      return { error: e instanceof Error ? e.message : 'File upload failed.' }
+  // Large files arrive already uploaded via the signed-URL path (file_id set);
+  // small files still come as bytes in `file` and upload here.
+  let fileId: string | null = textField(formData, 'file_id')
+  if (!fileId) {
+    const file = formData.get('file')
+    if (file instanceof File && file.size > 0) {
+      try {
+        fileId = await uploadResourceFile(supabase, file, auth.userId)
+      } catch (e) {
+        return { error: e instanceof Error ? e.message : 'File upload failed.' }
+      }
     }
   }
 
@@ -164,11 +235,15 @@ export async function updateResource(
     updated_at: new Date().toISOString(),
   }
 
-  // Only touch the file if a new one was uploaded; otherwise keep the
-  // existing attachment. On replace, swap file_id then clean up the old file.
+  // Only touch the file if a new one was provided -- either pre-uploaded via
+  // the signed-URL path (file_id) or as bytes for a small file (file).
+  // Otherwise keep the existing attachment. On replace, swap file_id then
+  // clean up the old file.
+  const preUploadedId = textField(formData, 'file_id')
   const file = formData.get('file')
+  const hasNewFile = Boolean(preUploadedId) || (file instanceof File && file.size > 0)
   let oldFileId: string | null = null
-  if (file instanceof File && file.size > 0) {
+  if (hasNewFile) {
     const { data: existing } = await supabase
       .from('resources')
       .select('file_id')
@@ -176,10 +251,14 @@ export async function updateResource(
       .single()
     oldFileId = existing?.file_id ?? null
 
-    try {
-      update.file_id = await uploadResourceFile(supabase, file, auth.userId)
-    } catch (e) {
-      return { error: e instanceof Error ? e.message : 'File upload failed.' }
+    if (preUploadedId) {
+      update.file_id = preUploadedId
+    } else {
+      try {
+        update.file_id = await uploadResourceFile(supabase, file as File, auth.userId)
+      } catch (e) {
+        return { error: e instanceof Error ? e.message : 'File upload failed.' }
+      }
     }
   }
 
