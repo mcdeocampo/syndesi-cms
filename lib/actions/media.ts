@@ -123,9 +123,16 @@ export async function deleteMedia(
   // doesn't leave an orphaned but undeletable-via-UI storage file.
   const path = extractStoragePath(row.file_url)
 
-  const { error: deleteRowError } = await supabase.from('media').delete().eq('id', id)
+  const { data: deleted, error: deleteRowError } = await supabase
+    .from('media')
+    .delete()
+    .eq('id', id)
+    .select('id')
   if (deleteRowError) {
     return { error: `Could not delete: ${deleteRowError.message}` }
+  }
+  if (!deleted || deleted.length === 0) {
+    return { error: 'Nothing was deleted — the file was already removed or your account lacks permission.' }
   }
 
   // FK references from pages/news/faculty/resources/gallery use
@@ -158,7 +165,7 @@ export async function updateMediaAltText(
     return { error: 'Missing media id.' }
   }
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('media')
     .update({
       alt_text: typeof altText === 'string' ? altText.trim() || null : null,
@@ -166,9 +173,13 @@ export async function updateMediaAltText(
       updated_at: new Date().toISOString(),
     })
     .eq('id', id)
+    .select('id')
 
   if (error) {
     return { error: `Could not save alt text: ${error.message}` }
+  }
+  if (!data || data.length === 0) {
+    return { error: 'Alt text was not saved — the file was not found or your account lacks permission.' }
   }
 
   revalidatePath('/admin/media')

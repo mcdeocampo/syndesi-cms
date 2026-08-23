@@ -193,8 +193,15 @@ export async function deleteSectionItem(
   const sectionKey = textField(formData, 'section_key')
   if (!id || !pageSlug || !sectionKey) return { error: 'Missing item.' }
 
-  const { error } = await supabase.from('page_section_items').delete().eq('id', id)
+  const { data, error } = await supabase
+    .from('page_section_items')
+    .delete()
+    .eq('id', id)
+    .select('id')
   if (error) return { error: `Could not delete: ${error.message}` }
+  if (!data || data.length === 0) {
+    return { error: 'Nothing was deleted — the item was already removed or your account lacks permission.' }
+  }
 
   revalidateFor(pageSlug, sectionKey)
   return { success: 'Deleted.' }
@@ -216,11 +223,15 @@ export async function reorderSectionItems(
         .from('page_section_items')
         .update({ display_order: index + 1, updated_by: auth.userId })
         .eq('id', id)
+        .select('id')
     )
   )
 
   const failed = results.find((r) => r.error)
   if (failed?.error) return { error: `Could not save new order: ${failed.error.message}` }
+  if (results.some((r) => !r.data || r.data.length === 0)) {
+    return { error: 'The new order could not be saved — please reload and try again.' }
+  }
 
   revalidateFor(pageSlug, sectionKey)
 }

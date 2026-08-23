@@ -233,7 +233,9 @@ export async function updateNews(
   // Slug is derived once at creation and left stable on edit (re-slugging
   // on every title edit would break the article's public URL and any
   // external links/bookmarks/social shares pointing at it).
-  const { error } = await supabase
+  // .select() so a silently-rejected UPDATE (RLS block / missing row) is
+  // caught rather than reported as a false success. See settings.ts.
+  const { data, error } = await supabase
     .from('news')
     .update({
       featured_image_id: coverId,
@@ -250,8 +252,12 @@ export async function updateNews(
       updated_at: new Date().toISOString(),
     })
     .eq('id', id)
+    .select('id')
 
   if (error) return { error: `Could not save changes: ${error.message}` }
+  if (!data || data.length === 0) {
+    return { error: 'Changes were not saved — the article was not found or your account lacks permission.' }
+  }
 
   const photoErr = await writeArticlePhotos(supabase, id, photoIds)
   if (photoErr) return { error: photoErr }
@@ -282,8 +288,11 @@ export async function deleteNews(
   // storage files don't, so gather them for reference-counted cleanup after.
   const media = await currentArticleMedia(supabase, id)
 
-  const { error } = await supabase.from('news').delete().eq('id', id)
+  const { data, error } = await supabase.from('news').delete().eq('id', id).select('id')
   if (error) return { error: `Could not delete: ${error.message}` }
+  if (!data || data.length === 0) {
+    return { error: 'Nothing was deleted — the article was already removed or your account lacks permission.' }
+  }
 
   if (media.size > 0) await cleanupOrphanedMedia(supabase, [...media])
 
@@ -307,12 +316,19 @@ export async function reorderNews(orderedIds: string[]): Promise<{ error?: strin
 
   const results = await Promise.all(
     orderedIds.map((id, index) =>
-      supabase.from('news').update({ display_order: index, updated_by: auth.userId }).eq('id', id)
+      supabase
+        .from('news')
+        .update({ display_order: index, updated_by: auth.userId })
+        .eq('id', id)
+        .select('id')
     )
   )
 
   const failed = results.find((r) => r.error)
   if (failed?.error) return { error: `Could not save new order: ${failed.error.message}` }
+  if (results.some((r) => !r.data || r.data.length === 0)) {
+    return { error: 'The new order could not be saved — please reload and try again.' }
+  }
 
   revalidatePath('/admin/news')
   revalidatePath('/news')

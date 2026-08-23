@@ -83,10 +83,25 @@ export async function updateWebsiteSettings(
   if (logoUrl) update.logo_url = logoUrl
   if (faviconUrl) update.favicon_url = faviconUrl
 
-  const { error } = await supabase.from('website_settings').update(update).eq('id', 1)
+  // .select() is REQUIRED, not decorative: a PostgREST UPDATE that matches no
+  // row (blocked by RLS, or the row absent) returns error:null -- a silent
+  // no-op that looked like success and then reverted on the next read. Reading
+  // the row back lets us tell a real save from a rejected one.
+  const { data, error } = await supabase
+    .from('website_settings')
+    .update(update)
+    .eq('id', 1)
+    .select('id')
 
   if (error) {
     return { error: `Could not save settings: ${error.message}` }
+  }
+  if (!data || data.length === 0) {
+    return {
+      error:
+        'Settings were not saved — the database rejected the change. This usually ' +
+        'means your account lacks admin rights. Ask a super admin to check your role.',
+    }
   }
 
   // 'layout' (not the default 'page' type) — website_settings is read in

@@ -183,8 +183,17 @@ export async function updateResource(
     }
   }
 
-  const { error } = await supabase.from('resources').update(update).eq('id', id)
+  // .select() so a silently-rejected UPDATE (RLS block / missing row) surfaces
+  // rather than reporting a false success. See settings.ts.
+  const { data, error } = await supabase
+    .from('resources')
+    .update(update)
+    .eq('id', id)
+    .select('id')
   if (error) return { error: `Could not save changes: ${error.message}` }
+  if (!data || data.length === 0) {
+    return { error: 'Changes were not saved — the resource was not found or your account lacks permission.' }
+  }
 
   if (oldFileId) await deleteMediaFile(supabase, oldFileId)
 
@@ -205,8 +214,11 @@ export async function deleteResource(
 
   const { data: row } = await supabase.from('resources').select('file_id').eq('id', id).single()
 
-  const { error } = await supabase.from('resources').delete().eq('id', id)
+  const { data, error } = await supabase.from('resources').delete().eq('id', id).select('id')
   if (error) return { error: `Could not delete: ${error.message}` }
+  if (!data || data.length === 0) {
+    return { error: 'Nothing was deleted — the resource was already removed or your account lacks permission.' }
+  }
 
   // Clean up the attached file so it doesn't orphan in storage.
   if (row?.file_id) await deleteMediaFile(supabase, row.file_id)

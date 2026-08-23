@@ -109,7 +109,10 @@ export async function updateFaculty(
   // Slug is derived once at creation and left stable on edit (re-slugging
   // on every name edit would break any external links/bookmarks to the
   // faculty member's slug).
-  const { error } = await supabase
+  // .select() so a silently-rejected UPDATE (RLS block / missing row) surfaces
+  // as an error rather than a false success -- see settings.ts for the full
+  // rationale on why a bare UPDATE can no-op without erroring.
+  const { data, error } = await supabase
     .from('faculty')
     .update({
       photo_id: textField(formData, 'photo_id'),
@@ -124,8 +127,12 @@ export async function updateFaculty(
       updated_at: new Date().toISOString(),
     })
     .eq('id', id)
+    .select('id')
 
   if (error) return { error: `Could not save changes: ${error.message}` }
+  if (!data || data.length === 0) {
+    return { error: 'Changes were not saved — the record was not found or your account lacks permission.' }
+  }
 
   revalidatePath('/admin/faculty')
   revalidatePath('/faculty')
@@ -142,8 +149,11 @@ export async function deleteFaculty(
   const id = textField(formData, 'id')
   if (!id) return { error: 'Missing faculty id.' }
 
-  const { error } = await supabase.from('faculty').delete().eq('id', id)
+  const { data, error } = await supabase.from('faculty').delete().eq('id', id).select('id')
   if (error) return { error: `Could not delete: ${error.message}` }
+  if (!data || data.length === 0) {
+    return { error: 'Nothing was deleted — the record was already removed or your account lacks permission.' }
+  }
 
   revalidatePath('/admin/faculty')
   revalidatePath('/admin')
@@ -168,11 +178,17 @@ export async function reorderFaculty(orderedIds: string[]): Promise<{ error?: st
         .from('faculty')
         .update({ display_order: index, updated_by: auth.userId })
         .eq('id', id)
+        .select('id')
     )
   )
 
   const failed = results.find((r) => r.error)
   if (failed?.error) return { error: `Could not save new order: ${failed.error.message}` }
+  // A row that matched nothing (RLS / deleted mid-drag) means the order didn't
+  // fully persist -- surface it so the client can revert rather than drift.
+  if (results.some((r) => !r.data || r.data.length === 0)) {
+    return { error: 'The new order could not be saved — please reload and try again.' }
+  }
 
   revalidatePath('/admin/faculty')
   revalidatePath('/faculty')
