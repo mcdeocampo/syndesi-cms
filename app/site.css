@@ -1063,6 +1063,69 @@ section {
     gap: 16px;
 }
 
+/* ===== QUICK FACTS (About) =====
+   A horizontal fact-row -- accent icon chip + label/value hierarchy --
+   instead of the generic centred icon-on-top card, so it reads like a real
+   fact sheet rather than a templated tile. */
+.fact-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s var(--ease-out-quint), box-shadow 0.3s var(--ease-out-quint);
+}
+
+.fact-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+}
+
+.fact-icon {
+    flex: 0 0 auto;
+    width: 50px;
+    height: 50px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    background: color-mix(in srgb, var(--fact-acc, var(--navy)) 12%, #fff);
+    color: var(--fact-acc, var(--navy));
+}
+
+.fact-body {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.fact-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.fact-value {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.3;
+}
+
+/* Four facts, each a distinct accent chip -- matches the site palette. */
+.fact-card:nth-child(1) { --fact-acc: #d1232a; }
+.fact-card:nth-child(2) { --fact-acc: #2563eb; }
+.fact-card:nth-child(3) { --fact-acc: #0891b2; }
+.fact-card:nth-child(4) { --fact-acc: #059669; }
+
 /* Stacks up to 992px, not 768px. About nests a 2x2 Quick Facts grid inside
    one of these columns, so splitting at 768px squeezed those cards to
    165-193px -- unreadably narrow -- until roughly 950px. Holding the single
@@ -2336,6 +2399,7 @@ summary:focus-visible,
     .card:hover .faculty-photo,
     .card:hover .news-card-image,
     .accent-card:hover,
+    .fact-card:hover,
     .faculty-bio summary:hover i,
     .card-learn-more:hover i {
         transform: none;

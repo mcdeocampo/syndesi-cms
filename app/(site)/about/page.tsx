@@ -37,10 +37,14 @@ export default async function AboutPage() {
           </div>
           <div className="stats-2x2-grid">
             {items.facts?.map((f, i) => (
-              <div className="card reveal" style={{ padding: 20, textAlign: 'center' }} key={f.id ?? i}>
-                <i className={f.icon ?? ''} aria-hidden="true" style={{ fontSize: '2rem', color: 'var(--red)' }}></i>
-                <h4>{f.title}</h4>
-                <p>{f.body}</p>
+              <div className="fact-card reveal" key={f.id ?? i}>
+                <span className="fact-icon">
+                  <i className={f.icon ?? ''} aria-hidden="true"></i>
+                </span>
+                <div className="fact-body">
+                  <span className="fact-label">{f.title}</span>
+                  <span className="fact-value">{f.body}</span>
+                </div>
               </div>
             ))}
           </div>
