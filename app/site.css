@@ -1768,6 +1768,47 @@ footer p {
     border-radius: 6px;
 }
 
+/* ===== TESTIMONIAL ACCENTS =====
+   Each testimonial gets its own accent, cycling as you navigate the carousel:
+   a top bar, an accent avatar with a soft ring, an accent role label, and a
+   faint decorative quote mark. Placed after the base testimonial rules so it
+   overrides their fixed navy/red. Uses the same site palette. */
+.testimonial-slide:nth-child(1) { --t-acc: #d1232a; } /* red (brand) */
+.testimonial-slide:nth-child(2) { --t-acc: #2563eb; } /* blue */
+.testimonial-slide:nth-child(3) { --t-acc: #0891b2; } /* cyan */
+.testimonial-slide:nth-child(4) { --t-acc: #059669; } /* emerald */
+.testimonial-slide:nth-child(5) { --t-acc: #7c3aed; } /* violet */
+
+.testimonial-slide .testimonial-card {
+    position: relative;
+    overflow: hidden;
+    border-top: 3px solid var(--t-acc, var(--navy));
+}
+
+/* Large decorative opening quote in the accent colour, behind the content. */
+.testimonial-slide .testimonial-card::before {
+    content: '\201C';
+    position: absolute;
+    top: 6px;
+    left: 26px;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 5.5rem;
+    line-height: 1;
+    color: var(--t-acc, var(--navy));
+    opacity: 0.13;
+    pointer-events: none;
+}
+
+.testimonial-slide .testimonial-avatar {
+    background: color-mix(in srgb, var(--t-acc, var(--navy)) 12%, #fff);
+    color: var(--t-acc, var(--navy));
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--t-acc, var(--navy)) 10%, transparent);
+}
+
+.testimonial-slide .testimonial-card .role {
+    color: var(--t-acc, var(--red));
+}
+
 /* ===== CTA SECTION ===== */
 .cta-section {
     background: linear-gradient(160deg, var(--navy) 0%, var(--navy-light) 100%);
