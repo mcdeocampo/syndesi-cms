@@ -225,8 +225,8 @@ export default async function HomePage() {
           </div>
           <div className="card-grid">
             {items.student_life?.map((c, i) => (
-              <div className="card reveal accent-card" key={c.id ?? i}>
-                <span className="icon"><i className={c.icon ?? ''} aria-hidden="true"></i></span>
+              <div className="program-card reveal" key={c.id ?? i}>
+                <span className="program-icon"><i className={c.icon ?? ''} aria-hidden="true"></i></span>
                 <h4>{c.title}</h4>
                 <p>{c.body}</p>
               </div>
