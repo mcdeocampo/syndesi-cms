@@ -16,7 +16,14 @@ import {
   type ItemField,
   type SectionItem,
 } from '@/lib/page-section-items-config'
+import type { MediaItem } from '@/lib/media'
 import ConfirmDialog from './ConfirmDialog'
+
+// A stored icon value is a photo when it looks like a URL rather than a
+// Font Awesome class.
+function isImageValue(v: string | null | undefined): boolean {
+  return !!v && (/^https?:\/\//i.test(v) || v.startsWith('/'))
+}
 
 const FIELD_LABELS: Record<ItemField, string> = {
   icon: 'Icon (Font Awesome class)',
@@ -43,10 +50,12 @@ export default function SectionItemsEditor({
   pageSlug,
   sectionKey,
   items: initialItems,
+  mediaItems = [],
 }: {
   pageSlug: string
   sectionKey: string
   items: SectionItem[]
+  mediaItems?: MediaItem[]
 }) {
   const meta = ITEM_SECTIONS[pageSlug]?.[sectionKey]
   const [state, formAction, pending] = useActionState(saveSectionItems, undefined)
@@ -76,9 +85,20 @@ export default function SectionItemsEditor({
   // remount the fields makes the form always show what was actually stored.
   const [syncedFrom, setSyncedFrom] = useState(initialItems)
   const [formKey, setFormKey] = useState(0)
+  // Controlled icon values, only used when the section stores photos in the
+  // icon slot (iconAsImage). Keyed by item id so the picker can update the
+  // preview and the submitted value live. Re-synced with the server on save.
+  const buildIconValues = (rows: SectionItem[]) =>
+    Object.fromEntries(rows.map((r) => [r.id ?? '', (r.icon as string) ?? '']))
+  const [iconValues, setIconValues] = useState<Record<string, string>>(() =>
+    buildIconValues(initialItems)
+  )
+  const [pickerOpenFor, setPickerOpenFor] = useState<string | null>(null)
   if (initialItems !== syncedFrom) {
     setSyncedFrom(initialItems)
     setItems(initialItems)
+    setIconValues(buildIconValues(initialItems))
+    setPickerOpenFor(null)
     setFormKey((k) => k + 1)
   }
 
@@ -225,7 +245,93 @@ export default function SectionItemsEditor({
             <input type="hidden" name="item_id" value={item.id ?? ''} />
 
             <div className="admin-form-grid">
-              {meta.fields.map((field) => (
+              {meta.fields.map((field) => {
+                // Photo-capable icon field (testimonials): a photo picker + a
+                // live preview, storing the chosen image URL (or a typed FA
+                // class) in the same `icon` value.
+                if (field === 'icon' && meta.iconAsImage) {
+                  const id = item.id ?? ''
+                  const val = iconValues[id] ?? ''
+                  const isPhoto = isImageValue(val)
+                  return (
+                    <div className="admin-field" key={field} style={{ gridColumn: '1 / -1' }}>
+                      <label>Photo or Icon</label>
+                      {/* Submitted value -- a photo URL or a Font Awesome class. */}
+                      <input type="hidden" name={`${id}__icon`} value={val} />
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 10 }}>
+                        <span className="news-photo-item" style={{ width: 56, height: 56, borderRadius: '50%', flex: '0 0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                          {isPhoto ? (
+                            <img src={val} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          ) : (
+                            <i className={val || 'fas fa-user'} aria-hidden="true" style={{ color: 'var(--admin-text-muted)' }}></i>
+                          )}
+                        </span>
+                        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                          <button
+                            type="button"
+                            className="admin-btn admin-btn-secondary"
+                            style={{ width: 'auto' }}
+                            onClick={() => setPickerOpenFor(pickerOpenFor === id ? null : id)}
+                          >
+                            {pickerOpenFor === id ? 'Close' : isPhoto ? 'Change photo' : 'Choose photo'}
+                          </button>
+                          {isPhoto && (
+                            <button
+                              type="button"
+                              className="admin-btn admin-btn-secondary"
+                              style={{ width: 'auto' }}
+                              onClick={() => setIconValues((p) => ({ ...p, [id]: '' }))}
+                            >
+                              Remove photo
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                      {pickerOpenFor === id && (
+                        mediaItems.length === 0 ? (
+                          <p className="admin-field-hint">
+                            No images in the Media Library yet. Upload one there first.
+                          </p>
+                        ) : (
+                          <div className="media-grid media-picker-grid" style={{ marginBottom: 8 }}>
+                            {mediaItems.map((m) => (
+                              <div
+                                key={m.id}
+                                className={`media-thumb media-picker-thumb${val === m.file_url ? ' media-picker-thumb-selected' : ''}`}
+                                role="button"
+                                tabIndex={0}
+                                onClick={() => {
+                                  setIconValues((p) => ({ ...p, [id]: m.file_url }))
+                                  setPickerOpenFor(null)
+                                }}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault()
+                                    setIconValues((p) => ({ ...p, [id]: m.file_url }))
+                                    setPickerOpenFor(null)
+                                  }
+                                }}
+                              >
+                                <img src={m.file_url} alt={m.alt_text ?? m.file_name} loading="lazy" />
+                              </div>
+                            ))}
+                          </div>
+                        )
+                      )}
+                      <input
+                        value={isPhoto ? '' : val}
+                        onChange={(e) => setIconValues((p) => ({ ...p, [id]: e.target.value }))}
+                        placeholder="…or a Font Awesome class, e.g. fas fa-user-graduate"
+                        disabled={isPhoto}
+                      />
+                      <p className="admin-field-hint">
+                        Pick a photo from the Media Library, or type a Font Awesome icon class as a
+                        fallback. Upload photos in Media Library first.
+                      </p>
+                    </div>
+                  )
+                }
+                return (
                 <div className="admin-field" key={field}>
                   <label htmlFor={`${item.id}__${field}`}>{FIELD_LABELS[field]}</label>
                   {field === 'body' || field === 'body_suffix' ? (
@@ -246,7 +352,8 @@ export default function SectionItemsEditor({
                     <p className="admin-field-hint">{FIELD_HINTS[field]}</p>
                   )}
                 </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         ))}

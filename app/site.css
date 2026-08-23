@@ -2003,6 +2003,15 @@ footer p {
     color: var(--t-acc, var(--red));
 }
 
+/* A real photo fills the avatar circle (overriding the tinted icon chip). */
+.testimonial-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
 /* ===== CTA SECTION ===== */
 .cta-section {
     background: linear-gradient(160deg, var(--navy) 0%, var(--navy-light) 100%);

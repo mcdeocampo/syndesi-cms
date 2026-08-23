@@ -45,6 +45,11 @@ export type ItemSectionMeta = {
   fields: ItemField[]
   // Fixed sets (e.g. the 4 stats, the 8 intelligences) don't offer "Add".
   allowAdd: boolean
+  // When true, the `icon` field can hold EITHER a Font Awesome class OR an
+  // uploaded photo URL (the admin editor shows a photo picker, and the public
+  // avatar renders an <img> when the value is a URL). Used by testimonials so
+  // real people can have real photos, falling back to the icon otherwise.
+  iconAsImage?: boolean
 }
 
 // Which fields each section's items actually use -- drives the admin form so
@@ -83,6 +88,7 @@ export const ITEM_SECTIONS: Record<string, Record<string, ItemSectionMeta>> = {
       label: 'Testimonials',
       fields: ['icon', 'title', 'subtitle', 'body', 'link_href', 'link_text'],
       allowAdd: true,
+      iconAsImage: true,
     },
   },
   about: {

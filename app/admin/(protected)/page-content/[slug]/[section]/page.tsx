@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { PAGES } from '@/lib/page-sections-config'
 import { ITEM_SECTIONS } from '@/lib/page-section-items-config'
 import { getSectionItemsForAdmin } from '@/lib/page-section-items'
+import { getMediaLibrary } from '@/lib/media'
 import SectionItemsEditor from '@/components/admin/SectionItemsEditor'
 
 export default async function EditSectionItems({
@@ -17,6 +18,8 @@ export default async function EditSectionItems({
   if (!page || !meta) notFound()
 
   const items = await getSectionItemsForAdmin(slug, section)
+  // Only fetch the media library for sections whose icon can be a photo.
+  const mediaItems = meta.iconAsImage ? await getMediaLibrary() : []
 
   return (
     <>
@@ -30,7 +33,12 @@ export default async function EditSectionItems({
       <p className="page-subtitle">
         Drag the handle to reorder. Changes appear on the live site after saving.
       </p>
-      <SectionItemsEditor pageSlug={slug} sectionKey={section} items={items} />
+      <SectionItemsEditor
+        pageSlug={slug}
+        sectionKey={section}
+        items={items}
+        mediaItems={mediaItems}
+      />
     </>
   )
 }

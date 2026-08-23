@@ -250,7 +250,15 @@ export default async function HomePage() {
                 {items.testimonials?.map((t, i) => (
                   <div className="testimonial-slide" key={t.id ?? i}>
                     <div className="testimonial-card">
-                      <div className="testimonial-avatar"><i className={t.icon ?? ''} aria-hidden="true"></i></div>
+                      {/* The icon slot holds either a photo URL (real person)
+                          or a Font Awesome class (placeholder). */}
+                      <div className="testimonial-avatar">
+                        {t.icon && /^(https?:\/\/|\/)/.test(t.icon) ? (
+                          <img src={t.icon} alt={t.title ?? ''} className="testimonial-photo" />
+                        ) : (
+                          <i className={t.icon ?? ''} aria-hidden="true"></i>
+                        )}
+                      </div>
                       <h4>{t.title}</h4>
                       <div className="role">{t.subtitle}</div>
                       <p>{t.body}</p>
