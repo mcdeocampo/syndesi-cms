@@ -23,12 +23,9 @@ export default async function AdmissionsPage() {
 
         <div className="card-grid">
           {items.cards?.map((card, i) => (
-            <div className="card reveal accent-card" key={card.id ?? i}>
-              <h4>
-                {/* No explicit colour -- inherits the card's accent from h4. */}
-                <i className={card.icon ?? ''} aria-hidden="true" style={{ marginRight: 8 }}></i>
-                {card.title}
-              </h4>
+            <div className="program-card reveal" key={card.id ?? i}>
+              <span className="program-icon"><i className={card.icon ?? ''} aria-hidden="true"></i></span>
+              <h4>{card.title}</h4>
               {/* Cards 1 and 2 render their body from the requirements /
                   procedure sections instead of their own `body` column. */}
               {i === 0 ? (
