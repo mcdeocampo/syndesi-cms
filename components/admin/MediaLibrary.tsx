@@ -4,6 +4,7 @@ import { useActionState, useRef } from 'react'
 import { uploadMedia } from '@/lib/actions/media'
 import type { MediaItem } from '@/lib/media'
 import MediaGridItem from './MediaGridItem'
+import { downscaleImage } from './downscale'
 
 export default function MediaLibrary({ items }: { items: MediaItem[] }) {
   const [state, formAction, pending] = useActionState(uploadMedia, undefined)
@@ -18,7 +19,16 @@ export default function MediaLibrary({ items }: { items: MediaItem[] }) {
         <form
           ref={formRef}
           action={async (formData) => {
-            await formAction(formData)
+            // Downscale large photos in the browser before upload so they fit
+            // under Vercel's ~4.5MB request-body cap (and get optimised). The
+            // rebuilt FormData replaces the raw files with the processed ones;
+            // non-photos and already-small files pass through unchanged.
+            const input = formRef.current?.querySelector<HTMLInputElement>('input[type=file]')
+            const rawFiles = input?.files ? Array.from(input.files) : []
+            const processed = await Promise.all(rawFiles.map((f) => downscaleImage(f)))
+            const fd = new FormData()
+            for (const f of processed) fd.append('files', f)
+            await formAction(processed.length ? fd : formData)
             formRef.current?.reset()
           }}
         >
@@ -33,7 +43,9 @@ export default function MediaLibrary({ items }: { items: MediaItem[] }) {
               required
             />
             <p className="admin-field-hint">
-              JPG, PNG, WEBP, SVG or GIF. 10MB max per file. You can select multiple files.
+              JPG, PNG, WEBP, SVG or GIF. Large photos are automatically resized and
+              optimized in your browser before upload, so phone photos work fine. You can
+              select multiple files.
             </p>
           </div>
           <button className="admin-btn" type="submit" disabled={pending} style={{ maxWidth: 200 }}>
