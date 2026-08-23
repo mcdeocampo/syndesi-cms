@@ -14,6 +14,29 @@ export default async function ContactPage() {
   // had already drifted (it showed contact@ while settings held info@).
   const [s, settings] = await Promise.all([getPageSections('contact'), getSiteSettings()])
 
+  // Each detail hides itself when its setting is blank, so clearing a value in
+  // the CMS never leaves an empty labelled row behind.
+  const details = [
+    settings.contact_number && {
+      cls: 'phone',
+      icon: 'fas fa-phone-alt',
+      label: 'Phone',
+      value: settings.contact_number,
+    },
+    settings.email && {
+      cls: 'email',
+      icon: 'fas fa-envelope',
+      label: 'Email',
+      value: settings.email,
+    },
+    settings.office_hours && {
+      cls: 'hours',
+      icon: 'fas fa-clock',
+      label: 'Office Hours',
+      value: settings.office_hours,
+    },
+  ].filter(Boolean) as { cls: string; icon: string; label: string; value: string }[]
+
   return (
     <section className="page-top">
       <div className="container">
@@ -21,38 +44,31 @@ export default async function ContactPage() {
         <h2 className="section-title">{s.intro.title}</h2>
         <p className="section-subtitle">{s.intro.subtitle}</p>
 
-        <div className="two-col-grid" style={{ gap: 48 }}>
-          <div>
-            <h3 style={{ color: 'var(--navy)', fontSize: '1.4rem', marginBottom: 16, fontFamily: "'Poppins',sans-serif" }}>{s.info.title}</h3>
-            <p style={{ color: 'var(--text-muted)', marginBottom: 24, whiteSpace: 'pre-line' }}>
+        <div className="two-col-grid contact-grid" style={{ gap: 28 }}>
+          {/* Contact information card */}
+          <div className="contact-info-card">
+            <h3 className="contact-panel-title">{s.info.title}</h3>
+            <p className="contact-address" style={{ whiteSpace: 'pre-line' }}>
               <strong>{settings.school_name}</strong>
               {settings.address ? `\n${settings.address}` : ''}
             </p>
-            {/* Each row hides itself when its setting is blank, so clearing a
-                detail in the CMS doesn't leave an empty labelled row behind. */}
-            {settings.contact_number && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
-                <i className="fas fa-phone-alt" aria-hidden="true" style={{ width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(22,34,92,0.06)', borderRadius: 12, color: 'var(--navy)' }}></i>
-                <div><div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Phone</div><div style={{ color: 'var(--text-dark)', fontWeight: 600 }}>{settings.contact_number}</div></div>
-              </div>
-            )}
-            {settings.email && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
-                <i className="fas fa-envelope" aria-hidden="true" style={{ width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(22,34,92,0.06)', borderRadius: 12, color: 'var(--navy)' }}></i>
-                <div><div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Email</div><div style={{ color: 'var(--text-dark)', fontWeight: 600 }}>{settings.email}</div></div>
-              </div>
-            )}
-            {settings.office_hours && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
-                <i className="fas fa-clock" aria-hidden="true" style={{ width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(22,34,92,0.06)', borderRadius: 12, color: 'var(--navy)' }}></i>
-                <div><div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Office Hours</div><div style={{ color: 'var(--text-dark)', fontWeight: 600 }}>{settings.office_hours}</div></div>
-              </div>
-            )}
-            {/* All four networks are treated identically: a real link when its
-                URL is set in Website Settings, a greyed "coming soon"
-                placeholder when it isn't. Previously Facebook vanished
-                entirely when unset while the others left placeholders, which
-                made the row shift around depending on what was filled in. */}
+
+            <ul className="contact-details">
+              {details.map((d) => (
+                <li className="contact-detail" key={d.label}>
+                  <span className={`contact-detail-icon ${d.cls}`}>
+                    <i className={d.icon} aria-hidden="true"></i>
+                  </span>
+                  <div>
+                    <span className="contact-detail-label">{d.label}</span>
+                    <span className="contact-detail-value">{d.value}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            {/* Each network is a real link when its URL is set in Website
+                Settings, or a greyed "coming soon" placeholder otherwise. */}
             <div className="contact-social-row">
               {SOCIAL_LINKS.map(({ key, name, icon }) => {
                 const url = settings[key]
@@ -81,22 +97,23 @@ export default async function ContactPage() {
             </div>
           </div>
 
-          <form className="contact-form" id="contactForm">
-            <label htmlFor="contactName" style={{ display: 'none' }}>Name</label>
-            <input type="text" id="contactName" placeholder="Name" required />
-            <label htmlFor="contactEmail" style={{ display: 'none' }}>Email</label>
-            <input type="email" id="contactEmail" placeholder="Email" required />
-            <label htmlFor="contactSubject" style={{ display: 'none' }}>Subject</label>
-            <input type="text" id="contactSubject" placeholder="Subject" />
-            <label htmlFor="contactMessage" style={{ display: 'none' }}>Message</label>
-            <textarea id="contactMessage" placeholder="Message" required></textarea>
-            {/* No inline width: an inline style outranks the stylesheet, so a
-                hardcoded width:100% here made this the one button on the site
-                that ignored the shared sizing. It follows .btn-primary now. */}
-            <button type="submit" className="btn-primary">
-              <i className="fas fa-paper-plane" aria-hidden="true"></i> Send Message
-            </button>
-          </form>
+          {/* Message form card */}
+          <div className="contact-form-card">
+            <h3 className="contact-panel-title">Send us a message</h3>
+            <form className="contact-form" id="contactForm">
+              <label htmlFor="contactName" style={{ display: 'none' }}>Name</label>
+              <input type="text" id="contactName" placeholder="Name" required />
+              <label htmlFor="contactEmail" style={{ display: 'none' }}>Email</label>
+              <input type="email" id="contactEmail" placeholder="Email" required />
+              <label htmlFor="contactSubject" style={{ display: 'none' }}>Subject</label>
+              <input type="text" id="contactSubject" placeholder="Subject" />
+              <label htmlFor="contactMessage" style={{ display: 'none' }}>Message</label>
+              <textarea id="contactMessage" placeholder="Message" required></textarea>
+              <button type="submit" className="btn-primary">
+                <i className="fas fa-paper-plane" aria-hidden="true"></i> Send Message
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </section>
