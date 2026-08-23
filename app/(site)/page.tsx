@@ -30,7 +30,7 @@ export default async function HomePage() {
         <div
           className="hero-bg-photo"
           role="img"
-          aria-label="Gardner School of Multiple Intelligences campus building in San Antonio, San Pascual, Batangas"
+          aria-label="Syndesi School campus building in Batangas City, Batangas"
         ></div>
         <div className="hero-overlay" aria-hidden="true"></div>
         <div className="hero-ring" aria-hidden="true"></div>

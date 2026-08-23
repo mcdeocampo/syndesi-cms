@@ -126,7 +126,7 @@ export const SECTION_DEFAULTS: Record<string, Record<string, SectionMeta>> = {
       label: 'Milestones / Stats',
       fields: ['tag', 'title'],
       tag: 'Our Milestones',
-      title: 'Gardner School at a Glance',
+      title: 'Syndesi School at a Glance',
       subtitle: null,
     },
     news: {
@@ -155,7 +155,7 @@ export const SECTION_DEFAULTS: Record<string, Record<string, SectionMeta>> = {
       tag: 'Community Voices',
       title: 'What Our Community Says',
       subtitle:
-        "We're building a collection of real stories from Gardner families — here's your invitation to be featured.",
+        "We're building a collection of real stories from Syndesi families — here's your invitation to be featured.",
     },
     cta: {
       label: 'Closing Call to Action',
@@ -167,7 +167,7 @@ export const SECTION_DEFAULTS: Record<string, Record<string, SectionMeta>> = {
       tag: null,
       title: "Ready to Begin Your Child's Learning Journey?",
       subtitle:
-        'Join the Gardner School community and give your child an education that nurtures every intelligence.',
+        'Join the Syndesi School community and give your child an education that nurtures every intelligence.',
     },
   },
   about: {
@@ -193,7 +193,7 @@ export const SECTION_DEFAULTS: Record<string, Record<string, SectionMeta>> = {
       tag: 'Admissions',
       title: 'Enroll Your Child Today',
       subtitle:
-        'We welcome students from Preschool through Junior High, with dedicated Special Education support. Discover the Gardner difference.',
+        'We welcome students from Preschool through Junior High, with dedicated Special Education support. Discover the Syndesi difference.',
       link_text: 'Request More Information',
       link_href: '/contact',
     },
@@ -256,13 +256,13 @@ export const SECTION_DEFAULTS: Record<string, Record<string, SectionMeta>> = {
       ],
       tag: 'News & Announcements',
       title: 'Stay Updated',
-      subtitle: 'The latest happenings at Gardner School.',
+      subtitle: 'The latest happenings at Syndesi School.',
       empty_text:
         'No news articles have been published yet. Check back soon, or follow us on Facebook below.',
       footnote: 'For real-time updates, announcements, and photos, follow us on Facebook.',
       link_text: 'Follow Us on Facebook',
       link_href:
-        'https://www.facebook.com/p/Gardner-School-of-Multiple-Intelligences-100057701558010/',
+        'https://www.facebook.com/SyndesiSchoolDemo',
       link_icon: 'fab fa-facebook',
     },
   },

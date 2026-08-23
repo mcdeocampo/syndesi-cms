@@ -6,7 +6,7 @@ import SectionCta, { SectionTag } from '@/components/SectionCta'
 
 export const metadata: Metadata = {
   description:
-    'The latest news, announcements, and past achievements from Gardner School of Multiple Intelligences.',
+    'The latest news, announcements, and past achievements from Syndesi School.',
 }
 
 export default async function NewsPage() {

@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Gardner School | Batangas',
+  title: 'Syndesi School | Batangas',
   description:
-    "Gardner School of Multiple Intelligences is a Preschool, Elementary, Junior High, and Special Education school in San Antonio, San Pascual, Batangas.",
+    "Syndesi School is a Preschool, Elementary, Junior High, and Special Education school in Batangas City, Batangas.",
   // Site-wide default favicon, so the CMS/admin tabs show the crest too. The
   // public (site) layout overrides this with the favicon uploaded in Website
   // Settings; admin and auth pages inherit this static one.

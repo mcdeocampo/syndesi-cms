@@ -5,7 +5,7 @@ import { SectionTag } from '@/components/SectionCta'
 
 export const metadata: Metadata = {
   description:
-    'Get in touch with Gardner School of Multiple Intelligences in San Antonio, San Pascual, Batangas. Phone, email, and address.',
+    'Get in touch with Syndesi School in Batangas City, Batangas. Phone, email, and address.',
 }
 
 export default async function ContactPage() {

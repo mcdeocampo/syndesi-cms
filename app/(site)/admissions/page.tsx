@@ -5,7 +5,7 @@ import SectionCta, { SectionTag } from '@/components/SectionCta'
 
 export const metadata: Metadata = {
   description:
-    'Admission requirements, enrollment procedure, tuition, and scholarship information for Gardner School of Multiple Intelligences.',
+    'Admission requirements, enrollment procedure, tuition, and scholarship information for Syndesi School.',
 }
 
 export default async function AdmissionsPage() {

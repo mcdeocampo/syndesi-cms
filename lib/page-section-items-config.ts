@@ -226,24 +226,24 @@ export const ITEM_DEFAULTS: Record<string, Record<string, SectionItem[]>> = {
       {
         icon: 'fas fa-people-roof',
         title: 'Parents',
-        subtitle: 'Gardner Family',
-        body: '"We\'d love to share what makes your experience as a Gardner parent special. Your story could be the next one featured here."',
+        subtitle: 'Syndesi Family',
+        body: '"We\'d love to share what makes your experience as a Syndesi parent special. Your story could be the next one featured here."',
         link_href: '/contact',
         link_text: 'Share Your Story',
       },
       {
         icon: 'fas fa-user-graduate',
         title: 'Students',
-        subtitle: 'Gardner Student',
-        body: '"What\'s your favorite Gardner memory? We\'re inviting current students to share their experiences for this space."',
+        subtitle: 'Syndesi Student',
+        body: '"What\'s your favorite Syndesi memory? We\'re inviting current students to share their experiences for this space."',
         link_href: '/contact',
         link_text: 'Share Your Story',
       },
       {
         icon: 'fas fa-user-tie',
         title: 'Alumni',
-        subtitle: 'Gardner Graduate',
-        body: '"Wherever your journey has taken you since Gardner, we\'d be honored to feature your reflections here."',
+        subtitle: 'Syndesi Graduate',
+        body: '"Wherever your journey has taken you since Syndesi, we\'d be honored to feature your reflections here."',
         link_href: '/contact',
         link_text: 'Share Your Story',
       },
@@ -254,8 +254,8 @@ export const ITEM_DEFAULTS: Record<string, Record<string, SectionItem[]>> = {
     // leave it blank for a plain paragraph.
     intro: [
       {
-        title: 'Gardner School of Multiple Intelligences',
-        body: 'is a progressive educational institution located in San Antonio, San Pascual, Batangas. We are committed to providing a holistic approach to education, focusing on the development of children\'s multiple intelligences.',
+        title: 'Syndesi School',
+        body: 'is a progressive educational institution located in Batangas City, Batangas. We are committed to providing a holistic approach to education, focusing on the development of children\'s multiple intelligences.',
       },
       {
         title: null,
@@ -268,7 +268,7 @@ export const ITEM_DEFAULTS: Record<string, Record<string, SectionItem[]>> = {
     ],
     facts: [
       { icon: 'fas fa-calendar-alt', title: 'Founded', body: '2019' },
-      { icon: 'fas fa-map-pin', title: 'Location', body: 'San Antonio, San Pascual, Batangas' },
+      { icon: 'fas fa-map-pin', title: 'Location', body: 'Batangas City, Batangas' },
       { icon: 'fas fa-user-graduate', title: 'School Head', body: 'Imeilyn Faltado' },
       { icon: 'fas fa-award', title: 'Accreditation', body: 'DepEd Accredited' },
     ],

@@ -199,7 +199,7 @@ export default function SiteInteractions() {
       const message = (contactForm.querySelector('#contactMessage') as HTMLTextAreaElement)?.value
 
       const body = `Name: ${name}\nEmail: ${email}\n\n${message}`
-      const mailto = `mailto:contact@gardnerschool.edu.ph?subject=${encodeURIComponent(
+      const mailto = `mailto:contact@syndesi.edu.ph?subject=${encodeURIComponent(
         subject
       )}&body=${encodeURIComponent(body)}`
       window.location.href = mailto

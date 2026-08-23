@@ -4,7 +4,7 @@ import { getPageSections } from '@/lib/page-sections'
 import SectionCta, { SectionTag } from '@/components/SectionCta'
 
 export const metadata: Metadata = {
-  description: 'Meet the faculty and staff of Gardner School of Multiple Intelligences.',
+  description: 'Meet the faculty and staff of Syndesi School.',
 }
 
 export default async function FacultyPage() {

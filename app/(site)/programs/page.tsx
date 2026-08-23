@@ -6,7 +6,7 @@ import { SectionTag } from '@/components/SectionCta'
 
 export const metadata: Metadata = {
   description:
-    "Gardner School of Multiple Intelligences offers Preschool, Elementary, Junior High, and Special Education, guided by Howard Gardner's theory of multiple intelligences.",
+    "Syndesi School offers Preschool, Elementary, Junior High, and Special Education, guided by Howard Gardner's theory of multiple intelligences.",
 }
 
 export default async function ProgramsPage() {

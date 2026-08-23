@@ -5,7 +5,7 @@ import SectionCta, { SectionTag } from '@/components/SectionCta'
 
 export const metadata: Metadata = {
   description:
-    'Forms, handbooks, and policy information for Gardner School of Multiple Intelligences families.',
+    'Forms, handbooks, and policy information for Syndesi School families.',
 }
 
 function fileIcon(fileType: string | null): string {

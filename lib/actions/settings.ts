@@ -57,7 +57,7 @@ export async function updateWebsiteSettings(
   }
 
   const update: Record<string, unknown> = {
-    school_name: textField('school_name') || 'Gardner School of Multiple Intelligences',
+    school_name: textField('school_name') || 'Syndesi School',
     address: textField('address'),
     contact_number: textField('contact_number'),
     email: textField('email'),

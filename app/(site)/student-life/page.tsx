@@ -5,7 +5,7 @@ import SectionCta, { SectionTag } from '@/components/SectionCta'
 
 export const metadata: Metadata = {
   description:
-    'Clubs, sports, events, and achievements that make up student life at Gardner School of Multiple Intelligences.',
+    'Clubs, sports, events, and achievements that make up student life at Syndesi School.',
 }
 
 export default async function StudentLifePage() {

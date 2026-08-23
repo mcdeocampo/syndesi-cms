@@ -61,29 +61,28 @@ export const DEFAULT_SETTINGS: WebsiteSettings = {
   favicon_url: '/images/syndesi-favicon.png',
   // Full street address -- the contact page renders this with
   // `whiteSpace: 'pre-line'`, so newlines entered in the CMS are preserved.
-  address:
-    'San Antonio Palico – Balayan – Batangas Road,\nSan Antonio, San Pascual, Batangas, Philippines',
+  address: '1887 Ibarra Street, Batangas City, Batangas',
   contact_number: '043 984 6533',
-  email: 'info@gardnerschool.edu.ph',
+  email: 'contact@syndesi.edu.ph',
   office_hours: 'Mon – Fri, 7:30 AM – 4:30 PM',
   facebook_url:
-    'https://www.facebook.com/p/Gardner-School-of-Multiple-Intelligences-100057701558010/',
+    'https://www.facebook.com/SyndesiSchoolDemo',
   youtube_url: null,
   instagram_url: null,
   linkedin_url: null,
   footer_text:
-    "A Multiple Intelligence School in San Antonio, San Pascual, Batangas, nurturing every child's unique talents.",
+    "A Multiple Intelligence School in Batangas City, Batangas, nurturing every child's unique talents.",
   copyright_text: 'DEMO WEBSITE | Concept Preview Only • Noetikon Technologies',
   google_maps_embed: null,
-  seo_title: 'Gardner School | Batangas',
+  seo_title: 'Syndesi School | Batangas',
   seo_description:
-    "Gardner School of Multiple Intelligences is a Preschool, Elementary, Junior High, and Special Education school in San Antonio, San Pascual, Batangas, nurturing every child's unique talents.",
+    "Syndesi School is a Preschool, Elementary, Junior High, and Special Education school in Batangas City, Batangas, nurturing every child's unique talents.",
   hero_tagline: 'Nurturing Excellence, Character, and Lifelong Learning',
   hero_heading: 'Nurturing',
   hero_heading_highlight: 'Multiple Intelligences',
   hero_description:
     "A holistic educational institution dedicated to developing every child's unique talents through Howard Gardner's Theory of Multiple Intelligences — from Preschool through Junior High, with dedicated Special Education support.",
-  hero_campus_caption: 'Our Campus — San Antonio, San Pascual',
+  hero_campus_caption: 'Our Campus — Batangas City',
   // Null on purpose: falls back to "<school name> CMS" via adminLabel().
   admin_label: null,
   updated_at: new Date().toISOString(),

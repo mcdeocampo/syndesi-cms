@@ -5,7 +5,7 @@ import { SectionTag } from '@/components/SectionCta'
 
 export const metadata: Metadata = {
   description:
-    "Learn about Gardner School of Multiple Intelligences: our story, mission, and core values, located in San Antonio, San Pascual, Batangas.",
+    "Learn about Syndesi School: our story, mission, and core values, located in Batangas City, Batangas.",
 }
 
 export default async function AboutPage() {
