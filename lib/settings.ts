@@ -8,6 +8,11 @@ export type WebsiteSettings = {
   contact_number: string | null
   email: string | null
   office_hours: string | null
+  // Footer-only overrides. Null falls back to the shared address/contact_number/
+  // email above, so the footer matches the Contact page unless set separately.
+  footer_address: string | null
+  footer_contact_number: string | null
+  footer_email: string | null
   facebook_url: string | null
   youtube_url: string | null
   instagram_url: string | null
@@ -106,6 +111,10 @@ export const DEFAULT_SETTINGS: WebsiteSettings = {
   contact_number: '043 984 6533',
   email: 'contact@syndesi.edu.ph',
   office_hours: 'Mon – Fri, 7:30 AM – 4:30 PM',
+  // Null -> footer uses the shared contact details above.
+  footer_address: null,
+  footer_contact_number: null,
+  footer_email: null,
   facebook_url:
     'https://www.facebook.com/SyndesiSchoolDemo',
   youtube_url: null,

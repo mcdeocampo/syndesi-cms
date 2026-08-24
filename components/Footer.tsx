@@ -2,9 +2,12 @@ import Link from 'next/link'
 import { splitList, type WebsiteSettings } from '@/lib/settings'
 
 export default function Footer({ settings }: { settings: WebsiteSettings }) {
-  // Phone and email can each list several values (one per line in the CMS).
-  const phones = splitList(settings.contact_number)
-  const emails = splitList(settings.email)
+  // Footer contact can be set separately; when a footer field is blank it
+  // falls back to the shared Contact page value. Phone/email each allow
+  // several values (one per line).
+  const footerAddress = settings.footer_address ?? settings.address
+  const phones = splitList(settings.footer_contact_number ?? settings.contact_number)
+  const emails = splitList(settings.footer_email ?? settings.email)
 
   // Admins can write {year} in the Copyright field and it resolves to the
   // current year on every render, so the notice can't silently go stale in
@@ -53,10 +56,10 @@ export default function Footer({ settings }: { settings: WebsiteSettings }) {
         <div className="footer-col">
           <h4>Contact</h4>
           <ul className="footer-contact">
-            {settings.address && (
+            {footerAddress && (
               <li>
                 <i className="fas fa-map-marker-alt" aria-hidden="true"></i>
-                <span>{settings.address}</span>
+                <span>{footerAddress}</span>
               </li>
             )}
             {phones.map((phone) => (

@@ -119,6 +119,48 @@ export default function SettingsForm({ settings }: { settings: WebsiteSettings }
       </div>
 
       <div className="admin-card" style={{ marginBottom: 20 }}>
+        <h2>Footer Contact</h2>
+        <p className="admin-field-hint" style={{ marginTop: -6, marginBottom: 16 }}>
+          Contact details shown in the footer at the bottom of every page. Leave a
+          field blank to use the same value as the Contact page (the Address / Contact
+          Number / Email above).
+        </p>
+        <div className="admin-field">
+          <label htmlFor="footer_address">Footer Address</label>
+          <input
+            id="footer_address"
+            name="footer_address"
+            defaultValue={settings.footer_address ?? ''}
+            placeholder="Same as Contact page"
+          />
+        </div>
+        <div className="admin-form-grid">
+          <div className="admin-field">
+            <label htmlFor="footer_contact_number">Footer Contact Number(s)</label>
+            <textarea
+              id="footer_contact_number"
+              name="footer_contact_number"
+              rows={2}
+              defaultValue={settings.footer_contact_number ?? ''}
+              placeholder="Same as Contact page"
+            />
+            <p className="admin-field-hint">One number per line to list several.</p>
+          </div>
+          <div className="admin-field">
+            <label htmlFor="footer_email">Footer Email Address(es)</label>
+            <textarea
+              id="footer_email"
+              name="footer_email"
+              rows={2}
+              defaultValue={settings.footer_email ?? ''}
+              placeholder="Same as Contact page"
+            />
+            <p className="admin-field-hint">One address per line to list several.</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="admin-card" style={{ marginBottom: 20 }}>
         <h2>Social Media</h2>
         <div className="admin-form-grid">
           <div className="admin-field">
