@@ -42,6 +42,7 @@ export async function updateWebsiteSettings(
   let logoUrl: string | null = null
   let faviconUrl: string | null = null
   let heroUrl: string | null = null
+  let aboutUrl: string | null = null
   try {
     logoUrl = await uploadIfPresent(supabase, formData.get('logo') as File | null, 'logo')
     faviconUrl = await uploadIfPresent(
@@ -53,6 +54,11 @@ export async function updateWebsiteSettings(
       supabase,
       formData.get('hero_image') as File | null,
       'hero'
+    )
+    aboutUrl = await uploadIfPresent(
+      supabase,
+      formData.get('about_image') as File | null,
+      'about'
     )
   } catch (e) {
     return { error: e instanceof Error ? e.message : 'Upload failed.' }
@@ -98,6 +104,10 @@ export async function updateWebsiteSettings(
   if (logoUrl) update.logo_url = logoUrl
   if (faviconUrl) update.favicon_url = faviconUrl
   if (heroUrl) update.hero_image_url = heroUrl
+  // A new upload sets the photo; the remove checkbox clears it. A new upload
+  // wins if somehow both are sent.
+  if (aboutUrl) update.about_image_url = aboutUrl
+  else if (formData.get('about_image_remove') === 'on') update.about_image_url = null
 
   // .select() is REQUIRED, not decorative: a PostgREST UPDATE that matches no
   // row (blocked by RLS, or the row absent) returns error:null -- a silent

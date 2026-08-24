@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { getPageSections } from '@/lib/page-sections'
 import { getPageItems } from '@/lib/page-section-items'
+import { getSiteSettings } from '@/lib/settings'
 import PageBanner from '@/components/PageBanner'
 
 export const metadata: Metadata = {
@@ -9,7 +10,11 @@ export const metadata: Metadata = {
 }
 
 export default async function AboutPage() {
-  const [s, items] = await Promise.all([getPageSections('about'), getPageItems('about')])
+  const [s, items, settings] = await Promise.all([
+    getPageSections('about'),
+    getPageItems('about'),
+    getSiteSettings(),
+  ])
 
   return (
     <>
@@ -21,7 +26,10 @@ export default async function AboutPage() {
       />
       <section className="page-body">
       <div className="container">
-        <div className="two-col-grid" style={{ gap: 40, alignItems: 'center' }}>
+        <div
+          className={settings.about_image_url ? 'two-col-grid' : undefined}
+          style={{ gap: 40, alignItems: 'center' }}
+        >
           <div className="our-story">
             {/* One <p> per stored paragraph. The first is styled as a larger
                 "lead" line; an optional `title` renders as a bold lead-in
@@ -40,19 +48,13 @@ export default async function AboutPage() {
               </p>
             ))}
           </div>
-          <div className="stats-2x2-grid">
-            {items.facts?.map((f, i) => (
-              <div className="fact-card reveal" key={f.id ?? i}>
-                <span className="fact-icon">
-                  <i className={f.icon ?? ''} aria-hidden="true"></i>
-                </span>
-                <div className="fact-body">
-                  <span className="fact-label">{f.title}</span>
-                  <span className="fact-value">{f.body}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+          {/* Photo (uploaded in Website Settings) sits beside the story. Until
+              one is set, the story simply spans the full width -- no empty box. */}
+          {settings.about_image_url && (
+            <div className="about-photo">
+              <img src={settings.about_image_url} alt={`${settings.school_name} campus`} />
+            </div>
+          )}
         </div>
         {items.mission_vision && items.mission_vision.length > 0 && (
           <div className="mv-grid">

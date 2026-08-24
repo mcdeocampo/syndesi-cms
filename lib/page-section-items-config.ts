@@ -101,7 +101,6 @@ export const ITEM_SECTIONS: Record<string, Record<string, ItemSectionMeta>> = {
       fields: ['icon', 'title', 'body'],
       allowAdd: false,
     },
-    facts: { label: 'Quick Facts', fields: ['icon', 'title', 'body'], allowAdd: true },
     values: { label: 'Core Values', fields: ['title', 'body'], allowAdd: true },
   },
   admissions: {

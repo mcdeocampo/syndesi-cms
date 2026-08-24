@@ -24,6 +24,9 @@ export type WebsiteSettings = {
   hero_campus_caption: string | null
   // Homepage hero background photo. Null falls back to the shipped image.
   hero_image_url: string | null
+  // Photo shown beside the About page "Our Story" text. Null hides the column
+  // and lets the story span full width.
+  about_image_url: string | null
   // Primary brand color (hex). Drives the navy fills across the site --
   // banners, stats, CTA, header, footer. Null falls back to the shipped navy
   // in site.css, so the default look is untouched until an admin changes it.
@@ -122,6 +125,8 @@ export const DEFAULT_SETTINGS: WebsiteSettings = {
     "A holistic educational institution dedicated to developing every child's unique talents through Howard Gardner's Theory of Multiple Intelligences — from Preschool through Junior High, with dedicated Special Education support.",
   hero_campus_caption: 'Our Campus — Batangas City',
   hero_image_url: '/images/syndesi-hero-new.jpg',
+  // Null by default -- the About story spans full width until a photo is set.
+  about_image_url: null,
   // Null by default so the layout injects no override and the shipped --navy
   // in site.css applies pixel-for-pixel. Set only when an admin picks a color.
   brand_color: null,

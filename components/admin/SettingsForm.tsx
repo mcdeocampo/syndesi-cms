@@ -9,6 +9,7 @@ export default function SettingsForm({ settings }: { settings: WebsiteSettings }
   const [logoPreview, setLogoPreview] = useState(settings.logo_url)
   const [faviconPreview, setFaviconPreview] = useState(settings.favicon_url)
   const [heroPreview, setHeroPreview] = useState(settings.hero_image_url)
+  const [aboutPreview, setAboutPreview] = useState(settings.about_image_url)
   // Empty string means "no custom color" -- submitting it blank clears the
   // stored value and reverts the site to the shipped navy.
   const [brandColor, setBrandColor] = useState(settings.brand_color ?? '')
@@ -334,6 +335,57 @@ export default function SettingsForm({ settings }: { settings: WebsiteSettings }
             The small location line with the pin icon at the bottom of the hero photo. Leave
             blank to hide it.
           </p>
+        </div>
+      </div>
+
+      <div className="admin-card" style={{ marginBottom: 20 }}>
+        <h2>About Page Photo</h2>
+        <p className="admin-field-hint" style={{ marginTop: -6, marginBottom: 16 }}>
+          A photo shown beside the “Our Story” text on the About page. Leave it
+          empty to let the story span the full width.
+        </p>
+        <div className="admin-field">
+          <label htmlFor="about_image">Photo</label>
+          {aboutPreview && (
+            <div
+              style={{
+                width: '100%',
+                maxWidth: 320,
+                aspectRatio: '4 / 3',
+                borderRadius: 10,
+                overflow: 'hidden',
+                border: '1px solid var(--admin-border)',
+                marginBottom: 8,
+              }}
+            >
+              <img
+                src={aboutPreview}
+                alt="Current About photo"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            </div>
+          )}
+          <input
+            id="about_image"
+            name="about_image"
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const f = e.target.files?.[0]
+              if (f) setAboutPreview(URL.createObjectURL(f))
+            }}
+          />
+          <p className="admin-field-hint">
+            A landscape photo works best (about 1200px wide). Leave blank to keep the current one.
+          </p>
+          {aboutPreview && (
+            <label
+              style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10, cursor: 'pointer' }}
+            >
+              <input type="checkbox" name="about_image_remove" style={{ width: 16, height: 16 }} />
+              Remove the current photo (show the story full width)
+            </label>
+          )}
         </div>
       </div>
 
