@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { getPublishedFaculty } from '@/lib/faculty'
 import { getPageSections } from '@/lib/page-sections'
-import SectionCta, { SectionTag } from '@/components/SectionCta'
+import SectionCta from '@/components/SectionCta'
+import PageBanner from '@/components/PageBanner'
 
 export const metadata: Metadata = {
   description: 'Meet the faculty and staff of Syndesi School.',
@@ -11,12 +12,15 @@ export default async function FacultyPage() {
   const [faculty, s] = await Promise.all([getPublishedFaculty(), getPageSections('faculty')])
 
   return (
-    <section className="page-top">
+    <>
+      <PageBanner
+        icon="fas fa-chalkboard-teacher"
+        tag={s.intro.tag}
+        title={s.intro.title}
+        subtitle={s.intro.subtitle}
+      />
+      <section className="page-body">
       <div className="container">
-        <SectionTag icon="fas fa-chalkboard-teacher" label={s.intro.tag} />
-        <h2 className="section-title">{s.intro.title}</h2>
-        <p className="section-subtitle">{s.intro.subtitle}</p>
-
         {faculty.length === 0 ? (
           <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginTop: 40 }}>
             {s.intro.empty_text}
@@ -45,6 +49,7 @@ export default async function FacultyPage() {
 
         <SectionCta section={s.intro} />
       </div>
-    </section>
+      </section>
+    </>
   )
 }

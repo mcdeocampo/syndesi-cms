@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { getPageSections } from '@/lib/page-sections'
 import { getPageItems } from '@/lib/page-section-items'
-import { SectionTag } from '@/components/SectionCta'
+import PageBanner from '@/components/PageBanner'
 
 export const metadata: Metadata = {
   description:
@@ -12,10 +12,15 @@ export default async function AboutPage() {
   const [s, items] = await Promise.all([getPageSections('about'), getPageItems('about')])
 
   return (
-    <section className="page-top">
+    <>
+      <PageBanner
+        icon="fas fa-info-circle"
+        tag={s.intro.tag}
+        title={s.intro.title}
+        subtitle={s.intro.subtitle}
+      />
+      <section className="page-body">
       <div className="container">
-        <SectionTag icon="fas fa-info-circle" label={s.intro.tag} />
-        <h2 className="section-title">{s.intro.title}</h2>
         <div className="two-col-grid" style={{ gap: 40, alignItems: 'center' }}>
           <div className="our-story">
             {/* One <p> per stored paragraph. The first is styled as a larger
@@ -75,6 +80,7 @@ export default async function AboutPage() {
           </div>
         </div>
       </div>
-    </section>
+      </section>
+    </>
   )
 }

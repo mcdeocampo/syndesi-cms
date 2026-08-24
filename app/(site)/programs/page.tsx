@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getPageSections } from '@/lib/page-sections'
 import { getPageItems } from '@/lib/page-section-items'
 import { SectionTag } from '@/components/SectionCta'
+import PageBanner from '@/components/PageBanner'
 
 export const metadata: Metadata = {
   description:
@@ -13,12 +14,15 @@ export default async function ProgramsPage() {
   const [s, items] = await Promise.all([getPageSections('programs'), getPageItems('programs')])
 
   return (
-    <section className="page-top">
+    <>
+      <PageBanner
+        icon="fas fa-book-open"
+        tag={s.intro.tag}
+        title={s.intro.title}
+        subtitle={s.intro.subtitle}
+      />
+      <section className="page-body">
       <div className="container">
-        <SectionTag icon="fas fa-book-open" label={s.intro.tag} />
-        <h2 className="section-title">{s.intro.title}</h2>
-        <p className="section-subtitle">{s.intro.subtitle}</p>
-
         <div className="card-grid">
           {items.levels?.map((lvl, i) => (
             <div className="card reveal" id={lvl.anchor_id ?? undefined} key={lvl.id ?? i}>
@@ -64,6 +68,7 @@ export default async function ProgramsPage() {
           </div>
         </div>
       </div>
-    </section>
+      </section>
+    </>
   )
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { getPageSections } from '@/lib/page-sections'
 import { getSiteSettings, SOCIAL_LINKS } from '@/lib/settings'
-import { SectionTag } from '@/components/SectionCta'
+import PageBanner from '@/components/PageBanner'
 
 export const metadata: Metadata = {
   description:
@@ -38,12 +38,15 @@ export default async function ContactPage() {
   ].filter(Boolean) as { cls: string; icon: string; label: string; value: string }[]
 
   return (
-    <section className="page-top">
+    <>
+      <PageBanner
+        icon="fas fa-paper-plane"
+        tag={s.intro.tag}
+        title={s.intro.title}
+        subtitle={s.intro.subtitle}
+      />
+      <section className="page-body">
       <div className="container">
-        <SectionTag icon="fas fa-paper-plane" label={s.intro.tag} />
-        <h2 className="section-title">{s.intro.title}</h2>
-        <p className="section-subtitle">{s.intro.subtitle}</p>
-
         <div className="two-col-grid contact-grid" style={{ gap: 28 }}>
           {/* Contact information card */}
           <div className="contact-info-card">
@@ -116,6 +119,7 @@ export default async function ContactPage() {
           </div>
         </div>
       </div>
-    </section>
+      </section>
+    </>
   )
 }

@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getPublishedNews } from '@/lib/news'
 import { getPageSections } from '@/lib/page-sections'
-import SectionCta, { SectionTag } from '@/components/SectionCta'
+import SectionCta from '@/components/SectionCta'
+import PageBanner from '@/components/PageBanner'
 
 export const metadata: Metadata = {
   description:
@@ -13,12 +14,15 @@ export default async function NewsPage() {
   const [news, s] = await Promise.all([getPublishedNews(), getPageSections('news')])
 
   return (
-    <section className="page-top">
+    <>
+      <PageBanner
+        icon="fas fa-newspaper"
+        tag={s.intro.tag}
+        title={s.intro.title}
+        subtitle={s.intro.subtitle}
+      />
+      <section className="page-body">
       <div className="container">
-        <SectionTag icon="fas fa-newspaper" label={s.intro.tag} />
-        <h2 className="section-title">{s.intro.title}</h2>
-        <p className="section-subtitle">{s.intro.subtitle}</p>
-
         {news.length === 0 ? (
           <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginTop: 40 }}>
             {s.intro.empty_text}
@@ -67,6 +71,7 @@ export default async function NewsPage() {
 
         <SectionCta section={s.intro} />
       </div>
-    </section>
+      </section>
+    </>
   )
 }

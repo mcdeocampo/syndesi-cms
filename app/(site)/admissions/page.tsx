@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { getPageSections } from '@/lib/page-sections'
 import { getPageItems } from '@/lib/page-section-items'
-import SectionCta, { SectionTag } from '@/components/SectionCta'
+import SectionCta from '@/components/SectionCta'
+import PageBanner from '@/components/PageBanner'
 
 export const metadata: Metadata = {
   description:
@@ -15,12 +16,15 @@ export default async function AdmissionsPage() {
   ])
 
   return (
-    <section className="page-top">
+    <>
+      <PageBanner
+        icon="fas fa-door-open"
+        tag={s.intro.tag}
+        title={s.intro.title}
+        subtitle={s.intro.subtitle}
+      />
+      <section className="page-body">
       <div className="container">
-        <SectionTag icon="fas fa-door-open" label={s.intro.tag} />
-        <h2 className="section-title">{s.intro.title}</h2>
-        <p className="section-subtitle">{s.intro.subtitle}</p>
-
         <div className="card-grid">
           {items.cards?.map((card, i) => (
             <div className="program-card reveal" key={card.id ?? i}>
@@ -49,6 +53,7 @@ export default async function AdmissionsPage() {
 
         <SectionCta section={s.intro} />
       </div>
-    </section>
+      </section>
+    </>
   )
 }
