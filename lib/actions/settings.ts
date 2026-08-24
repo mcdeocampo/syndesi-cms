@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { requireAdmin } from '@/lib/supabase/dal'
 import { createClient } from '@/lib/supabase/server'
+import { sanitizeBrandColor } from '@/lib/settings'
 
 export type SettingsFormState = { error?: string; success?: string } | undefined
 
@@ -82,6 +83,9 @@ export async function updateWebsiteSettings(
     hero_heading_highlight: textField('hero_heading_highlight'),
     hero_description: textField('hero_description'),
     hero_campus_caption: textField('hero_campus_caption'),
+    // Normalized to a safe hex or null; an invalid value clears it (reverts to
+    // the shipped navy) rather than being stored and injected verbatim.
+    brand_color: sanitizeBrandColor(textField('brand_color')),
     admin_label: textField('admin_label'),
     updated_at: new Date().toISOString(),
   }

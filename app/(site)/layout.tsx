@@ -3,7 +3,7 @@ import '../site.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import SiteInteractions from './site-interactions'
-import { getSiteSettings } from '@/lib/settings'
+import { getSiteSettings, sanitizeBrandColor } from '@/lib/settings'
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings()
@@ -25,8 +25,20 @@ export default async function SiteLayout({
 }) {
   const settings = await getSiteSettings()
 
+  // Override the brand color only when a valid one is stored -- otherwise the
+  // shipped --navy in site.css applies untouched. The lighter gradient stop is
+  // derived from the chosen color so a single picker themes every navy band.
+  const brand = sanitizeBrandColor(settings.brand_color)
+
   return (
     <>
+      {brand && (
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `:root{--navy:${brand};--navy-light:color-mix(in srgb, ${brand}, #ffffff 16%);}`,
+          }}
+        />
+      )}
       <Header settings={settings} />
       {children}
       <Footer settings={settings} />

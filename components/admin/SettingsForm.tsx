@@ -9,6 +9,9 @@ export default function SettingsForm({ settings }: { settings: WebsiteSettings }
   const [logoPreview, setLogoPreview] = useState(settings.logo_url)
   const [faviconPreview, setFaviconPreview] = useState(settings.favicon_url)
   const [heroPreview, setHeroPreview] = useState(settings.hero_image_url)
+  // Empty string means "no custom color" -- submitting it blank clears the
+  // stored value and reverts the site to the shipped navy.
+  const [brandColor, setBrandColor] = useState(settings.brand_color ?? '')
 
   return (
     <form action={formAction}>
@@ -117,6 +120,58 @@ export default function SettingsForm({ settings }: { settings: WebsiteSettings }
             <label htmlFor="linkedin_url">LinkedIn (optional)</label>
             <input id="linkedin_url" name="linkedin_url" type="url" defaultValue={settings.linkedin_url ?? ''} />
           </div>
+        </div>
+      </div>
+
+      <div className="admin-card" style={{ marginBottom: 20 }}>
+        <h2>Brand Color</h2>
+        <p className="admin-field-hint" style={{ marginTop: -6, marginBottom: 16 }}>
+          The main color used across the site — page banners, the header,
+          footer, the stats band, and the call-to-action. Change it here and all
+          of those update together.
+        </p>
+        <div className="admin-field">
+          <label htmlFor="brand_color_text">Primary Color</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <input
+              type="color"
+              aria-label="Pick primary brand color"
+              value={brandColor || '#16225c'}
+              onChange={(e) => setBrandColor(e.target.value)}
+              style={{
+                width: 52,
+                height: 40,
+                padding: 2,
+                borderRadius: 8,
+                border: '1px solid var(--admin-border)',
+                cursor: 'pointer',
+                flexShrink: 0,
+              }}
+            />
+            <input
+              id="brand_color_text"
+              name="brand_color"
+              value={brandColor}
+              onChange={(e) => setBrandColor(e.target.value)}
+              placeholder="#16225c"
+              style={{ maxWidth: 160, textTransform: 'lowercase' }}
+            />
+            {brandColor && (
+              <button
+                type="button"
+                className="admin-btn-secondary"
+                onClick={() => setBrandColor('')}
+                style={{ padding: '8px 12px' }}
+              >
+                Reset to default
+              </button>
+            )}
+          </div>
+          <p className="admin-field-hint">
+            Pick a color or paste a hex code (e.g. <strong>#16225c</strong>). Leave
+            blank to use the default navy. The gradient’s lighter shade is created
+            from this color automatically.
+          </p>
         </div>
       </div>
 

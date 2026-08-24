@@ -24,6 +24,10 @@ export type WebsiteSettings = {
   hero_campus_caption: string | null
   // Homepage hero background photo. Null falls back to the shipped image.
   hero_image_url: string | null
+  // Primary brand color (hex). Drives the navy fills across the site --
+  // banners, stats, CTA, header, footer. Null falls back to the shipped navy
+  // in site.css, so the default look is untouched until an admin changes it.
+  brand_color: string | null
   // Wordmark shown in the CMS sidebar and on the login screen. Null means
   // "derive it from school_name" -- see adminLabel() below.
   admin_label: string | null
@@ -45,6 +49,19 @@ export const SOCIAL_LINKS = [
   name: string
   icon: string
 }[]
+
+// Accept only a plain 3- or 6-digit hex color. Anything else returns null so a
+// stray value can never break the layout or, worse, inject CSS (the value is
+// interpolated into a <style> tag). Returned normalized with a leading '#'.
+export function sanitizeBrandColor(value: string | null | undefined): string | null {
+  if (!value) return null
+  const v = value.trim()
+  return /^#?[0-9a-fA-F]{6}$/.test(v) || /^#?[0-9a-fA-F]{3}$/.test(v)
+    ? v.startsWith('#')
+      ? v
+      : `#${v}`
+    : null
+}
 
 // The CMS's own wordmark. Deliberately derived rather than stored by default,
 // so renaming the school can't leave the admin panel showing the old brand.
@@ -86,6 +103,9 @@ export const DEFAULT_SETTINGS: WebsiteSettings = {
     "A holistic educational institution dedicated to developing every child's unique talents through Howard Gardner's Theory of Multiple Intelligences — from Preschool through Junior High, with dedicated Special Education support.",
   hero_campus_caption: 'Our Campus — Batangas City',
   hero_image_url: '/images/syndesi-hero-new.jpg',
+  // Null by default so the layout injects no override and the shipped --navy
+  // in site.css applies pixel-for-pixel. Set only when an admin picks a color.
+  brand_color: null,
   // Null on purpose: falls back to "<school name> CMS" via adminLabel().
   admin_label: null,
   updated_at: new Date().toISOString(),
