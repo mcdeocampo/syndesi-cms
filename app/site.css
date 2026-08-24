@@ -1350,18 +1350,18 @@ section {
 .about-photo img {
     display: block;
     width: 100%;
-    max-width: 440px;
+    max-width: 500px;
     height: auto;
     border-radius: 16px;
     box-shadow: var(--shadow);
 }
 
-/* Give the story text more room than the photo so the two columns balance.
+/* Text column only slightly wider than the photo so neither side dominates.
    Desktop only -- below 992px the grid stacks to a single column (handled by
    the .two-col-grid rule) and this must not apply. */
 @media (min-width: 993px) {
     .about-story-grid {
-        grid-template-columns: 1.5fr 1fr;
+        grid-template-columns: 1.15fr 1fr;
     }
 }
 
