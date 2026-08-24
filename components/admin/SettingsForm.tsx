@@ -8,6 +8,7 @@ export default function SettingsForm({ settings }: { settings: WebsiteSettings }
   const [state, formAction, pending] = useActionState(updateWebsiteSettings, undefined)
   const [logoPreview, setLogoPreview] = useState(settings.logo_url)
   const [faviconPreview, setFaviconPreview] = useState(settings.favicon_url)
+  const [heroPreview, setHeroPreview] = useState(settings.hero_image_url)
 
   return (
     <form action={formAction}>
@@ -122,8 +123,44 @@ export default function SettingsForm({ settings }: { settings: WebsiteSettings }
       <div className="admin-card" style={{ marginBottom: 20 }}>
         <h2>Homepage Hero</h2>
         <p className="admin-field-hint" style={{ marginTop: -6, marginBottom: 16 }}>
-          The large banner text at the top of the homepage.
+          The large banner text and photo at the top of the homepage.
         </p>
+        <div className="admin-field">
+          <label htmlFor="hero_image">Background Photo</label>
+          {heroPreview && (
+            <div
+              style={{
+                width: '100%',
+                maxWidth: 360,
+                aspectRatio: '16 / 9',
+                borderRadius: 10,
+                overflow: 'hidden',
+                border: '1px solid var(--admin-border)',
+                marginBottom: 8,
+              }}
+            >
+              <img
+                src={heroPreview}
+                alt="Current hero background"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            </div>
+          )}
+          <input
+            id="hero_image"
+            name="hero_image"
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const f = e.target.files?.[0]
+              if (f) setHeroPreview(URL.createObjectURL(f))
+            }}
+          />
+          <p className="admin-field-hint">
+            A wide landscape photo of the campus works best (about 1600–1920px wide, under ~4MB).
+            Leave blank to keep the current one.
+          </p>
+        </div>
         <div className="admin-field">
           <label htmlFor="hero_tagline">Tagline</label>
           <input

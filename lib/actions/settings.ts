@@ -40,12 +40,18 @@ export async function updateWebsiteSettings(
 
   let logoUrl: string | null = null
   let faviconUrl: string | null = null
+  let heroUrl: string | null = null
   try {
     logoUrl = await uploadIfPresent(supabase, formData.get('logo') as File | null, 'logo')
     faviconUrl = await uploadIfPresent(
       supabase,
       formData.get('favicon') as File | null,
       'favicon'
+    )
+    heroUrl = await uploadIfPresent(
+      supabase,
+      formData.get('hero_image') as File | null,
+      'hero'
     )
   } catch (e) {
     return { error: e instanceof Error ? e.message : 'Upload failed.' }
@@ -82,6 +88,7 @@ export async function updateWebsiteSettings(
 
   if (logoUrl) update.logo_url = logoUrl
   if (faviconUrl) update.favicon_url = faviconUrl
+  if (heroUrl) update.hero_image_url = heroUrl
 
   // .select() is REQUIRED, not decorative: a PostgREST UPDATE that matches no
   // row (blocked by RLS, or the row absent) returns error:null -- a silent

@@ -22,6 +22,8 @@ export type WebsiteSettings = {
   hero_heading_highlight: string | null
   hero_description: string | null
   hero_campus_caption: string | null
+  // Homepage hero background photo. Null falls back to the shipped image.
+  hero_image_url: string | null
   // Wordmark shown in the CMS sidebar and on the login screen. Null means
   // "derive it from school_name" -- see adminLabel() below.
   admin_label: string | null
@@ -83,6 +85,7 @@ export const DEFAULT_SETTINGS: WebsiteSettings = {
   hero_description:
     "A holistic educational institution dedicated to developing every child's unique talents through Howard Gardner's Theory of Multiple Intelligences — from Preschool through Junior High, with dedicated Special Education support.",
   hero_campus_caption: 'Our Campus — Batangas City',
+  hero_image_url: '/images/syndesi-hero-new.jpg',
   // Null on purpose: falls back to "<school name> CMS" via adminLabel().
   admin_label: null,
   updated_at: new Date().toISOString(),

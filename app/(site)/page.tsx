@@ -31,6 +31,13 @@ export default async function HomePage() {
           className="hero-bg-photo"
           role="img"
           aria-label="Syndesi School campus building in Batangas City, Batangas"
+          /* Background photo comes from Website Settings; the CSS default in
+             .hero-bg-photo applies when it's unset. */
+          style={
+            settings.hero_image_url
+              ? { backgroundImage: `url('${settings.hero_image_url}')` }
+              : undefined
+          }
         ></div>
         <div className="hero-overlay" aria-hidden="true"></div>
         <div className="hero-ring" aria-hidden="true"></div>
