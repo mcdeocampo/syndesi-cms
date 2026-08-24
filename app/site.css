@@ -1350,6 +1350,15 @@ section {
     box-shadow: var(--shadow);
 }
 
+/* Give the story text more room than the photo so a tall/near-square image
+   doesn't tower over the prose. Desktop only -- below 992px the grid stacks to
+   a single column (handled by the .two-col-grid rule) and this must not apply. */
+@media (min-width: 993px) {
+    .about-story-grid {
+        grid-template-columns: 1.4fr 1fr;
+    }
+}
+
 /* ===== MISSION & VISION (About) =====
    Two statement panels with a soft tinted background and a large accent icon,
    distinct from the info/feature cards so they read as institutional

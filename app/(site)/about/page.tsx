@@ -27,7 +27,7 @@ export default async function AboutPage() {
       <section className="page-body">
       <div className="container">
         <div
-          className={settings.about_image_url ? 'two-col-grid' : undefined}
+          className={settings.about_image_url ? 'two-col-grid about-story-grid' : undefined}
           style={{ gap: 40, alignItems: 'center' }}
         >
           <div className="our-story">
