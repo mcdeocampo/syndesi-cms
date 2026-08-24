@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { getPageSections } from '@/lib/page-sections'
-import { getSiteSettings, SOCIAL_LINKS } from '@/lib/settings'
+import { getSiteSettings, SOCIAL_LINKS, splitList } from '@/lib/settings'
 import PageBanner from '@/components/PageBanner'
 
 export const metadata: Metadata = {
@@ -14,28 +14,41 @@ export default async function ContactPage() {
   // had already drifted (it showed contact@ while settings held info@).
   const [s, settings] = await Promise.all([getPageSections('contact'), getSiteSettings()])
 
-  // Each detail hides itself when its setting is blank, so clearing a value in
-  // the CMS never leaves an empty labelled row behind.
+  // Phone and email can each hold several values (one per line in the CMS);
+  // office hours stays a single value. Each detail hides itself when its
+  // setting is blank, so clearing a value never leaves an empty labelled row.
+  // `link` turns each value into a tel:/mailto: anchor; hours has none.
+  const phones = splitList(settings.contact_number)
+  const emails = splitList(settings.email)
   const details = [
-    settings.contact_number && {
+    phones.length > 0 && {
       cls: 'phone',
       icon: 'fas fa-phone-alt',
       label: 'Phone',
-      value: settings.contact_number,
+      values: phones,
+      link: (v: string) => `tel:${v.replace(/\s/g, '')}`,
     },
-    settings.email && {
+    emails.length > 0 && {
       cls: 'email',
       icon: 'fas fa-envelope',
       label: 'Email',
-      value: settings.email,
+      values: emails,
+      link: (v: string) => `mailto:${v}`,
     },
     settings.office_hours && {
       cls: 'hours',
       icon: 'fas fa-clock',
       label: 'Office Hours',
-      value: settings.office_hours,
+      values: [settings.office_hours],
+      link: null,
     },
-  ].filter(Boolean) as { cls: string; icon: string; label: string; value: string }[]
+  ].filter(Boolean) as {
+    cls: string
+    icon: string
+    label: string
+    values: string[]
+    link: ((v: string) => string) | null
+  }[]
 
   return (
     <>
@@ -64,7 +77,17 @@ export default async function ContactPage() {
                   </span>
                   <div>
                     <span className="contact-detail-label">{d.label}</span>
-                    <span className="contact-detail-value">{d.value}</span>
+                    {d.values.map((v) =>
+                      d.link ? (
+                        <a key={v} href={d.link(v)} className="contact-detail-value">
+                          {v}
+                        </a>
+                      ) : (
+                        <span key={v} className="contact-detail-value">
+                          {v}
+                        </span>
+                      )
+                    )}
                   </div>
                 </li>
               ))}

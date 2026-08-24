@@ -1,7 +1,11 @@
 import Link from 'next/link'
-import type { WebsiteSettings } from '@/lib/settings'
+import { splitList, type WebsiteSettings } from '@/lib/settings'
 
 export default function Footer({ settings }: { settings: WebsiteSettings }) {
+  // Phone and email can each list several values (one per line in the CMS).
+  const phones = splitList(settings.contact_number)
+  const emails = splitList(settings.email)
+
   // Admins can write {year} in the Copyright field and it resolves to the
   // current year on every render, so the notice can't silently go stale in
   // January. A literal year typed instead still works untouched.
@@ -55,20 +59,18 @@ export default function Footer({ settings }: { settings: WebsiteSettings }) {
                 <span>{settings.address}</span>
               </li>
             )}
-            {settings.contact_number && (
-              <li>
+            {phones.map((phone) => (
+              <li key={phone}>
                 <i className="fas fa-phone-alt" aria-hidden="true"></i>
-                <a href={`tel:${settings.contact_number.replace(/\s/g, '')}`}>
-                  {settings.contact_number}
-                </a>
+                <a href={`tel:${phone.replace(/\s/g, '')}`}>{phone}</a>
               </li>
-            )}
-            {settings.email && (
-              <li>
+            ))}
+            {emails.map((email) => (
+              <li key={email}>
                 <i className="fas fa-envelope" aria-hidden="true"></i>
-                <a href={`mailto:${settings.email}`}>{settings.email}</a>
+                <a href={`mailto:${email}`}>{email}</a>
               </li>
-            )}
+            ))}
           </ul>
         </div>
       </div>

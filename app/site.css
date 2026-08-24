@@ -1605,6 +1605,19 @@ section {
     display: block;
     color: var(--text-dark);
     font-weight: 600;
+    text-decoration: none;
+}
+
+/* When there are several stacked values (multiple phones/emails), give each a
+   little breathing room and keep the icon aligned to the top row. */
+.contact-detail-value + .contact-detail-value {
+    margin-top: 2px;
+}
+a.contact-detail-value {
+    transition: color 0.15s ease;
+}
+a.contact-detail-value:hover {
+    color: var(--navy);
 }
 
 /* Inputs sit on a faint tint so they read as fields inside the white card. */

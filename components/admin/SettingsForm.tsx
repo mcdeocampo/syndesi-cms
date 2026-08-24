@@ -70,12 +70,28 @@ export default function SettingsForm({ settings }: { settings: WebsiteSettings }
 
         <div className="admin-form-grid">
           <div className="admin-field">
-            <label htmlFor="contact_number">Contact Number</label>
-            <input id="contact_number" name="contact_number" defaultValue={settings.contact_number ?? ''} />
+            <label htmlFor="contact_number">Contact Number(s)</label>
+            <textarea
+              id="contact_number"
+              name="contact_number"
+              rows={2}
+              defaultValue={settings.contact_number ?? ''}
+            />
+            <p className="admin-field-hint">
+              Put each number on its own line to list several.
+            </p>
           </div>
           <div className="admin-field">
-            <label htmlFor="email">Email Address</label>
-            <input id="email" name="email" type="email" defaultValue={settings.email ?? ''} />
+            <label htmlFor="email">Email Address(es)</label>
+            <textarea
+              id="email"
+              name="email"
+              rows={2}
+              defaultValue={settings.email ?? ''}
+            />
+            <p className="admin-field-hint">
+              Put each address on its own line to list several.
+            </p>
           </div>
         </div>
 

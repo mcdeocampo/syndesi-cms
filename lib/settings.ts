@@ -63,6 +63,19 @@ export function sanitizeBrandColor(value: string | null | undefined): string | n
     : null
 }
 
+// Split a multi-value settings field (phone numbers, email addresses) into a
+// clean list. Admins enter one per line; we also tolerate commas. Empty lines
+// are dropped so a trailing newline never renders a blank row. A single value
+// with no separators just comes back as a one-item list, so existing single
+// entries keep working unchanged.
+export function splitList(value: string | null | undefined): string[] {
+  if (!value) return []
+  return value
+    .split(/[\n,]/)
+    .map((v) => v.trim())
+    .filter(Boolean)
+}
+
 // The CMS's own wordmark. Deliberately derived rather than stored by default,
 // so renaming the school can't leave the admin panel showing the old brand.
 export function adminLabel(settings: WebsiteSettings): string {
