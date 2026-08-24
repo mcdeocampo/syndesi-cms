@@ -1339,23 +1339,29 @@ section {
     }
 }
 
-/* Photo beside the "Our Story" text. Shown in full at its own proportions --
-   no fixed height / object-fit cover, which cropped near-square images (the
-   crest at the top and the lower row of a composite were being cut off). */
+/* Photo beside the "Our Story" text. Shown in full at its own proportions
+   (no crop). Capped in size and centered so a near-square image can't tower
+   over the prose or balloon on wide screens -- it stays balanced with the
+   text. */
+.about-photo {
+    display: flex;
+    justify-content: center;
+}
 .about-photo img {
     display: block;
     width: 100%;
+    max-width: 440px;
     height: auto;
     border-radius: 16px;
     box-shadow: var(--shadow);
 }
 
-/* Give the story text more room than the photo so a tall/near-square image
-   doesn't tower over the prose. Desktop only -- below 992px the grid stacks to
-   a single column (handled by the .two-col-grid rule) and this must not apply. */
+/* Give the story text more room than the photo so the two columns balance.
+   Desktop only -- below 992px the grid stacks to a single column (handled by
+   the .two-col-grid rule) and this must not apply. */
 @media (min-width: 993px) {
     .about-story-grid {
-        grid-template-columns: 1.4fr 1fr;
+        grid-template-columns: 1.5fr 1fr;
     }
 }
 
