@@ -95,6 +95,12 @@ export const ITEM_SECTIONS: Record<string, Record<string, ItemSectionMeta>> = {
     // Body prose for "Our Story" -- one item per paragraph. `title` is an
     // optional bold lead-in shown inline at the start of the paragraph.
     intro: { label: 'Story Paragraphs', fields: ['title', 'body'], allowAdd: true },
+    // Fixed pair: Our Mission and Our Vision.
+    mission_vision: {
+      label: 'Mission & Vision',
+      fields: ['icon', 'title', 'body'],
+      allowAdd: false,
+    },
     facts: { label: 'Quick Facts', fields: ['icon', 'title', 'body'], allowAdd: true },
     values: { label: 'Core Values', fields: ['title', 'body'], allowAdd: true },
   },
@@ -270,6 +276,18 @@ export const ITEM_DEFAULTS: Record<string, Record<string, SectionItem[]>> = {
       {
         title: null,
         body: 'With a strong emphasis on creativity, critical thinking, and emotional intelligence, we prepare students to become lifelong learners and responsible global citizens.',
+      },
+    ],
+    mission_vision: [
+      {
+        icon: 'fas fa-bullseye',
+        title: 'Our Mission',
+        body: "To nurture every child's unique intelligences through holistic, learner-centered education — developing confident, compassionate, and capable individuals ready to contribute meaningfully to their community and the world.",
+      },
+      {
+        icon: 'fas fa-eye',
+        title: 'Our Vision',
+        body: 'To be a leading school where every learner discovers their strengths, embraces lifelong learning, and grows into a responsible, globally-minded citizen.',
       },
     ],
     facts: [

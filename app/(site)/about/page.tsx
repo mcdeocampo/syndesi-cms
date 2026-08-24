@@ -49,6 +49,20 @@ export default async function AboutPage() {
             ))}
           </div>
         </div>
+        {items.mission_vision && items.mission_vision.length > 0 && (
+          <div className="mv-grid">
+            {items.mission_vision.map((m, i) => (
+              <div className={`mv-card ${i === 0 ? 'mv-mission' : 'mv-vision'}`} key={m.id ?? i}>
+                <span className="mv-icon">
+                  <i className={m.icon ?? ''} aria-hidden="true"></i>
+                </span>
+                <h3>{m.title}</h3>
+                <p>{m.body}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
         <div style={{ marginTop: 50 }}>
           <h3 style={{ color: 'var(--navy)', fontSize: '1.6rem', marginBottom: 16, fontFamily: "'Poppins',sans-serif" }}>{s.values.title}</h3>
           <div className="card-grid">
