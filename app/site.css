@@ -1611,15 +1611,95 @@ section {
     cursor: default;
 }
 
-/* ===== CONTACT FORM ===== */
 /* ===== CONTACT PAGE (modernised two-card layout) ===== */
 .contact-info-card,
 .contact-form-card {
-    background: #fff;
-    border: 1px solid var(--border);
     border-radius: 20px;
     padding: 32px;
     box-shadow: var(--shadow);
+}
+
+.contact-form-card {
+    background: #fff;
+    border: 1px solid var(--border);
+}
+
+/* Modernized contact info panel: a dark brand-gradient card (paired with the
+   white form beside it) with a faint dot texture and a soft gold glow, matching
+   the banners/CTA. Text and icons are recolored for the dark background. */
+.contact-info-card {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(150deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: #fff;
+}
+.contact-info-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 22px 22px;
+    opacity: 0.6;
+    pointer-events: none;
+}
+.contact-info-card::after {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -15%;
+    width: 340px;
+    height: 340px;
+    background: radial-gradient(circle, rgba(246, 201, 59, 0.16) 0%, transparent 70%);
+    pointer-events: none;
+}
+.contact-info-card > * {
+    position: relative;
+    z-index: 1;
+}
+.contact-info-card .contact-panel-title {
+    color: #fff;
+}
+.contact-info-card .contact-address {
+    color: rgba(255, 255, 255, 0.75);
+}
+.contact-info-card .contact-address strong {
+    color: #fff;
+}
+.contact-info-card .contact-detail-label {
+    color: rgba(255, 255, 255, 0.6);
+}
+.contact-info-card .contact-detail-value {
+    color: #fff;
+}
+.contact-info-card a.contact-detail-value:hover {
+    color: var(--gold);
+}
+/* Icon chips: translucent, lightened accents so they read on the dark panel. */
+.contact-info-card .contact-detail-icon.phone {
+    background: rgba(147, 180, 255, 0.16);
+    color: #a8c2ff;
+}
+.contact-info-card .contact-detail-icon.email {
+    background: rgba(255, 158, 162, 0.16);
+    color: #ffb0b3;
+}
+.contact-info-card .contact-detail-icon.hours {
+    background: rgba(246, 201, 59, 0.2);
+    color: var(--gold);
+}
+/* Social chips on the dark panel. */
+.contact-info-card .contact-social-icon {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+.contact-info-card .contact-social-icon:not(.placeholder):hover {
+    background: #fff;
+    color: var(--navy);
+}
+.contact-info-card .contact-social-icon.placeholder {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px dashed rgba(255, 255, 255, 0.22);
+    color: rgba(255, 255, 255, 0.4);
 }
 
 .contact-panel-title {
