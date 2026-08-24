@@ -27,7 +27,7 @@ html {
 }
 
 [id] {
-    scroll-margin-top: 96px;
+    scroll-margin-top: calc(96px + var(--ann-h, 0px));
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -154,10 +154,72 @@ html {
     margin-inline: auto;
 }
 
+/* ===== ANNOUNCEMENT BAR =====
+   Fixed strip above the nav. --ann-h (0 by default, set by AnnouncementBar to
+   the bar's real height) offsets the fixed nav and inner-page content so
+   nothing hides under it; it goes back to 0 when the bar is dismissed. */
+.announcement-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 44px;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: #fff;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.announcement-text i.fa-bullhorn {
+    color: var(--gold);
+    margin-right: 4px;
+}
+
+.announcement-link {
+    color: var(--gold);
+    font-weight: 700;
+    text-decoration: none;
+    margin-left: 10px;
+    white-space: nowrap;
+}
+.announcement-link:hover {
+    text-decoration: underline;
+}
+.announcement-link i {
+    font-size: 0.8em;
+    margin-left: 2px;
+}
+
+.announcement-close {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1rem;
+    line-height: 1;
+    padding: 6px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+.announcement-close:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+}
+
 /* ===== NAVIGATION ===== */
 nav {
     position: fixed;
-    top: 0;
+    top: var(--ann-h, 0px);
     left: 0;
     width: 100%;
     padding: 12px 0;
@@ -931,7 +993,7 @@ section {
    the viewport -- 100px on mobile (a comfortable ~29px below the header),
    rising to the original 140px on desktop where it reads as intentional. */
 .page-top {
-    padding-top: clamp(100px, 11vw, 140px);
+    padding-top: calc(clamp(100px, 11vw, 140px) + var(--ann-h, 0px));
 }
 
 /* ===== INNER-PAGE BANNER =====
@@ -943,7 +1005,7 @@ section {
     position: relative;
     overflow: hidden;
     background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-    padding: clamp(108px, 12vw, 156px) 0 clamp(38px, 5vw, 60px);
+    padding: calc(clamp(108px, 12vw, 156px) + var(--ann-h, 0px)) 0 clamp(38px, 5vw, 60px);
     text-align: center;
 }
 
@@ -2433,11 +2495,11 @@ footer p {
 @media (max-width: 860px) {
     .nav-links {
         position: fixed;
-        top: 0;
+        top: var(--ann-h, 0px);
         right: -100%;
         width: 78%;
         max-width: 320px;
-        height: 100vh;
+        height: calc(100vh - var(--ann-h, 0px));
         background: linear-gradient(165deg, var(--navy) 0%, var(--navy-light) 55%, #2d3f9e 100%);
         flex-direction: column;
         /* Was justify-content: center with a 22px gap. Combined with the 44px

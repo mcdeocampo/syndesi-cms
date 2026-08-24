@@ -86,6 +86,11 @@ export async function updateWebsiteSettings(
     // Normalized to a safe hex or null; an invalid value clears it (reverts to
     // the shipped navy) rather than being stored and injected verbatim.
     brand_color: sanitizeBrandColor(textField('brand_color')),
+    // Unchecked checkboxes aren't submitted at all, so absence means false.
+    announcement_enabled: formData.get('announcement_enabled') === 'on',
+    announcement_text: textField('announcement_text'),
+    announcement_link_href: textField('announcement_link_href'),
+    announcement_link_text: textField('announcement_link_text'),
     admin_label: textField('admin_label'),
     updated_at: new Date().toISOString(),
   }

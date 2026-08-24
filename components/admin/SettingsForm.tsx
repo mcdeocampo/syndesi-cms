@@ -140,6 +140,59 @@ export default function SettingsForm({ settings }: { settings: WebsiteSettings }
       </div>
 
       <div className="admin-card" style={{ marginBottom: 20 }}>
+        <h2>Announcement Bar</h2>
+        <p className="admin-field-hint" style={{ marginTop: -6, marginBottom: 16 }}>
+          A strip shown at the very top of every public page — great for
+          enrollment notices. Visitors can dismiss it, and it reappears whenever
+          you change the text.
+        </p>
+        <div className="admin-field">
+          <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
+            <input
+              type="checkbox"
+              name="announcement_enabled"
+              defaultChecked={settings.announcement_enabled}
+              style={{ width: 18, height: 18 }}
+            />
+            Show the announcement bar
+          </label>
+        </div>
+        <div className="admin-field">
+          <label htmlFor="announcement_text">Announcement Text</label>
+          <input
+            id="announcement_text"
+            name="announcement_text"
+            defaultValue={settings.announcement_text ?? ''}
+            placeholder="Enrollment for SY 2026–2027 is now open!"
+          />
+        </div>
+        <div className="admin-form-grid">
+          <div className="admin-field">
+            <label htmlFor="announcement_link_text">Button Text (optional)</label>
+            <input
+              id="announcement_link_text"
+              name="announcement_link_text"
+              defaultValue={settings.announcement_link_text ?? ''}
+              placeholder="Enroll now"
+            />
+          </div>
+          <div className="admin-field">
+            <label htmlFor="announcement_link_href">Button Link (optional)</label>
+            <input
+              id="announcement_link_href"
+              name="announcement_link_href"
+              defaultValue={settings.announcement_link_href ?? ''}
+              placeholder="/admissions"
+            />
+            <p className="admin-field-hint">
+              An internal path like /admissions, or a full https:// address. Leave both blank for
+              text only.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="admin-card" style={{ marginBottom: 20 }}>
         <h2>Brand Color</h2>
         <p className="admin-field-hint" style={{ marginTop: -6, marginBottom: 16 }}>
           The main color used across the site — page banners, the header,

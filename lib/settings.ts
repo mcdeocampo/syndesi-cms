@@ -28,6 +28,12 @@ export type WebsiteSettings = {
   // banners, stats, CTA, header, footer. Null falls back to the shipped navy
   // in site.css, so the default look is untouched until an admin changes it.
   brand_color: string | null
+  // Dismissible announcement strip at the very top of the public site.
+  // Hidden entirely unless enabled AND given text.
+  announcement_enabled: boolean
+  announcement_text: string | null
+  announcement_link_href: string | null
+  announcement_link_text: string | null
   // Wordmark shown in the CMS sidebar and on the login screen. Null means
   // "derive it from school_name" -- see adminLabel() below.
   admin_label: string | null
@@ -119,6 +125,11 @@ export const DEFAULT_SETTINGS: WebsiteSettings = {
   // Null by default so the layout injects no override and the shipped --navy
   // in site.css applies pixel-for-pixel. Set only when an admin picks a color.
   brand_color: null,
+  // Off by default -- no announcement bar until an admin enables one.
+  announcement_enabled: false,
+  announcement_text: null,
+  announcement_link_href: null,
+  announcement_link_text: null,
   // Null on purpose: falls back to "<school name> CMS" via adminLabel().
   admin_label: null,
   updated_at: new Date().toISOString(),

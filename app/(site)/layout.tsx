@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import '../site.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import AnnouncementBar from '@/components/AnnouncementBar'
 import SiteInteractions from './site-interactions'
 import { getSiteSettings, sanitizeBrandColor } from '@/lib/settings'
 
@@ -30,6 +31,9 @@ export default async function SiteLayout({
   // derived from the chosen color so a single picker themes every navy band.
   const brand = sanitizeBrandColor(settings.brand_color)
 
+  const showAnnouncement =
+    settings.announcement_enabled && !!settings.announcement_text?.trim()
+
   return (
     <>
       {brand && (
@@ -38,6 +42,19 @@ export default async function SiteLayout({
             __html: `:root{--navy:${brand};--navy-light:color-mix(in srgb, ${brand}, #ffffff 16%);}`,
           }}
         />
+      )}
+      {showAnnouncement && (
+        <>
+          {/* Seed the offset server-side so the nav/content don't jump on load;
+              AnnouncementBar refines it to the exact height and zeroes it on
+              dismiss. */}
+          <style dangerouslySetInnerHTML={{ __html: ':root{--ann-h:44px}' }} />
+          <AnnouncementBar
+            text={settings.announcement_text!.trim()}
+            linkHref={settings.announcement_link_href}
+            linkText={settings.announcement_link_text}
+          />
+        </>
       )}
       <Header settings={settings} />
       {children}
