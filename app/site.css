@@ -1339,13 +1339,13 @@ section {
     }
 }
 
-/* Photo beside the "Our Story" text. Rounded, shadowed, fills its grid cell. */
+/* Photo beside the "Our Story" text. Shown in full at its own proportions --
+   no fixed height / object-fit cover, which cropped near-square images (the
+   crest at the top and the lower row of a composite were being cut off). */
 .about-photo img {
     display: block;
     width: 100%;
-    height: 100%;
-    max-height: 460px;
-    object-fit: cover;
+    height: auto;
     border-radius: 16px;
     box-shadow: var(--shadow);
 }
