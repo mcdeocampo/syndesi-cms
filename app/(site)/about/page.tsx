@@ -17,15 +17,15 @@ export default async function AboutPage() {
         <SectionTag icon="fas fa-info-circle" label={s.intro.tag} />
         <h2 className="section-title">{s.intro.title}</h2>
         <div className="two-col-grid" style={{ gap: 40, alignItems: 'center' }}>
-          <div>
-            {/* One <p> per stored paragraph. An optional `title` renders as a
-                bold lead-in inline at the start of the paragraph. The last
-                paragraph drops its bottom margin, as the hardcoded copy did. */}
+          <div className="our-story">
+            {/* One <p> per stored paragraph. The first is styled as a larger
+                "lead" line; an optional `title` renders as a bold lead-in
+                inline at the start of the paragraph. */}
             {items.intro?.map((p, i) => (
               <p
                 key={p.id ?? i}
+                className={i === 0 ? 'story-lead' : undefined}
                 style={{
-                  color: 'var(--text-muted)',
                   marginBottom: i === (items.intro?.length ?? 0) - 1 ? 0 : 16,
                 }}
               >

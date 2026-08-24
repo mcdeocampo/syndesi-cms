@@ -1151,6 +1151,36 @@ section {
 .program-card:nth-child(3) { --prog-acc: #0891b2; }
 .program-card:nth-child(4) { --prog-acc: #059669; }
 
+/* ===== OUR STORY (About) =====
+   Editorial treatment: a gold accent bar down the side and a larger lead
+   paragraph, so the story reads as a featured narrative rather than a plain
+   text block. */
+.our-story {
+    border-left: 3px solid var(--gold);
+    padding-left: 26px;
+}
+
+.our-story p {
+    color: var(--text-muted);
+    line-height: 1.75;
+}
+
+.our-story .story-lead {
+    font-size: 1.18rem;
+    line-height: 1.7;
+    color: var(--text-dark);
+}
+
+.our-story .story-lead strong {
+    color: var(--navy);
+}
+
+@media (max-width: 992px) {
+    .our-story {
+        padding-left: 18px;
+    }
+}
+
 /* ===== QUICK FACTS (About) =====
    A horizontal fact-row -- accent icon chip + label/value hierarchy --
    instead of the generic centred icon-on-top card, so it reads like a real
