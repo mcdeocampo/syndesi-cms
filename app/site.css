@@ -2471,7 +2471,39 @@ footer p {
 .testimonial-slide .testimonial-card {
     position: relative;
     overflow: hidden;
+    /* Soft wash of the slide's accent colour instead of flat white, with a
+       matching tinted border, so the card reads as designed rather than blank. */
+    background: linear-gradient(
+        160deg,
+        #ffffff 0%,
+        color-mix(in srgb, var(--t-acc, var(--navy)) 9%, #fff) 100%
+    );
+    border: 1px solid color-mix(in srgb, var(--t-acc, var(--navy)) 20%, var(--border));
     border-top: 3px solid var(--t-acc, var(--navy));
+}
+
+/* Soft accent glow in the lower corner for a bit of depth. Sits behind the
+   content (which is lifted with z-index below). */
+.testimonial-slide .testimonial-card::after {
+    content: '';
+    position: absolute;
+    bottom: -45%;
+    right: -20%;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(
+        circle,
+        color-mix(in srgb, var(--t-acc, var(--navy)) 12%, transparent) 0%,
+        transparent 70%
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Keep the text and avatar above the glow and the decorative quote mark. */
+.testimonial-slide .testimonial-card > * {
+    position: relative;
+    z-index: 1;
 }
 
 /* Large decorative opening quote in the accent colour, behind the content. */
