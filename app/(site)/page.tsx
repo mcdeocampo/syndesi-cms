@@ -33,41 +33,6 @@ export default async function HomePage() {
           aria-label="Syndesi School campus building in Batangas City, Batangas"
         ></div>
         <div className="hero-overlay" aria-hidden="true"></div>
-        <div className="hero-ring" aria-hidden="true"></div>
-        <div className="hero-ring-inner" aria-hidden="true"></div>
-        <div className="hero-shapes" aria-hidden="true">
-          <span className="shape-1"></span>
-          <span className="shape-2"></span>
-          <span className="shape-3"></span>
-          <span className="shape-4"></span>
-        </div>
-
-        <div className="hero-mi-orbit" aria-hidden="true">
-          <span className="mi-icon-wrap mi-tier-1 mi-pos-1" title="Linguistic / Communication">
-            <span className="mi-icon"><i className="fas fa-book"></i></span>
-          </span>
-          <span className="mi-icon-wrap mi-tier-3 mi-pos-2" title="Logical / Science">
-            <span className="mi-icon"><i className="fas fa-atom"></i></span>
-          </span>
-          <span className="mi-icon-wrap mi-tier-1 mi-pos-3" title="Creativity / Arts">
-            <span className="mi-icon"><i className="fas fa-palette"></i></span>
-          </span>
-          <span className="mi-icon-wrap mi-tier-1 mi-pos-4" title="Music">
-            <span className="mi-icon"><i className="fas fa-music"></i></span>
-          </span>
-          <span className="mi-icon-wrap mi-tier-2 mi-pos-5" title="Sports / Physical Development">
-            <span className="mi-icon"><i className="fas fa-futbol"></i></span>
-          </span>
-          <span className="mi-icon-wrap mi-tier-3 mi-pos-6" title="Leadership / Collaboration">
-            <span className="mi-icon"><i className="fas fa-users"></i></span>
-          </span>
-          <span className="mi-icon-wrap mi-tier-2 mi-pos-7" title="Nature / Discovery">
-            <span className="mi-icon"><i className="fas fa-seedling"></i></span>
-          </span>
-          <span className="mi-icon-wrap mi-tier-1 mi-pos-8" title="Innovation / Problem Solving">
-            <span className="mi-icon"><i className="fas fa-lightbulb"></i></span>
-          </span>
-        </div>
 
         <div className="hero-inner">
           <div className="hero-content">

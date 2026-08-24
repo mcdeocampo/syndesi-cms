@@ -396,7 +396,16 @@ nav.scrolled {
     position: absolute;
     inset: 0;
     z-index: 0;
-    background: linear-gradient(160deg, rgba(22, 34, 92, 0.92) 0%, rgba(22, 34, 92, 0.8) 45%, rgba(22, 34, 92, 0.93) 100%);
+    /* Lighter than before (was ~0.9 flat navy, which hid the campus photo and
+       read as a plain colour block). Now the building shows through, with the
+       gradient deepening toward the bottom so the headline and caption stay
+       legible -- a real photographic hero rather than a template panel. */
+    background: linear-gradient(
+        180deg,
+        rgba(22, 34, 92, 0.74) 0%,
+        rgba(22, 34, 92, 0.6) 42%,
+        rgba(13, 20, 54, 0.9) 100%
+    );
 }
 
 .hero::before {
