@@ -44,16 +44,33 @@ body {
     line-height: 1.6;
 }
 
-/* ===== SCROLLBAR ===== */
+/* ===== SCROLLBAR =====
+   Subtle, unobtrusive thumb -- a faint brand-tinted grey rather than the bright
+   gold, which read as a solid yellow bar down the edge of the page. Darkens a
+   little on hover so it's still discoverable. */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
 }
 ::-webkit-scrollbar-track {
-    background: var(--cream);
+    background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-    background: var(--gold);
+    background: rgba(22, 34, 92, 0.18);
     border-radius: 10px;
+    /* Transparent border + background-clip insets the thumb so it reads as a
+       slim pill with breathing room, not a full-width bar. */
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(22, 34, 92, 0.32);
+    background-clip: padding-box;
+}
+
+/* Firefox */
+html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(22, 34, 92, 0.22) transparent;
 }
 
 /* ===== UTILITY ===== */
