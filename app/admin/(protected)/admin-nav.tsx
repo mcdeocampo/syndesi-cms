@@ -10,6 +10,7 @@ import { usePathname } from 'next/navigation'
 const NAV_ITEMS: { href: string; label: string; icon: string; enabled: boolean }[] = [
   { href: '/admin', label: 'Dashboard', icon: 'fa-gauge', enabled: true },
   { href: '/admin/settings', label: 'Website Settings', icon: 'fa-gear', enabled: true },
+  { href: '/admin/inquiries', label: 'Inquiries', icon: 'fa-inbox', enabled: true },
   { href: '/admin/page-content', label: 'Page Content', icon: 'fa-file-lines', enabled: true },
   { href: '/admin/news', label: 'News', icon: 'fa-newspaper', enabled: true },
   { href: '/admin/faculty', label: 'Faculty', icon: 'fa-chalkboard-user', enabled: true },

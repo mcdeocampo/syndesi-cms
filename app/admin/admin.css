@@ -720,3 +720,87 @@
 .admin-btn-danger:hover {
   background: #b01e24;
 }
+
+/* ===== INQUIRIES ===== */
+.inquiry-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.inquiry-card {
+  background: var(--admin-card);
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+
+/* Unread submissions get a colored left edge and a subtle tint so they stand
+   out in the list. */
+.inquiry-card-unread {
+  border-left: 4px solid var(--admin-navy);
+  background: color-mix(in srgb, var(--admin-navy) 3%, #fff);
+}
+
+.inquiry-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.inquiry-name {
+  display: block;
+  font-weight: 700;
+  color: var(--admin-navy);
+}
+
+.inquiry-new-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--admin-navy);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+}
+
+.inquiry-email {
+  font-size: 0.85rem;
+  color: var(--admin-text-muted);
+  text-decoration: none;
+}
+.inquiry-email:hover {
+  text-decoration: underline;
+}
+
+.inquiry-date {
+  font-size: 0.8rem;
+  color: var(--admin-text-muted);
+  white-space: nowrap;
+}
+
+.inquiry-subject {
+  margin-top: 10px;
+  font-weight: 600;
+  color: var(--admin-text);
+}
+
+.inquiry-message {
+  margin-top: 8px;
+  color: var(--admin-text);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.inquiry-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}

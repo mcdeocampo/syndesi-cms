@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getPageSections } from '@/lib/page-sections'
 import { getSiteSettings, SOCIAL_LINKS, splitList } from '@/lib/settings'
 import PageBanner from '@/components/PageBanner'
+import ContactForm from '@/components/ContactForm'
 
 export const metadata: Metadata = {
   description:
@@ -126,19 +127,7 @@ export default async function ContactPage() {
           {/* Message form card */}
           <div className="contact-form-card">
             <h3 className="contact-panel-title">Send us a message</h3>
-            <form className="contact-form" id="contactForm">
-              <label htmlFor="contactName" style={{ display: 'none' }}>Name</label>
-              <input type="text" id="contactName" placeholder="Name" required />
-              <label htmlFor="contactEmail" style={{ display: 'none' }}>Email</label>
-              <input type="email" id="contactEmail" placeholder="Email" required />
-              <label htmlFor="contactSubject" style={{ display: 'none' }}>Subject</label>
-              <input type="text" id="contactSubject" placeholder="Subject" />
-              <label htmlFor="contactMessage" style={{ display: 'none' }}>Message</label>
-              <textarea id="contactMessage" placeholder="Message" required></textarea>
-              <button type="submit" className="btn-primary">
-                <i className="fas fa-paper-plane" aria-hidden="true"></i> Send Message
-              </button>
-            </form>
+            <ContactForm />
           </div>
         </div>
       </div>

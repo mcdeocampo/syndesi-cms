@@ -184,27 +184,8 @@ export default function SiteInteractions() {
       startAutoplay()
     }
 
-    // 4. Contact form (mailto — no backend)
-    const contactForm = document.getElementById(
-      'contactForm'
-    ) as HTMLFormElement | null
-    const onSubmit = (e: Event) => {
-      e.preventDefault()
-      if (!contactForm) return
-      const name = (contactForm.querySelector('#contactName') as HTMLInputElement)?.value
-      const email = (contactForm.querySelector('#contactEmail') as HTMLInputElement)?.value
-      const subject =
-        (contactForm.querySelector('#contactSubject') as HTMLInputElement)?.value ||
-        'Website Inquiry'
-      const message = (contactForm.querySelector('#contactMessage') as HTMLTextAreaElement)?.value
-
-      const body = `Name: ${name}\nEmail: ${email}\n\n${message}`
-      const mailto = `mailto:contact@syndesi.edu.ph?subject=${encodeURIComponent(
-        subject
-      )}&body=${encodeURIComponent(body)}`
-      window.location.href = mailto
-    }
-    contactForm?.addEventListener('submit', onSubmit)
+    // The contact form is now a real React form (components/ContactForm.tsx)
+    // that posts to a server action, so there's no DOM handler to wire here.
 
     return () => {
       if (navbar) window.removeEventListener('scroll', onScroll)
@@ -221,7 +202,6 @@ export default function SiteInteractions() {
       carousel?.removeEventListener('mouseleave', startAutoplay!)
       carousel?.removeEventListener('focusin', stopAutoplay!)
       carousel?.removeEventListener('focusout', startAutoplay!)
-      contactForm?.removeEventListener('submit', onSubmit)
     }
   }, [pathname])
 

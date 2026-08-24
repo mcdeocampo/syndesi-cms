@@ -1648,6 +1648,32 @@ a.contact-detail-value:hover {
     resize: vertical;
 }
 
+/* Confirmation / error banner shown above the form after submitting. */
+.contact-form-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+.contact-form-note i {
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+.contact-form-success {
+    background: color-mix(in srgb, #16a34a 12%, #fff);
+    color: #15803d;
+    border: 1px solid color-mix(in srgb, #16a34a 30%, #fff);
+}
+.contact-form-error {
+    background: color-mix(in srgb, var(--red) 10%, #fff);
+    color: var(--red);
+    border: 1px solid color-mix(in srgb, var(--red) 28%, #fff);
+}
+
 /* ===== FOOTER ===== */
 footer {
     padding: 64px 0 0;
