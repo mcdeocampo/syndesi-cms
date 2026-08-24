@@ -172,7 +172,7 @@ export const SECTION_DEFAULTS: Record<string, Record<string, SectionMeta>> = {
   },
   about: {
     intro: {
-      label: 'Introduction',
+      label: 'Page Banner',
       fields: ['tag', 'title', 'subtitle'],
       tag: 'About Us',
       title: 'Our Story',
@@ -189,7 +189,7 @@ export const SECTION_DEFAULTS: Record<string, Record<string, SectionMeta>> = {
   },
   admissions: {
     intro: {
-      label: 'Introduction',
+      label: 'Page Banner',
       fields: ['tag', 'title', 'subtitle', 'link_text', 'link_href'],
       tag: 'Admissions',
       title: 'Enroll Your Child Today',
@@ -201,7 +201,7 @@ export const SECTION_DEFAULTS: Record<string, Record<string, SectionMeta>> = {
   },
   programs: {
     intro: {
-      label: 'Introduction',
+      label: 'Page Banner',
       fields: ['tag', 'title', 'subtitle'],
       tag: 'Academic Programs',
       title: 'Our Educational Pathways',
@@ -219,7 +219,7 @@ export const SECTION_DEFAULTS: Record<string, Record<string, SectionMeta>> = {
   },
   'student-life': {
     intro: {
-      label: 'Introduction',
+      label: 'Page Banner',
       fields: ['tag', 'title', 'subtitle', 'footnote', 'link_text', 'link_href', 'link_icon'],
       tag: 'Student Life',
       title: 'Beyond the Classroom',
@@ -233,7 +233,7 @@ export const SECTION_DEFAULTS: Record<string, Record<string, SectionMeta>> = {
   },
   faculty: {
     intro: {
-      label: 'Introduction',
+      label: 'Page Banner',
       fields: ['tag', 'title', 'subtitle', 'empty_text', 'footnote'],
       tag: 'Faculty & Staff',
       title: 'Our Dedicated Team',
@@ -244,7 +244,7 @@ export const SECTION_DEFAULTS: Record<string, Record<string, SectionMeta>> = {
   },
   news: {
     intro: {
-      label: 'Introduction',
+      label: 'Page Banner',
       fields: [
         'tag',
         'title',
@@ -269,7 +269,7 @@ export const SECTION_DEFAULTS: Record<string, Record<string, SectionMeta>> = {
   },
   resources: {
     intro: {
-      label: 'Introduction',
+      label: 'Page Banner',
       fields: ['tag', 'title', 'subtitle', 'empty_text', 'link_text', 'link_href'],
       tag: 'Resources',
       title: 'Helpful Forms & Handbooks',
@@ -282,7 +282,7 @@ export const SECTION_DEFAULTS: Record<string, Record<string, SectionMeta>> = {
   },
   contact: {
     intro: {
-      label: 'Introduction',
+      label: 'Page Banner',
       fields: ['tag', 'title', 'subtitle'],
       tag: 'Get in Touch',
       title: "We'd Love to Hear From You",
