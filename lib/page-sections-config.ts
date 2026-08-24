@@ -173,10 +173,11 @@ export const SECTION_DEFAULTS: Record<string, Record<string, SectionMeta>> = {
   about: {
     intro: {
       label: 'Introduction',
-      fields: ['tag', 'title'],
+      fields: ['tag', 'title', 'subtitle'],
       tag: 'About Us',
       title: 'Our Story',
-      subtitle: null,
+      subtitle:
+        'Discover who we are, what we believe, and the values that shape every Syndesi learner.',
     },
     values: {
       label: 'Core Values',
