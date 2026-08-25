@@ -2348,17 +2348,14 @@ footer p {
         box-shadow 0.35s var(--ease-out-quint);
 }
 
-/* Accent colour cycles per card for the portrait ring and role icon. */
-.faculty-card:nth-child(8n + 1) { --f-acc: #2563eb; }
-.faculty-card:nth-child(8n + 2) { --f-acc: #059669; }
-.faculty-card:nth-child(8n + 3) { --f-acc: #7c3aed; }
-.faculty-card:nth-child(8n + 4) { --f-acc: #db2777; }
-.faculty-card:nth-child(8n + 5) { --f-acc: #0891b2; }
-.faculty-card:nth-child(8n + 6) { --f-acc: #d97706; }
-.faculty-card:nth-child(8n + 7) { --f-acc: #d1232a; }
-.faculty-card:nth-child(8n + 8) { --f-acc: #0d9488; }
+/* Uniform, on-brand accent (navy) for the role icon and photo fallback --
+   the previous per-card rainbow read as too colourful. */
+.faculty-card {
+    --f-acc: var(--navy);
+}
 
-/* Gradient accent ring around the circular portrait. */
+/* Brand gradient ring around the portrait: navy with a single gold arc,
+   consistent on every card. */
 .faculty-photo-ring {
     width: 120px;
     height: 120px;
@@ -2367,9 +2364,9 @@ footer p {
     margin: 0 auto 16px;
     background: conic-gradient(
         from 210deg,
-        var(--f-acc, var(--navy)),
-        color-mix(in srgb, var(--f-acc, var(--navy)) 22%, #fff) 150deg,
-        var(--f-acc, var(--navy)) 320deg
+        var(--navy),
+        var(--gold) 55%,
+        var(--navy)
     );
     transition: transform 0.35s var(--ease-out-quint);
 }
