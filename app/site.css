@@ -2364,9 +2364,9 @@ footer p {
     margin: 0 auto 16px;
     background: conic-gradient(
         from 210deg,
-        var(--navy),
-        var(--navy-light) 55%,
-        var(--navy)
+        color-mix(in srgb, var(--navy) 45%, #fff),
+        color-mix(in srgb, var(--navy) 24%, #fff) 55%,
+        color-mix(in srgb, var(--navy) 45%, #fff)
     );
     transition: transform 0.35s var(--ease-out-quint);
 }
