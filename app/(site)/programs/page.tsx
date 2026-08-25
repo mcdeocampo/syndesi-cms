@@ -25,32 +25,32 @@ export default async function ProgramsPage() {
       <div className="container">
         <div className="card-grid">
           {items.levels?.map((lvl, i) => (
-            <div className="card reveal" id={lvl.anchor_id ?? undefined} key={lvl.id ?? i}>
-              <h4>
-                <i className={lvl.icon ?? ''} aria-hidden="true" style={{ color: 'var(--red)', marginRight: 8 }}></i>
-                {lvl.title}
-              </h4>
+            <div className="program-card reveal" id={lvl.anchor_id ?? undefined} key={lvl.id ?? i}>
+              <span className="program-icon">
+                <i className={lvl.icon ?? ''} aria-hidden="true"></i>
+              </span>
+              <h4>{lvl.title}</h4>
               <p>{lvl.body}</p>
             </div>
           ))}
         </div>
 
         {items.note?.map((n, i) => (
-          <div className="card reveal" style={{ marginTop: 24, background: '#f3efe4', border: '1px dashed var(--border)' }} key={n.id ?? i}>
-            <h4>
-              <i className={n.icon ?? ''} aria-hidden="true" style={{ color: 'var(--navy)', marginRight: 8 }}></i>
-              {n.title}
-            </h4>
-            {/* body / link / body_suffix keeps the link mid-sentence */}
-            <p>
-              {n.body}
-              {n.link_text && (
-                <Link href={n.link_href ?? '#'} style={{ color: 'var(--red)', fontWeight: 600 }}>
-                  {n.link_text}
-                </Link>
-              )}
-              {n.body_suffix}
-            </p>
+          <div className="program-note reveal" key={n.id ?? i}>
+            <span className="program-note-icon">
+              <i className={n.icon ?? ''} aria-hidden="true"></i>
+            </span>
+            <div>
+              <h4>{n.title}</h4>
+              {/* body / link / body_suffix keeps the link mid-sentence */}
+              <p>
+                {n.body}
+                {n.link_text && (
+                  <Link href={n.link_href ?? '#'}>{n.link_text}</Link>
+                )}
+                {n.body_suffix}
+              </p>
+            </div>
           </div>
         ))}
 
