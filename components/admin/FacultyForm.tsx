@@ -45,6 +45,15 @@ export default function FacultyForm({
           </div>
         </div>
         <div className="admin-field">
+          <label htmlFor="icon">Role Icon (optional)</label>
+          <input id="icon" name="icon" defaultValue={faculty?.icon ?? ''} placeholder="e.g. fas fa-user-shield" />
+          <p className="admin-field-hint">
+            A Font Awesome class shown beside the role — e.g.{' '}
+            <strong>fas fa-user-shield</strong> (principal), <strong>fas fa-graduation-cap</strong>{' '}
+            (academic), <strong>fas fa-heart</strong> (counselor). Leave blank for a default icon.
+          </p>
+        </div>
+        <div className="admin-field">
           <label htmlFor="email">Email</label>
           <input id="email" name="email" type="email" defaultValue={faculty?.email ?? ''} />
         </div>

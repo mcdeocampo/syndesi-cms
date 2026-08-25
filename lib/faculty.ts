@@ -8,6 +8,7 @@ export type FacultyMember = {
   full_name: string
   position: string | null
   department: string | null
+  icon: string | null
   biography: string | null
   email: string | null
   display_order: number

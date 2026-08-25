@@ -28,14 +28,26 @@ export default async function FacultyPage() {
         ) : (
           <div className="card-grid">
             {faculty.map((member) => (
-              <div className="card reveal faculty-card" style={{ textAlign: 'center' }} key={member.id}>
-                {member.photo_url ? (
-                  <img src={member.photo_url} alt={member.full_name} className="faculty-photo" />
-                ) : (
-                  <i className="fas fa-user-graduate" aria-hidden="true" style={{ fontSize: '3rem', color: 'var(--red)' }}></i>
-                )}
+              <div className="card reveal faculty-card" key={member.id}>
+                <div className="faculty-photo-ring">
+                  {member.photo_url ? (
+                    <img src={member.photo_url} alt={member.full_name} className="faculty-photo" />
+                  ) : (
+                    <span className="faculty-fallback">
+                      <i className="fas fa-user-graduate" aria-hidden="true"></i>
+                    </span>
+                  )}
+                </div>
                 <h4>{member.full_name}</h4>
-                <p>{member.position ?? member.department ?? ''}</p>
+                {(member.position || member.department) && (
+                  <p className="faculty-role">
+                    <i
+                      className={member.icon?.trim() ? member.icon.trim() : 'fas fa-user-tie'}
+                      aria-hidden="true"
+                    ></i>
+                    {member.position ?? member.department}
+                  </p>
+                )}
                 {member.biography && (
                   <details className="faculty-bio">
                     <summary>Read Bio <i className="fas fa-arrow-right" aria-hidden="true"></i></summary>

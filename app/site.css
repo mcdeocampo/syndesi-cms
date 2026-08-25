@@ -2253,38 +2253,78 @@ footer p {
    multicolour accent-card look they get a clean portrait ring that warms to
    gold on hover, a subtle gold top accent, and a sliding Read Bio arrow. */
 .faculty-card {
-    border-top: 3px solid transparent;
+    text-align: center;
     transition:
         transform 0.35s var(--ease-out-quint),
-        box-shadow 0.35s var(--ease-out-quint),
-        border-color 0.35s ease;
+        box-shadow 0.35s var(--ease-out-quint);
 }
 
-.faculty-card:hover {
-    border-top-color: var(--gold);
+/* Accent colour cycles per card for the portrait ring and role icon. */
+.faculty-card:nth-child(8n + 1) { --f-acc: #2563eb; }
+.faculty-card:nth-child(8n + 2) { --f-acc: #059669; }
+.faculty-card:nth-child(8n + 3) { --f-acc: #7c3aed; }
+.faculty-card:nth-child(8n + 4) { --f-acc: #db2777; }
+.faculty-card:nth-child(8n + 5) { --f-acc: #0891b2; }
+.faculty-card:nth-child(8n + 6) { --f-acc: #d97706; }
+.faculty-card:nth-child(8n + 7) { --f-acc: #d1232a; }
+.faculty-card:nth-child(8n + 8) { --f-acc: #0d9488; }
+
+/* Gradient accent ring around the circular portrait. */
+.faculty-photo-ring {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    padding: 4px;
+    margin: 0 auto 16px;
+    background: conic-gradient(
+        from 210deg,
+        var(--f-acc, var(--navy)),
+        color-mix(in srgb, var(--f-acc, var(--navy)) 22%, #fff) 150deg,
+        var(--f-acc, var(--navy)) 320deg
+    );
+    transition: transform 0.35s var(--ease-out-quint);
+}
+.faculty-card:hover .faculty-photo-ring {
+    transform: translateY(-2px) scale(1.03);
 }
 
 .faculty-photo {
-    width: 116px;
-    height: 116px;
+    width: 112px;
+    height: 112px;
     border-radius: 50%;
     object-fit: cover;
-    margin: 0 auto 16px;
     display: block;
-    /* White inner ring + soft navy halo -- a framed-portrait look. */
-    border: 4px solid #fff;
-    box-shadow:
-        0 0 0 3px rgba(22, 34, 92, 0.12),
-        0 6px 16px rgba(22, 34, 92, 0.12);
-    transition: box-shadow 0.4s var(--ease-out-quint);
+    box-sizing: border-box;
+    border: 3px solid #fff; /* white gap between the gradient ring and photo */
 }
 
-/* On hover the halo turns brand gold and lifts. (The scale is handled by the
-   existing .card:hover .faculty-photo rule.) */
-.faculty-card:hover .faculty-photo {
-    box-shadow:
-        0 0 0 3px var(--gold),
-        0 10px 24px rgba(22, 34, 92, 0.22);
+/* Placeholder circle when a member has no photo. */
+.faculty-fallback {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    border: 3px solid #fff;
+    background: color-mix(in srgb, var(--f-acc, var(--navy)) 12%, #fff);
+    color: var(--f-acc, var(--navy));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.6rem;
+}
+
+/* Role line: accent icon + muted text. */
+.faculty-role {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+.faculty-role i {
+    color: var(--f-acc, var(--navy));
 }
 
 .faculty-bio summary i {
@@ -3146,9 +3186,8 @@ footer p {
     transition: transform 0.5s var(--ease-out-quint);
 }
 
-.card:hover .faculty-photo {
-    transform: scale(1.05);
-}
+/* Faculty portrait hover motion is handled by .faculty-photo-ring now, so the
+   photo itself no longer scales (it would overflow the gradient ring). */
 
 /* ---- Keyboard accessibility ----
    :focus-visible targets keyboard users only, so mouse clicks
