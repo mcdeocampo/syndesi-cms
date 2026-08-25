@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { getPublishedResources } from '@/lib/resources'
 import { getPageSections } from '@/lib/page-sections'
-import SectionCta from '@/components/SectionCta'
+import { SmartLink } from '@/components/SectionCta'
 import PageBanner from '@/components/PageBanner'
 
 export const metadata: Metadata = {
@@ -42,32 +42,60 @@ export default async function ResourcesPage() {
         ) : (
           <div className="card-grid">
             {resources.map((r) => (
-              <div className="card reveal" key={r.id}>
-                {r.category && <span className="news-category-badge">{r.category}</span>}
-                <h4>
-                  <i
-                    className={`fas ${fileIcon(r.file_type)}`}
-                    aria-hidden="true"
-                    style={{ color: 'var(--red)', marginRight: 8 }}
-                  ></i>
-                  {r.title}
-                </h4>
+              <div className="resource-card reveal" key={r.id}>
+                <span className="resource-icon">
+                  <i className={`fas ${fileIcon(r.file_type)}`} aria-hidden="true"></i>
+                </span>
+                {r.category && <span className="resource-kicker">{r.category}</span>}
+                <h4>{r.title}</h4>
+                <span className="resource-underline" aria-hidden="true"></span>
                 {r.description && <p>{r.description}</p>}
                 {r.file_url ? (
-                  <a href={r.file_url} target="_blank" rel="noopener" className="card-learn-more">
-                    Download <i className="fas fa-arrow-down" aria-hidden="true"></i>
+                  <a
+                    href={r.file_url}
+                    target="_blank"
+                    rel="noopener"
+                    className="resource-foot resource-foot-link"
+                  >
+                    <span>
+                      <i className="fas fa-download" aria-hidden="true"></i> Download
+                    </span>
+                    <i className="fas fa-arrow-right" aria-hidden="true"></i>
                   </a>
                 ) : (
-                  <span style={{ marginTop: 12, display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                    <i className="fas fa-map-marker-alt" aria-hidden="true"></i> Available at the school office
-                  </span>
+                  <div className="resource-foot">
+                    <span>
+                      <i className="fas fa-map-marker-alt" aria-hidden="true"></i> Available at the
+                      school office
+                    </span>
+                    <i className="fas fa-arrow-right" aria-hidden="true"></i>
+                  </div>
                 )}
               </div>
             ))}
           </div>
         )}
 
-        <SectionCta section={s.intro} />
+        {/* "Can't find what you need?" help banner. The button (text + link) is
+            CMS-driven via the Resources intro; the surrounding copy is fixed. */}
+        {s.intro.link_text && s.intro.link_href && (
+          <div className="resource-help">
+            <span className="resource-help-icon">
+              <i className="fas fa-comments" aria-hidden="true"></i>
+            </span>
+            <div className="resource-help-text">
+              <h3>Can&rsquo;t find what you need?</h3>
+              <p>
+                Our school office is here to help you. Reach out to us for any documents or
+                information.
+              </p>
+            </div>
+            <SmartLink href={s.intro.link_href} className="btn-primary resource-help-btn">
+              <i className="fas fa-envelope" aria-hidden="true" style={{ marginRight: 8 }}></i>
+              {s.intro.link_text}
+            </SmartLink>
+          </div>
+        )}
       </div>
       </section>
     </>

@@ -1845,6 +1845,175 @@ a.contact-detail-value:hover {
     border: 1px solid color-mix(in srgb, var(--red) 28%, #fff);
 }
 
+/* ===== RESOURCES CARDS ===== */
+.resource-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 32px 24px 0;
+    text-align: center;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform 0.3s var(--ease-out-quint), box-shadow 0.3s ease;
+}
+.resource-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* Accent colour cycles per card, matching the multi-colour look of the mockup. */
+.resource-card:nth-child(4n + 1) { --r-acc: #d1232a; }
+.resource-card:nth-child(4n + 2) { --r-acc: #2563eb; }
+.resource-card:nth-child(4n + 3) { --r-acc: #059669; }
+.resource-card:nth-child(4n + 4) { --r-acc: #7c3aed; }
+
+.resource-icon {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+    background: color-mix(in srgb, var(--r-acc, var(--navy)) 12%, #fff);
+    color: var(--r-acc, var(--navy));
+    font-size: 1.7rem;
+}
+
+.resource-kicker {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--r-acc, var(--navy));
+    margin-bottom: 6px;
+}
+
+.resource-card h4 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--navy);
+    font-size: 1.15rem;
+    margin: 0 0 12px;
+}
+
+.resource-underline {
+    display: block;
+    width: 44px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--r-acc, var(--navy));
+    margin: 0 auto 16px;
+}
+
+.resource-card p {
+    color: var(--text-muted);
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin: 0 0 22px;
+    flex-grow: 1; /* pushes the footer row to the bottom so cards align */
+}
+
+/* Full-width footer row: pin/download label left, accent arrow right. */
+.resource-foot {
+    margin: 0 -24px;
+    padding: 15px 22px;
+    border-top: 1px solid var(--border);
+    background: color-mix(in srgb, var(--r-acc, var(--navy)) 4%, #fff);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+.resource-foot > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-align: left;
+}
+.resource-foot > i {
+    color: var(--r-acc, var(--navy));
+    font-size: 0.95rem;
+    transition: transform 0.25s ease;
+}
+.resource-foot-link:hover {
+    color: var(--r-acc, var(--navy));
+}
+.resource-foot-link:hover > i {
+    transform: translateX(3px);
+}
+
+/* "Can't find what you need?" help banner. */
+.resource-help {
+    margin-top: 48px;
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    padding: 26px 32px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--navy) 4%, #fff);
+    position: relative;
+    overflow: hidden;
+}
+.resource-help::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(color-mix(in srgb, var(--navy) 10%, transparent) 1px, transparent 1px);
+    background-size: 18px 18px;
+    -webkit-mask-image: linear-gradient(90deg, #000 0%, transparent 30%);
+    mask-image: linear-gradient(90deg, #000 0%, transparent 30%);
+    opacity: 0.5;
+    pointer-events: none;
+}
+.resource-help > * {
+    position: relative;
+    z-index: 1;
+}
+.resource-help-icon {
+    flex: 0 0 auto;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--red);
+    font-size: 1.7rem;
+}
+.resource-help-text {
+    flex: 1 1 auto;
+}
+.resource-help-text h3 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--navy);
+    font-size: 1.3rem;
+    margin: 0 0 4px;
+}
+.resource-help-text p {
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.55;
+}
+.resource-help-btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+@media (max-width: 640px) {
+    .resource-help {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
 /* ===== FOOTER ===== */
 footer {
     padding: 64px 0 0;
