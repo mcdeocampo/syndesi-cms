@@ -1430,6 +1430,24 @@ section {
     overflow: hidden;
 }
 
+/* Decorative dot pattern in the top-right corner, tinted per card. */
+.mv-card::after {
+    content: '';
+    position: absolute;
+    top: 26px;
+    right: 24px;
+    width: 86px;
+    height: 58px;
+    background-image: radial-gradient(currentColor 1.5px, transparent 1.5px);
+    background-size: 13px 13px;
+    opacity: 0.3;
+    pointer-events: none;
+}
+.mv-card > * {
+    position: relative;
+    z-index: 1;
+}
+
 .mv-card h3 {
     font-family: 'Poppins', sans-serif;
     font-size: 1.35rem;
@@ -1458,8 +1476,13 @@ section {
     background: color-mix(in srgb, var(--navy) 6%, #fff);
     border: 1px solid color-mix(in srgb, var(--navy) 14%, transparent);
 }
+/* White icon chip with a soft shadow, matching the reference. */
 .mv-mission .mv-icon {
-    background: color-mix(in srgb, var(--navy) 14%, #fff);
+    background: #fff;
+    color: var(--navy);
+    box-shadow: 0 6px 16px rgba(22, 34, 92, 0.12);
+}
+.mv-mission::after {
     color: var(--navy);
 }
 
@@ -1468,8 +1491,12 @@ section {
     border: 1px solid color-mix(in srgb, var(--gold) 34%, transparent);
 }
 .mv-vision .mv-icon {
-    background: color-mix(in srgb, var(--gold) 26%, #fff);
-    color: #a97b00;
+    background: #fff;
+    color: #d9a300;
+    box-shadow: 0 6px 16px rgba(169, 123, 0, 0.16);
+}
+.mv-vision::after {
+    color: var(--gold);
 }
 
 @media (max-width: 768px) {
