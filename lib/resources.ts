@@ -5,6 +5,7 @@ export type Resource = {
   title: string
   description: string | null
   category: string | null
+  icon: string | null
   file_id: string | null
   file_url: string | null
   file_name: string | null
@@ -20,6 +21,7 @@ type ResourceRow = {
   title: string
   description: string | null
   category: string | null
+  icon: string | null
   file_id: string | null
   status: 'draft' | 'published'
   created_at: string
@@ -44,7 +46,7 @@ function toResource(row: ResourceRow): Resource {
 }
 
 const SELECT_COLUMNS =
-  'id, title, description, category, file_id, status, created_at, updated_at, media(file_url, file_name, file_type, file_size)'
+  'id, title, description, category, icon, file_id, status, created_at, updated_at, media(file_url, file_name, file_type, file_size)'
 
 // Public site reader: published only, grouped-friendly order (category then
 // title). Tolerates Supabase errors like getPublishedNews() -- runs in the

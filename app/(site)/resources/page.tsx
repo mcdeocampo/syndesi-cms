@@ -44,7 +44,12 @@ export default async function ResourcesPage() {
             {resources.map((r) => (
               <div className="resource-card reveal" key={r.id}>
                 <span className="resource-icon">
-                  <i className={`fas ${fileIcon(r.file_type)}`} aria-hidden="true"></i>
+                  {/* Custom icon (a full Font Awesome class) if set, else one
+                      derived from the file type. */}
+                  <i
+                    className={r.icon?.trim() ? r.icon.trim() : `fas ${fileIcon(r.file_type)}`}
+                    aria-hidden="true"
+                  ></i>
                 </span>
                 {r.category && <span className="resource-kicker">{r.category}</span>}
                 <h4>{r.title}</h4>

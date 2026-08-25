@@ -87,6 +87,21 @@ export default function ResourceForm({ resource }: { resource?: Resource }) {
           <textarea id="description" name="description" defaultValue={resource?.description ?? ''} />
         </div>
         <div className="admin-field">
+          <label htmlFor="icon">Icon (optional)</label>
+          <input
+            id="icon"
+            name="icon"
+            defaultValue={resource?.icon ?? ''}
+            placeholder="e.g. fas fa-users"
+          />
+          <p className="admin-field-hint">
+            A Font Awesome class shown in the card&rsquo;s circle — e.g.{' '}
+            <strong>fas fa-users</strong> (families), <strong>fas fa-shield-halved</strong>{' '}
+            (policies), <strong>fas fa-book-open</strong> (handbook). Leave blank to use an icon
+            based on the file type.
+          </p>
+        </div>
+        <div className="admin-field">
           <label htmlFor="file">File</label>
           {resource?.file_name && (
             <p className="admin-field-hint" style={{ marginTop: 0, marginBottom: 6 }}>
