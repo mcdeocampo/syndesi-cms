@@ -2365,7 +2365,7 @@ footer p {
     background: conic-gradient(
         from 210deg,
         var(--navy),
-        var(--gold) 55%,
+        var(--navy-light) 55%,
         var(--navy)
     );
     transition: transform 0.35s var(--ease-out-quint);
