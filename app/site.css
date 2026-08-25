@@ -1005,7 +1005,10 @@ section {
     position: relative;
     overflow: hidden;
     background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-    padding: calc(clamp(108px, 12vw, 156px) + var(--ann-h, 0px)) 0 clamp(38px, 5vw, 60px);
+    /* Top = fixed-header clearance (~72px) + a balanced visual gap, plus the
+       announcement bar height when present. Previously a flat clamp up to 156px,
+       which left ~85px of empty space above the pill on wide screens. */
+    padding: calc(72px + clamp(28px, 2.8vw, 44px) + var(--ann-h, 0px)) 0 clamp(38px, 5vw, 60px);
     text-align: center;
 }
 
