@@ -239,7 +239,6 @@ export const SECTION_DEFAULTS: Record<string, Record<string, SectionMeta>> = {
       title: 'Our Dedicated Team',
       subtitle: 'Meet the educators who inspire and guide our students.',
       empty_text: 'Our faculty roster is being updated. Please check back soon.',
-      footnote: 'Our complete faculty roster is available at the school office.',
     },
   },
   news: {
