@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { getPageSections } from '@/lib/page-sections'
 import { getPageItems } from '@/lib/page-section-items'
-import SectionCta from '@/components/SectionCta'
+import SectionCta, { SectionTag } from '@/components/SectionCta'
 import PageBanner from '@/components/PageBanner'
 
 export const metadata: Metadata = {
@@ -50,6 +50,29 @@ export default async function AdmissionsPage() {
             </div>
           ))}
         </div>
+
+        {items.faq && items.faq.length > 0 && (
+          <div className="faq-section">
+            <div className="section-head-center">
+              <SectionTag icon="fas fa-circle-question" label={s.faq.tag} />
+              <h2 className="section-title">{s.faq.title}</h2>
+              {s.faq.subtitle && <p className="section-subtitle">{s.faq.subtitle}</p>}
+            </div>
+            <div className="faq-list">
+              {items.faq.map((f, i) => (
+                <details className="faq-item" key={f.id ?? i}>
+                  <summary>
+                    <span>{f.title}</span>
+                    <i className="fas fa-chevron-down" aria-hidden="true"></i>
+                  </summary>
+                  <div className="faq-answer">
+                    <p>{f.body}</p>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+        )}
 
         <SectionCta section={s.intro} />
       </div>

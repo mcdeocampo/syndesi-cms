@@ -198,6 +198,13 @@ export const SECTION_DEFAULTS: Record<string, Record<string, SectionMeta>> = {
       link_text: 'Request More Information',
       link_href: '/contact',
     },
+    faq: {
+      label: 'FAQ',
+      fields: ['tag', 'title', 'subtitle'],
+      tag: 'FAQ',
+      title: 'Frequently Asked Questions',
+      subtitle: 'Answers to the questions families ask us most.',
+    },
   },
   programs: {
     intro: {

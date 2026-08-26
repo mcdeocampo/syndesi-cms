@@ -107,6 +107,8 @@ export const ITEM_SECTIONS: Record<string, Record<string, ItemSectionMeta>> = {
     cards: { label: 'Info Cards', fields: ['icon', 'title', 'body'], allowAdd: true },
     requirements: { label: 'Admission Requirements (list)', fields: ['body'], allowAdd: true },
     procedure: { label: 'Enrollment Procedure (steps)', fields: ['body'], allowAdd: true },
+    // Q&A pairs: `title` is the question, `body` is the answer.
+    faq: { label: 'FAQ', fields: ['title', 'body'], allowAdd: true },
   },
   programs: {
     levels: {
@@ -332,6 +334,28 @@ export const ITEM_DEFAULTS: Record<string, Record<string, SectionItem[]>> = {
       { body: 'Interview with the Principal.' },
       { body: 'Pay the registration fee.' },
       { body: 'Receive class schedule and ID.' },
+    ],
+    faq: [
+      {
+        title: 'When does enrollment start?',
+        body: 'Enrollment for the coming school year typically opens in the second quarter. Contact the admissions office or watch our announcements for exact dates.',
+      },
+      {
+        title: 'What grade levels do you offer?',
+        body: 'We welcome students from Preschool through Junior High School, with dedicated Special Education support.',
+      },
+      {
+        title: 'Do you accept transferees?',
+        body: 'Yes. Transferees are welcome and follow the same procedure, with an assessment to ensure the right grade placement.',
+      },
+      {
+        title: 'How much is the tuition?',
+        body: 'For the latest tuition and fee schedule, please contact our finance office or visit the school. Flexible payment plans are available.',
+      },
+      {
+        title: 'Are scholarships available?',
+        body: 'Yes, we offer academic and athletic scholarships. Inquire at the admissions office for qualification criteria and deadlines.',
+      },
     ],
   },
   programs: {
