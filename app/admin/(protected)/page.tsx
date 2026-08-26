@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 
 async function getCounts() {
@@ -10,14 +11,20 @@ async function getCounts() {
   // media/faculty/news/resources are the exceptions: they have real SELECT
   // policies now that their modules are built, but the count works the same
   // way either way.
-  const [media, pages, news, faculty, resources, galleryImages] = await Promise.all([
-    supabase.from('media').select('*', { count: 'exact', head: true }),
-    supabase.from('pages').select('*', { count: 'exact', head: true }),
-    supabase.from('news').select('*', { count: 'exact', head: true }),
-    supabase.from('faculty').select('*', { count: 'exact', head: true }),
-    supabase.from('resources').select('*', { count: 'exact', head: true }),
-    supabase.from('gallery_images').select('*', { count: 'exact', head: true }),
-  ])
+  const [media, pages, news, faculty, resources, galleryImages, inquiries, unread] =
+    await Promise.all([
+      supabase.from('media').select('*', { count: 'exact', head: true }),
+      supabase.from('pages').select('*', { count: 'exact', head: true }),
+      supabase.from('news').select('*', { count: 'exact', head: true }),
+      supabase.from('faculty').select('*', { count: 'exact', head: true }),
+      supabase.from('resources').select('*', { count: 'exact', head: true }),
+      supabase.from('gallery_images').select('*', { count: 'exact', head: true }),
+      supabase.from('contact_inquiries').select('*', { count: 'exact', head: true }),
+      supabase
+        .from('contact_inquiries')
+        .select('*', { count: 'exact', head: true })
+        .eq('is_read', false),
+    ])
 
   return {
     media: media.count ?? 0,
@@ -26,6 +33,8 @@ async function getCounts() {
     faculty: faculty.count ?? 0,
     resources: resources.count ?? 0,
     galleryImages: galleryImages.count ?? 0,
+    inquiries: inquiries.count ?? 0,
+    unreadInquiries: unread.count ?? 0,
   }
 }
 
@@ -42,13 +51,36 @@ async function getLastUpdated() {
 export default async function DashboardPage() {
   const [counts, lastUpdated] = await Promise.all([getCounts(), getLastUpdated()])
 
-  const stats = [
-    { label: 'Total Media Files', value: counts.media },
-    { label: 'Total Pages', value: counts.pages },
-    { label: 'Total News Articles', value: counts.news },
-    { label: 'Total Faculty Members', value: counts.faculty },
-    { label: 'Total Documents', value: counts.resources },
-    { label: 'Total Gallery Images', value: counts.galleryImages },
+  const stats: {
+    label: string
+    value: number
+    icon: string
+    accent: string
+    href?: string
+    badge?: string | null
+  }[] = [
+    { label: 'News Articles', value: counts.news, icon: 'fa-newspaper', accent: '#d1232a', href: '/admin/news' },
+    { label: 'Faculty Members', value: counts.faculty, icon: 'fa-chalkboard-user', accent: '#059669', href: '/admin/faculty' },
+    { label: 'Documents', value: counts.resources, icon: 'fa-file-lines', accent: '#d97706', href: '/admin/resources' },
+    {
+      label: 'Inquiries',
+      value: counts.inquiries,
+      icon: 'fa-inbox',
+      accent: '#7c3aed',
+      href: '/admin/inquiries',
+      badge: counts.unreadInquiries > 0 ? `${counts.unreadInquiries} new` : null,
+    },
+    { label: 'Media Files', value: counts.media, icon: 'fa-images', accent: '#2563eb', href: '/admin/media' },
+    { label: 'Gallery Images', value: counts.galleryImages, icon: 'fa-panorama', accent: '#db2777' },
+    { label: 'Pages', value: counts.pages, icon: 'fa-file', accent: '#0891b2' },
+  ]
+
+  const quickActions = [
+    { label: 'Website Settings', icon: 'fa-gear', href: '/admin/settings' },
+    { label: 'Page Content', icon: 'fa-file-lines', href: '/admin/page-content' },
+    { label: 'Add News', icon: 'fa-plus', href: '/admin/news/new' },
+    { label: 'Add Faculty', icon: 'fa-plus', href: '/admin/faculty/new' },
+    { label: 'Add Resource', icon: 'fa-plus', href: '/admin/resources/new' },
   ]
 
   return (
@@ -57,12 +89,58 @@ export default async function DashboardPage() {
       <p className="page-subtitle">Overview of your school website content.</p>
 
       <div className="admin-stats-grid">
-        {stats.map((s) => (
-          <div className="admin-stat-card" key={s.label}>
-            <div className="value">{s.value}</div>
-            <div className="label">{s.label}</div>
-          </div>
-        ))}
+        {stats.map((s) => {
+          const inner = (
+            <>
+              <span
+                className="admin-stat-icon"
+                style={{
+                  background: `color-mix(in srgb, ${s.accent} 12%, #fff)`,
+                  color: s.accent,
+                }}
+              >
+                <i className={`fas ${s.icon}`} aria-hidden="true"></i>
+              </span>
+              <div className="admin-stat-body">
+                <div className="value">{s.value}</div>
+                <div className="label">
+                  {s.label}
+                  {s.badge && <span className="admin-stat-badge">{s.badge}</span>}
+                </div>
+              </div>
+            </>
+          )
+          return s.href ? (
+            <Link
+              href={s.href}
+              className="admin-stat-card admin-stat-link"
+              key={s.label}
+              style={{ ['--stat-acc' as string]: s.accent }}
+            >
+              {inner}
+            </Link>
+          ) : (
+            <div
+              className="admin-stat-card"
+              key={s.label}
+              style={{ ['--stat-acc' as string]: s.accent }}
+            >
+              {inner}
+            </div>
+          )
+        })}
+      </div>
+
+      <div className="admin-card" style={{ marginBottom: 20 }}>
+        <h2>Quick Actions</h2>
+        <div className="admin-quick-actions">
+          {quickActions.map((a) => (
+            <Link href={a.href} className="admin-quick-action" key={a.label}>
+              <i className={`fas ${a.icon}`} aria-hidden="true"></i>
+              {a.label}
+            </Link>
+          ))}
+        </div>
       </div>
 
       <div className="admin-card">

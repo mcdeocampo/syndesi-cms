@@ -262,28 +262,116 @@
 
 .admin-stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .admin-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
   background: var(--admin-card);
   border: 1px solid var(--admin-border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+/* Accent edge on the left of each card. */
+.admin-stat-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--stat-acc, var(--admin-navy));
+  opacity: 0.85;
+}
+.admin-stat-link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(22, 34, 92, 0.1);
+  border-color: color-mix(in srgb, var(--stat-acc, var(--admin-navy)) 40%, var(--admin-border));
+}
+
+.admin-stat-icon {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
   border-radius: 12px;
-  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.admin-stat-body {
+  min-width: 0;
 }
 
 .admin-stat-card .value {
-  font-size: 2rem;
+  font-size: 1.9rem;
   font-weight: 700;
+  line-height: 1.1;
   color: var(--admin-navy);
 }
 
 .admin-stat-card .label {
   color: var(--admin-text-muted);
   font-size: 0.85rem;
-  margin-top: 4px;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-stat-badge {
+  background: #d1232a;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+
+/* Quick action buttons */
+.admin-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.admin-quick-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--admin-border);
+  background: var(--admin-bg);
+  color: var(--admin-navy);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.admin-quick-action i {
+  color: var(--admin-navy);
+  font-size: 0.85rem;
+}
+.admin-quick-action:hover {
+  background: var(--admin-navy);
+  border-color: var(--admin-navy);
+  color: #fff;
+  transform: translateY(-2px);
+}
+.admin-quick-action:hover i {
+  color: #fff;
 }
 
 .admin-card {
