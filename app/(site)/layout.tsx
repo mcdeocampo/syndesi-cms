@@ -53,6 +53,7 @@ export default async function SiteLayout({
             text={settings.announcement_text!.trim()}
             linkHref={settings.announcement_link_href}
             linkText={settings.announcement_link_text}
+            scroll={settings.announcement_scroll}
           />
         </>
       )}

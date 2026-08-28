@@ -100,6 +100,7 @@ export async function updateWebsiteSettings(
     announcement_text: textField('announcement_text'),
     announcement_link_href: textField('announcement_link_href'),
     announcement_link_text: textField('announcement_link_text'),
+    announcement_scroll: formData.get('announcement_scroll') === 'on',
     admin_label: textField('admin_label'),
     updated_at: new Date().toISOString(),
   }

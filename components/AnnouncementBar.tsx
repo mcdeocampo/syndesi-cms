@@ -17,10 +17,12 @@ export default function AnnouncementBar({
   text,
   linkHref,
   linkText,
+  scroll = false,
 }: {
   text: string
   linkHref: string | null
   linkText: string | null
+  scroll?: boolean
 }) {
   const [dismissed, setDismissed] = useState(false)
   const barRef = useRef<HTMLDivElement>(null)
@@ -62,18 +64,59 @@ export default function AnnouncementBar({
 
   if (dismissed) return null
 
-  return (
-    <div className="announcement-bar" ref={barRef} role="region" aria-label="Announcement">
-      <div className="announcement-inner">
-        <span className="announcement-text">
-          <i className="fas fa-bullhorn" aria-hidden="true"></i> {text}
-          {linkHref && (
-            <SmartLink href={linkHref} className="announcement-link">
-              {linkText || 'Learn more'} <i className="fas fa-arrow-right" aria-hidden="true"></i>
-            </SmartLink>
-          )}
+  // The message content, shared by both modes.
+  const message = (
+    <>
+      {text}
+      {linkHref && (
+        <SmartLink href={linkHref} className="announcement-link">
+          {linkText || 'Learn more'} <i className="fas fa-arrow-right" aria-hidden="true"></i>
+        </SmartLink>
+      )}
+    </>
+  )
+
+  // A non-interactive visual clone of the message, used to make the ticker loop
+  // seamlessly without a second focusable/announced copy of the link.
+  const messageClone = (
+    <>
+      {text}
+      {linkHref && (
+        <span className="announcement-link">
+          {linkText || 'Learn more'} <i className="fas fa-arrow-right" aria-hidden="true"></i>
         </span>
-      </div>
+      )}
+    </>
+  )
+
+  return (
+    <div
+      className={`announcement-bar${scroll ? ' announcement-bar-scroll' : ''}`}
+      ref={barRef}
+      role="region"
+      aria-label="Announcement"
+    >
+      {scroll ? (
+        <>
+          <span className="announcement-lead" aria-hidden="true">
+            <i className="fas fa-bullhorn"></i>
+          </span>
+          <div className="announcement-marquee">
+            <div className="announcement-marquee-track">
+              <span className="announcement-marquee-item">{message}</span>
+              <span className="announcement-marquee-item" aria-hidden="true">
+                {messageClone}
+              </span>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="announcement-inner">
+          <span className="announcement-text">
+            <i className="fas fa-bullhorn" aria-hidden="true"></i> {message}
+          </span>
+        </div>
+      )}
       <button
         type="button"
         className="announcement-close"

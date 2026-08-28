@@ -42,6 +42,9 @@ export type WebsiteSettings = {
   announcement_text: string | null
   announcement_link_href: string | null
   announcement_link_text: string | null
+  // When true the announcement scrolls as a ticker/marquee instead of sitting
+  // static.
+  announcement_scroll: boolean
   // Wordmark shown in the CMS sidebar and on the login screen. Null means
   // "derive it from school_name" -- see adminLabel() below.
   admin_label: string | null
@@ -144,6 +147,7 @@ export const DEFAULT_SETTINGS: WebsiteSettings = {
   announcement_text: null,
   announcement_link_href: null,
   announcement_link_text: null,
+  announcement_scroll: false,
   // Null on purpose: falls back to "<school name> CMS" via adminLabel().
   admin_label: null,
   updated_at: new Date().toISOString(),

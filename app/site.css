@@ -216,6 +216,65 @@ html {
     background: rgba(255, 255, 255, 0.12);
 }
 
+/* ----- Scrolling (ticker/marquee) mode ----- */
+.announcement-bar-scroll {
+    justify-content: flex-start;
+    gap: 12px;
+    /* Extra right padding reserves space for the absolutely-positioned close
+       button so the scrolling text never slides under it. */
+    padding: 9px 46px 9px 18px;
+}
+.announcement-lead {
+    flex: 0 0 auto;
+    color: var(--gold);
+    font-size: 0.95rem;
+}
+.announcement-marquee {
+    flex: 1 1 auto;
+    overflow: hidden;
+    /* Fade the text in/out at both edges. */
+    -webkit-mask-image: linear-gradient(
+        90deg,
+        transparent,
+        #000 24px,
+        #000 calc(100% - 24px),
+        transparent
+    );
+    mask-image: linear-gradient(
+        90deg,
+        transparent,
+        #000 24px,
+        #000 calc(100% - 24px),
+        transparent
+    );
+}
+.announcement-marquee-track {
+    display: inline-flex;
+    white-space: nowrap;
+    will-change: transform;
+    animation: ann-marquee 26s linear infinite;
+}
+/* Two identical items make -50% loop seamlessly; pause on hover. */
+.announcement-marquee:hover .announcement-marquee-track {
+    animation-play-state: paused;
+}
+.announcement-marquee-item {
+    padding-right: 64px;
+}
+@keyframes ann-marquee {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .announcement-marquee-track {
+        animation: none;
+    }
+}
+
 /* ===== NAVIGATION ===== */
 nav {
     position: fixed;

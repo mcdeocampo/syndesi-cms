@@ -201,6 +201,21 @@ export default function SettingsForm({ settings }: { settings: WebsiteSettings }
           </label>
         </div>
         <div className="admin-field">
+          <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
+            <input
+              type="checkbox"
+              name="announcement_scroll"
+              defaultChecked={settings.announcement_scroll}
+              style={{ width: 18, height: 18 }}
+            />
+            Scroll it as a ticker (marquee)
+          </label>
+          <p className="admin-field-hint">
+            The text slides across continuously and pauses when a visitor hovers over it. Leave
+            unchecked for a static, centered bar.
+          </p>
+        </div>
+        <div className="admin-field">
           <label htmlFor="announcement_text">Announcement Text</label>
           <input
             id="announcement_text"
