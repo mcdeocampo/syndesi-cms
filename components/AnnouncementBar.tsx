@@ -26,6 +26,27 @@ export default function AnnouncementBar({
 }) {
   const [dismissed, setDismissed] = useState(false)
   const barRef = useRef<HTMLDivElement>(null)
+  const marqueeRef = useRef<HTMLDivElement>(null)
+  const itemRef = useRef<HTMLSpanElement>(null)
+  // How many copies of the message make up ONE looping sequence. Enough to
+  // overflow the bar so the ticker reads as a continuous stream (not just two
+  // side-by-side copies) and loops seamlessly at any screen width.
+  const [repeats, setRepeats] = useState(4)
+
+  // Measure the message vs. the bar width and repeat it enough to fill+overflow.
+  useEffect(() => {
+    if (!scroll || dismissed) return
+    const compute = () => {
+      const containerW = marqueeRef.current?.offsetWidth ?? 0
+      const itemW = itemRef.current?.offsetWidth ?? 0
+      if (containerW > 0 && itemW > 0) {
+        setRepeats(Math.max(2, Math.ceil(containerW / itemW) + 1))
+      }
+    }
+    compute()
+    window.addEventListener('resize', compute)
+    return () => window.removeEventListener('resize', compute)
+  }, [scroll, dismissed, text, linkText])
 
   // On mount, hide immediately if this exact message was already dismissed.
   useEffect(() => {
@@ -101,12 +122,22 @@ export default function AnnouncementBar({
           <span className="announcement-lead" aria-hidden="true">
             <i className="fas fa-bullhorn"></i>
           </span>
-          <div className="announcement-marquee">
+          <div className="announcement-marquee" ref={marqueeRef}>
             <div className="announcement-marquee-track">
-              <span className="announcement-marquee-item">{message}</span>
-              <span className="announcement-marquee-item" aria-hidden="true">
-                {messageClone}
-              </span>
+              {/* Two identical sequences of `repeats` copies. The first copy is
+                  the real (interactive, announced) message; every other copy is
+                  an aria-hidden visual clone. Animating the track by -50% moves
+                  exactly one sequence, so the loop is seamless. */}
+              {Array.from({ length: repeats * 2 }, (_, i) => (
+                <span
+                  key={i}
+                  className="announcement-marquee-item"
+                  ref={i === 0 ? itemRef : undefined}
+                  aria-hidden={i === 0 ? undefined : true}
+                >
+                  {i === 0 ? message : messageClone}
+                </span>
+              ))}
             </div>
           </div>
         </>
